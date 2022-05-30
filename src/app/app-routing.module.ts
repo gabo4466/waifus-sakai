@@ -28,6 +28,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ErrorComponent } from './components/error/error.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { AccessComponent } from './components/access/access.component';
+import {ProfileComponent} from "./components/profile/profile.component";
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -77,8 +78,8 @@ import { AccessComponent } from './components/access/access.component';
             {
                 path: 'pages', component: AppMainComponent,
                 children: [
+                    {path: 'profile', component: ProfileComponent},
                     {path: '', component: DashboardComponent},
-                    {path:'landing', component: LandingComponent},
                     {path:'error', component: ErrorComponent},
                     {path:'notfound', component: NotfoundComponent},
                     {path:'access', component: AccessComponent},
