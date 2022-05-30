@@ -32,9 +32,13 @@ import { AccessComponent } from './components/access/access.component';
     imports: [
         RouterModule.forRoot([
             {
+                /*
+                ----------------------------------------------------------------
+                RUTAS DE PRUEBA
+                ----------------------------------------------------------------
+                 */
                 path: '', component: AppMainComponent,
                 children: [
-                    {path: '', component: DashboardComponent},
                     {path: 'uikit/formlayout', component: FormLayoutComponent},
                     {path: 'uikit/input', component: InputComponent},
                     {path: 'uikit/floatlabel', component: FloatLabelComponent},
@@ -59,11 +63,28 @@ import { AccessComponent } from './components/access/access.component';
                     {path: 'documentation', component: DocumentationComponent}
                 ],
             },
-            {path:'pages/landing', component: LandingComponent},
-            {path:'pages/login', component: LoginComponent},
-            {path:'pages/error', component: ErrorComponent},
-            {path:'pages/notfound', component: NotfoundComponent},
-            {path:'pages/access', component: AccessComponent},
+            /*
+            ----------------------------------------------------------------
+                FIN RUTAS DE PRUEBA
+            ----------------------------------------------------------------
+             */
+            {
+                path: 'auth',
+                children: [
+                    {path: 'login', component: LoginComponent},
+                ],
+            },
+            {
+                path: 'pages', component: AppMainComponent,
+                children: [
+                    {path: '', component: DashboardComponent},
+                    {path:'landing', component: LandingComponent},
+                    {path:'error', component: ErrorComponent},
+                    {path:'notfound', component: NotfoundComponent},
+                    {path:'access', component: AccessComponent},
+                    {path: '**', redirectTo: 'pages'},
+                ],
+            },
             {path: '**', redirectTo: 'pages/notfound'},
         ], {scrollPositionRestoration: 'enabled', anchorScrolling:'enabled'})
     ],
