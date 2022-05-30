@@ -28,6 +28,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ErrorComponent } from './components/error/error.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { AccessComponent } from './components/access/access.component';
+import {RegisterComponent} from "./components/register/register.component";
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -72,6 +73,7 @@ import { AccessComponent } from './components/access/access.component';
                 path: 'auth',
                 children: [
                     {path: 'login', component: LoginComponent},
+                    {path: 'register', component: RegisterComponent},
                 ],
             },
             {
