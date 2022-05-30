@@ -78,7 +78,6 @@ import { AccessComponent } from './components/access/access.component';
                 path: 'pages', component: AppMainComponent,
                 children: [
                     {path: '', component: DashboardComponent},
-                    {path:'landing', component: LandingComponent},
                     {path:'error', component: ErrorComponent},
                     {path:'notfound', component: NotfoundComponent},
                     {path:'access', component: AccessComponent},
