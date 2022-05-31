@@ -36,7 +36,7 @@
                                    aria-describedby="nickname-help"
                                    style="padding:1rem;"
                                    formControlName="nickname">
-                            <small *ngIf="emailInvalid" id="nickname-help" class="p-error">El nombre de usuario no es válido.</small>
+                            <small *ngIf="nicknameInvalid" id="nickname-help" class="p-error">El nombre de usuario no es válido.</small>
                         </div>
 
                         <div class="field p-fluid mb-3">
@@ -49,7 +49,7 @@
                                    aria-describedby="name-help"
                                    style="padding:1rem;"
                                    formControlName="name">
-                            <small *ngIf="emailInvalid" id="name-help" class="p-error">Introduce un nombre.</small>
+                            <small *ngIf="nameInvalid" id="name-help" class="p-error">Introduce un nombre.</small>
                         </div>
 
                         <div class="field p-fluid mb-3">
@@ -57,9 +57,23 @@
                             <p-password id="password1"
                                         placeholder="Contraseña"
                                         [toggleMask]="true"
-                                        styleClass="w-full mb-3"
+                                        styleClass="w-full mb-3 p-password p-component p-inputwrapper p-input-icon-right"
                                         aria-describedby="password-help"
-                                        formControlName="password"></p-password>
+                                        formControlName="password">
+                                <ng-template pTemplate="header">
+                                    <h6>Introduzca una contraseña</h6>
+                                </ng-template>
+                                <ng-template pTemplate="footer">
+                                    <p-divider></p-divider>
+                                    <p class="mt-2">Mínimo obligatorio</p>
+                                    <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                                        <li>Una letra minúscula</li>
+                                        <li>Una letra mayúscula</li>
+                                        <li>Un número</li>
+                                        <li>5 caracteres</li>
+                                    </ul>
+                                </ng-template>
+                            </p-password>
                             <small *ngIf="passwordInvalid" id="password-help" class="p-error">La contraseña no es válida.</small>
                         </div>
 
@@ -68,22 +82,30 @@
                             <p-password id="password2"
                                         placeholder="Repetir contraseña"
                                         [toggleMask]="true"
-                                        styleClass="w-full mb-3"
+                                        styleClass="w-full mb-3 p-password p-component p-inputwrapper p-input-icon-right"
                                         aria-describedby="password-help2"
                                         formControlName="repPass"></p-password>
-                            <small *ngIf="passwordInvalid" id="password-help2" class="p-error">La contraseña no es válida.</small>
+                            <small *ngIf="repPassInvalid" id="password-help2" class="p-error">La contraseña no es válida.</small>
+                        </div>
+
+                        <div class="field mb-3">
+                            <label for="basic" class="block text-900 font-medium text-xl mb-2">Fecha de Nacimiento</label>
+                            <p-calendar id="basic" formControlName="birthday" styleClass="w-full mb-3" aria-describedby="birthday-help"></p-calendar>
+                            <small *ngIf="birthdayInvalid" id="birthday-help" class="p-error">Introduce una fecha de nacimiento.</small>
                         </div>
 
                         <div class="mb-3">
                             <p-inputSwitch formControlName="adultContent" id="aC"></p-inputSwitch>
-                            <label for="aC" class="p-3 pt-0">Contenido Adulto</label>
+                            <label for="aC" class="p-3 vertical-align-bottom md:vertical-align-top">Contenido Adulto</label>
                         </div>
 
                         <div class="field-checkbox mb-3">
-                            <p-checkbox name="group1" id="ch" formControlName="terms"></p-checkbox>
-                            <label for="ch">Términos y Condiciones de uso</label>
+                            <p-checkbox name="group1" [binary]="true" id="ch" formControlName="terms" aria-describedby="terms-help"></p-checkbox>
+                            <label for="ch">Acepto los términos y condiciones de uso</label>
                         </div>
-
+                        <div class="mb-3">
+                            <small *ngIf="termsInvalid" id="terms-help" class="p-error">Es necesario aceptar los términos y condiciones.</small>
+                        </div>
 
                         <button type="submit" pButton pRipple label="Enviar" class="w-full p-3 text-xl"></button>
                     </form>

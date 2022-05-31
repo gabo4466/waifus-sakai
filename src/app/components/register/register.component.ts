@@ -90,6 +90,7 @@ export class RegisterComponent implements OnInit {
         let dateD = date.getDate();
         let dateM = date.getMonth() + 1;
         let dateY = date.getFullYear();
+
         if (dateY-birthdayY<18){
 
         }else if (dateY-birthdayY==18){
@@ -134,15 +135,15 @@ export class RegisterComponent implements OnInit {
                 '',
                 [
                     Validators.required,
-                    Validators.minLength(5),
-                    Validators.pattern('[A-Za-z\\d]')
+                    Validators.minLength(6),
+                    Validators.pattern('[A-Za-z0-9=)(/&%$·"!;:_,.-]+')
                 ]
             ],
             repPass: [
                 '',
                 [
                     Validators.required,
-                    Validators.minLength(5)
+                    Validators.minLength(6)
                 ]
             ],
             nickname: [
@@ -150,8 +151,8 @@ export class RegisterComponent implements OnInit {
                 [
                     Validators.required,
                     Validators.minLength(4),
-                    Validators.minLength(20),
-                    Validators.pattern('[\\w_.\\s]')
+                    Validators.maxLength(20),
+                    Validators.pattern('[a-zA-Z0-9._-]+')
                 ]
             ],
             name: [
@@ -167,10 +168,13 @@ export class RegisterComponent implements OnInit {
                 ]
             ],
             terms: [
-                '',
+                false,
                 [
                     Validators.required
                 ]
+            ],
+            adultContent: [
+                false,
             ]
         },
             {
@@ -179,7 +183,7 @@ export class RegisterComponent implements OnInit {
     }
 
     send(){
-
+        console.log(this.formatDateYYYYMMDD(this.fg.get('birthday').value),);
         if (this.fg.valid){
             this.user.constructorRegister(this.fg.get('email').value, this.fg.get('password').value, this.fg.get('nickname').value, this.fg.get('name').value, this.fg.get('repPass').value, this.formatDateYYYYMMDD(this.fg.get('birthday').value), this.fg.get('adultContent').value, this.fg.get('terms').value);
             this.http.post<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {
@@ -215,6 +219,26 @@ export class RegisterComponent implements OnInit {
 
     get passwordInvalid(){
         return this.fg.get('password').invalid && this.fg.get('password').touched
+    }
+
+    get nicknameInvalid(){
+        return this.fg.get('nickname').invalid && this.fg.get('nickname').touched
+    }
+
+    get repPassInvalid(){
+        return this.fg.get('repPass').invalid && this.fg.get('repPass').touched
+    }
+
+    get nameInvalid(){
+        return this.fg.get('name').invalid && this.fg.get('name').touched
+    }
+
+    get birthdayInvalid(){
+        return this.fg.get('birthday').invalid && this.fg.get('birthday').touched
+    }
+
+    get termsInvalid(){
+        return !this.fg.get('terms').value && this.fg.get('terms').touched
     }
 
 }
