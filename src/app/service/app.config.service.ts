@@ -5,9 +5,11 @@ import { AppConfig } from '../api/appconfig';
 @Injectable()
 export class ConfigService {
 
+
+    cacheTheme:string = localStorage.getItem('theme');
     config: AppConfig = {
-        theme: 'lara-light-indigo',
-        dark: false,
+        theme: this.cacheTheme===''?'arya-purple':this.cacheTheme,
+        dark: true,
         inputStyle: 'outlined',
         ripple: true
     };

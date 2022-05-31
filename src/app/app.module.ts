@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -141,6 +141,8 @@ import { ErrorComponent } from './components/error/error.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { AccessComponent } from './components/access/access.component';
 import { RegisterComponent } from './components/register/register.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import {HttpInterceptorService} from "./service/http-interceptor.service";
 
 @NgModule({
     imports: [
@@ -231,6 +233,7 @@ import { RegisterComponent } from './components/register/register.component';
         VirtualScrollerModule,
         AppCodeModule,
         StyleClassModule,
+        ReactiveFormsModule
     ],
     declarations: [
         AppComponent,
@@ -275,9 +278,11 @@ import { RegisterComponent } from './components/register/register.component';
         NotfoundComponent,
         AccessComponent,
         RegisterComponent,
+        ProfileComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},
+        {provide:HTTP_INTERCEPTORS, useClass:HttpInterceptorService, multi:true},
         CountryService, CustomerService, EventService, IconService, NodeService,
         PhotoService, ProductService, MenuService, ConfigService
     ],
