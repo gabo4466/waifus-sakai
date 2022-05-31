@@ -28,6 +28,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ErrorComponent } from './components/error/error.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { AccessComponent } from './components/access/access.component';
+import {RegisterComponent} from "./components/register/register.component";
 import {ProfileComponent} from "./components/profile/profile.component";
 import {OtpAuthComponent} from "./components/otp-auth/otp-auth.component";
 @NgModule({
@@ -75,6 +76,7 @@ import {OtpAuthComponent} from "./components/otp-auth/otp-auth.component";
                 children: [
                     {path: 'login', component: LoginComponent},
                     { path: 'code', component: OtpAuthComponent },
+                    {path: 'register', component: RegisterComponent},
                 ],
             },
             {

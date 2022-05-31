@@ -140,6 +140,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ErrorComponent } from './components/error/error.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { AccessComponent } from './components/access/access.component';
+import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import {HttpInterceptorService} from "./service/http-interceptor.service";
 import { OtpAuthComponent } from './components/otp-auth/otp-auth.component';
@@ -279,6 +280,7 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
         ErrorComponent,
         NotfoundComponent,
         AccessComponent,
+        RegisterComponent,
         ProfileComponent,
         OtpAuthComponent,
     ],
