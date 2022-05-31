@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfigService } from '../../service/app.config.service';
 import { AppConfig } from '../../api/appconfig';
-import { Subscription } from 'rxjs';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Observable, Subscription} from 'rxjs';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {UserModel} from "../../model/user.model";
@@ -73,14 +73,6 @@ export class RegisterComponent implements OnInit {
         }
     }
 
-    passwordMatchValidator(control: AbstractControl) {
-        let password: string = control.get('password').value;
-        let confirmPassword: string = control.get('repPass').value;
-        if (password !== confirmPassword) {
-            control.get('repPass').setErrors({ NoPassswordMatch: true });
-        }
-    }
-
     ageValidator(control: AbstractControl){
         let birthday: Date = control.get('birthday').value;
         let birthdayD = birthday.getDate();
@@ -110,6 +102,19 @@ export class RegisterComponent implements OnInit {
         }
     }
 
+    passwordCheck(password:string, repPass:string){
+        return(formGroup:FormGroup)=>{
+            let passwordControl = formGroup.controls[password];
+            let repPassControl = formGroup.controls[repPass];
+
+            if (passwordControl.value === repPassControl.value){
+                repPassControl.setErrors(null);
+            }else {
+                repPassControl.setErrors({notEqual : true});
+            }
+        }
+    }
+
     formatDateYYYYMMDD(date:Date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -122,6 +127,26 @@ export class RegisterComponent implements OnInit {
         return [year, month, day].join('');
     }
 
+    emailCheck(control:FormControl): Promise<Error>|Observable<Error>{
+        if(!control.value){
+            return Promise.resolve(null);
+        }
+        return new Promise((resolve, reject)=>{
+            this.user.constructorEmail(control.value)
+            this.http.get<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {});
+            });
+    }
+
+    nicknameCheck(control:FormControl): Promise<Error>|Observable<Error>{
+        if(!control.value){
+            return Promise.resolve(null);
+        }
+        return new Promise((resolve, reject)=>{
+            this.user.constructorNickname(control.value)
+            this.http.get<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {});
+        });
+    }
+
     createForm(){
         this.fg = this.fb.group({
             email: [
@@ -129,7 +154,8 @@ export class RegisterComponent implements OnInit {
                 [
                     Validators.required,
                     Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$')
-                ]
+                ],
+                this.emailCheck
             ],
             password: [
                 '',
@@ -153,7 +179,8 @@ export class RegisterComponent implements OnInit {
                     Validators.minLength(4),
                     Validators.maxLength(20),
                     Validators.pattern('[a-zA-Z0-9._-]+')
-                ]
+                ],
+                this.nicknameCheck
             ],
             name: [
               '',
@@ -178,8 +205,8 @@ export class RegisterComponent implements OnInit {
             ]
         },
             {
-            Validators:this.passwordMatchValidator
-        });
+                validators: this.passwordCheck('password', 'repPass')
+            });
     }
 
     send(){
@@ -226,7 +253,9 @@ export class RegisterComponent implements OnInit {
     }
 
     get repPassInvalid(){
-        return this.fg.get('repPass').invalid && this.fg.get('repPass').touched
+        let password = this.fg.get('password').value;
+        let repPass = this.fg.get('repPass').value;
+        return (this.fg.get('repPass').invalid && this.fg.get('repPass').touched) || password !== repPass
     }
 
     get nameInvalid(){
