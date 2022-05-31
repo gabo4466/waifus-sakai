@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfigService } from '../../service/app.config.service';
 import { AppConfig } from '../../api/appconfig';
 import { Subscription } from 'rxjs';
+import {FormBuilder, FormGroup} from "@angular/forms";
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -26,26 +27,42 @@ import { Subscription } from 'rxjs';
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  valCheck: string[] = ['remember'];
+    valCheck: string[] = ['remember'];
 
-  password: string;
-  
-  config: AppConfig;
-  
-  subscription: Subscription;
+    fg: FormGroup;
+    password: string;
 
-  constructor(public configService: ConfigService){ }
+    config: AppConfig;
 
-  ngOnInit(): void {
-    this.config = this.configService.config;
-    this.subscription = this.configService.configUpdate$.subscribe(config => {
-      this.config = config;
-    });
-  }
+    subscription: Subscription;
 
-  ngOnDestroy(): void {
-    if(this.subscription){
-      this.subscription.unsubscribe();
+    constructor(public configService: ConfigService,
+              private fb: FormBuilder){
+        this.createForm();
     }
-  }
+
+    ngOnInit(): void {
+        this.config = this.configService.config;
+        this.subscription = this.configService.configUpdate$.subscribe(config => {
+          this.config = config;
+        });
+    }
+
+    ngOnDestroy(): void {
+        if(this.subscription){
+          this.subscription.unsubscribe();
+        }
+    }
+
+    createForm(){
+        this.fg = this.fb.group({
+            email: ['',],
+            password: ['',],
+        });
+    }
+
+    send(){
+        console.log(this.fg);
+    }
+
 }

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
@@ -88,7 +88,7 @@ import { TreeSelectModule } from 'primeng/treeselect';
 import { TreeTableModule } from 'primeng/treetable';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { BlockViewer } from './components/blockviewer/blockviewer.component';
- 
+
 import { AppCodeModule } from './components/app-code/app.code.component';
 import { AppComponent } from './app.component';
 import { AppMainComponent } from './app.main.component';
@@ -231,6 +231,7 @@ import { ProfileComponent } from './components/profile/profile.component';
         VirtualScrollerModule,
         AppCodeModule,
         StyleClassModule,
+        ReactiveFormsModule
     ],
     declarations: [
         AppComponent,
