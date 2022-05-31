@@ -6,6 +6,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {UserModel} from "../../model/user.model";
+import Swal from 'sweetalert2';
+import {Constants} from "../../common/constants";
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -34,12 +36,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     fg: FormGroup;
     password: string;
-
     config: AppConfig;
-
     private user: UserModel;
-
     subscription: Subscription;
+    private url:string = Constants.apiURL;
 
     constructor( public configService: ConfigService,
                  private fb: FormBuilder,
@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                  private router: Router){
         this.createForm();
         this.user = new UserModel();
+        this.url += 'login';
     }
 
     ngOnInit(): void {
@@ -82,14 +83,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     send(){
-        console.log(this.fg);
-
         if (this.fg.valid){
             this.user.constructorLogIn(this.fg.get('email').value, this.fg.get('password').value);
             this.http.post<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {
                 if (resp.status === 200){
                     localStorage.setItem("access", resp.body['access']);
-                    this.router.navigate(['/forum']);
+                    this.router.navigate(['/']);
                 }else if (resp.status === 202){
                     console.log(resp.body['user']);
                     this.router.navigate(['/auth/code', resp.body['user']['idUser']]);
