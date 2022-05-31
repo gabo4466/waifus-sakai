@@ -22,7 +22,7 @@
                                    aria-describedby="email-help"
                                    style="padding:1rem;"
                                     formControlName="email">
-                            <small id="email-help" class="p-error">El correo no es válido.</small>
+                            <small *ngIf="emailInvalid" id="email-help" class="p-error">El correo no es válido.</small>
                         </div>
 
                         <div class="field p-fluid mb-3">
@@ -33,13 +33,13 @@
                                         styleClass="w-full mb-3"
                                         aria-describedby="password-help"
                                         formControlName="password"></p-password>
-                            <small id="password-help" class="p-error">La contraseña no es válida.</small>
+                            <small *ngIf="passwordInvalid" id="password-help" class="p-error">La contraseña no es válida.</small>
                         </div>
 
                         <div class="flex align-items-center justify-content-between mb-5">
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">¿Olvidaste tu contraseña?</a>
                         </div>
-                        <button pButton pRipple label="Iniciar sesión" class="w-full p-3 text-xl"></button>
+                        <button type="submit" pButton pRipple label="Iniciar sesión" class="w-full p-3 text-xl"></button>
                     </form>
                 </div>
             </div>
