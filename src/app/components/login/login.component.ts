@@ -44,7 +44,7 @@ import { MessageService } from "primeng/api";
 export class LoginComponent implements OnInit, OnDestroy {
 
     valCheck: string[] = ['remember'];
-
+    displayModal:boolean;
     fg: FormGroup;
     config: AppConfig;
     private user: UserModel;
@@ -65,6 +65,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.createForm();
         this.user = new UserModel();
         this.url += 'login';
+        this.displayModal = false;
     }
 
     ngOnInit(): void {
@@ -107,7 +108,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.http.post<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {
                 if (resp.status === 200){
                     localStorage.setItem("access", resp.body['access']);
-                    this.router.navigate(['/']);
+                    this.displayModal = true;
                 }else if (resp.status === 202){
                     Swal.fire({
                         title: 'Su cuenta no se encuentra activa',
@@ -121,7 +122,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                         if (result.isConfirmed){
                             this.router.navigate(['/auth/code'], { queryParams: { id: resp.body['user']['idUser'] } });
                         }else{
-                            this.router.navigate(['/']);
+                            this.navigateToDashboard();
                         }
                     })
                 }
@@ -150,6 +151,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     get passwordInvalid(){
         return this.fg.get('password').invalid && this.fg.get('password').touched
+    }
+
+    navigateToDashboard(){
+        this.router.navigate(['/']);
     }
 
 
