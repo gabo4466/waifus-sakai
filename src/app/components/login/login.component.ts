@@ -50,7 +50,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     private user: UserModel;
     subscription: Subscription;
     private readonly url:string = Constants.apiURL;
-
+    swal = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    });
     constructor( private configService: ConfigService,
                  private fb: FormBuilder,
                  private http: HttpClient,
@@ -103,8 +109,21 @@ export class LoginComponent implements OnInit, OnDestroy {
                     localStorage.setItem("access", resp.body['access']);
                     this.router.navigate(['/']);
                 }else if (resp.status === 202){
-                    console.log(resp.body['user']);
-                    this.router.navigate(['/auth/code'], { queryParams: { id: resp.body['user']['idUser'] } });
+                    this.swal.fire({
+                        title: 'Su cuenta no se encuentra activa',
+                        text: "¿Desea activar su cuenta? Se le enviará un mail al correo electrónico asociado con la cuenta.",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí',
+                        cancelButtonText: 'No',
+                        reverseButtons: true
+                    }).then((result:any)=>{
+                        if (result.isConfirmed){
+                            this.router.navigate(['/auth/code'], { queryParams: { id: resp.body['user']['idUser'] } });
+                        }else{
+                            this.router.navigate(['/']);
+                        }
+                    })
                 }
 
             }, (resp:HttpErrorResponse) => {

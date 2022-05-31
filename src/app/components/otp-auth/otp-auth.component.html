@@ -8,10 +8,14 @@
             <div class="h-full w-full m-0 py-7 px-4" style="border-radius:53px; background: linear-gradient(180deg, var(--surface-50) 38.9%, var(--surface-0));">
                 <div class="text-center mb-5">
                     <div class="text-900 text-3xl font-medium mb-3">Activación de Cuenta</div>
-                    <span class="text-600 font-medium">Se ha enviado un correo eléctronico a tu cuenta con el código de activación.</span>
+                    <p-progressSpinner *ngIf="loading"></p-progressSpinner>
+                    <div *ngIf="loading">
+                        <span class="text-600 font-medium">Enviando correo...</span>
+                    </div>
+                    <span *ngIf="!loading" class="text-600 font-medium">Se ha enviado un correo eléctronico a tu cuenta con el código de activación.</span>
                 </div>
 
-                <div class="w-full md:w-10 mx-auto">
+                <div *ngIf="!loading" class="w-full md:w-10 mx-auto">
                     <form [formGroup]="fg" (ngSubmit)="send()">
                         <div class="field p-fluid mb-3">
                             <label for="otpCode" class="block text-900 text-xl font-medium mb-2">Código</label>

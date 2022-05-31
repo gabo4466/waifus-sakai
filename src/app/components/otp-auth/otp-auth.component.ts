@@ -3,10 +3,11 @@ import { ConfigService } from "../../service/app.config.service";
 import { AppConfig } from "../../api/appconfig";
 import { Subscription } from "rxjs";
 import { Constants } from "../../common/constants";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {ActivatedRoute, Params } from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MessageService} from "primeng/api";
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-otp-auth',
@@ -26,6 +27,7 @@ export class OtpAuthComponent implements OnInit, OnDestroy {
     private readonly url:string = Constants.apiURL;
     private jwtOtp:string;
     private idUser:string;
+    loading:boolean = true;
     fg: FormGroup;
     constructor( private configService: ConfigService,
                  private http: HttpClient,
@@ -36,6 +38,8 @@ export class OtpAuthComponent implements OnInit, OnDestroy {
         this.url += "activationOTP";
         this.jwtOtp = '';
         this.route.queryParams.subscribe(params => this.idUser = params.id);
+
+
     }
 
     ngOnInit(): void {
@@ -46,11 +50,9 @@ export class OtpAuthComponent implements OnInit, OnDestroy {
 
         let param:HttpParams = new HttpParams();
         param = param.append('idUser', this.idUser);
-        console.log(param )
         this.http.get(this.url, { params : param, observe: 'response' }).subscribe((resp:any)=>{
-
             this.jwtOtp = resp.body['activationOTP'];
-            console.log(this.jwtOtp);
+            this.loading = false;
         });
     }
 
@@ -62,7 +64,24 @@ export class OtpAuthComponent implements OnInit, OnDestroy {
 
     send(){
         if (this.fg.valid){
+            let param: HttpParams = new HttpParams();
+            localStorage.setItem('access', this.jwtOtp);
+            param = param.append('codeRec', this.fg.get('otp').value);
 
+            this.http.post(this.url, "", { params: param, observe: 'response' }).subscribe((resp:any) =>{
+                if (resp.status === 200){
+
+                }else if (resp.status === 202){
+
+                }
+            },(resp:any) =>{
+                Swal.fire({
+                    title:`${resp.error['message']}`,
+                    html: ``,
+                    icon: "error",
+                    confirmButtonText: 'Ok'
+                });
+            });
         }else{
             this.showErrorViaToast();
         }
@@ -77,7 +96,7 @@ export class OtpAuthComponent implements OnInit, OnDestroy {
                     Validators.minLength(6),
                     Validators.maxLength(6),
                     Validators.required,
-                    Validators.pattern('[0-9]')
+                    Validators.pattern('[0-9]+')
                 ]
             ]
         })

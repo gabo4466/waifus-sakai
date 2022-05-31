@@ -143,6 +143,7 @@ import { AccessComponent } from './components/access/access.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import {HttpInterceptorService} from "./service/http-interceptor.service";
 import { OtpAuthComponent } from './components/otp-auth/otp-auth.component';
+import {ProgressSpinnerModule} from "primeng/progressspinner";
 
 @NgModule({
     imports: [
@@ -233,7 +234,8 @@ import { OtpAuthComponent } from './components/otp-auth/otp-auth.component';
         VirtualScrollerModule,
         AppCodeModule,
         StyleClassModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        ProgressSpinnerModule
     ],
     declarations: [
         AppComponent,
