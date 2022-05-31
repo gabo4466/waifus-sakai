@@ -109,10 +109,10 @@ export class LoginComponent implements OnInit, OnDestroy {
                     localStorage.setItem("access", resp.body['access']);
                     this.router.navigate(['/']);
                 }else if (resp.status === 202){
-                    this.swal.fire({
+                    Swal.fire({
                         title: 'Su cuenta no se encuentra activa',
                         text: "¿Desea activar su cuenta? Se le enviará un mail al correo electrónico asociado con la cuenta.",
-                        icon: 'question',
+                        icon: 'info',
                         showCancelButton: true,
                         confirmButtonText: 'Sí',
                         cancelButtonText: 'No',
