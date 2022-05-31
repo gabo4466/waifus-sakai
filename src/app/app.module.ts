@@ -277,8 +277,8 @@ import {HttpInterceptorService} from "./service/http-interceptor.service";
         ErrorComponent,
         NotfoundComponent,
         AccessComponent,
-        ProfileComponent,
         RegisterComponent,
+        ProfileComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},

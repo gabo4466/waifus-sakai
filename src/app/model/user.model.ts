@@ -7,7 +7,6 @@ export class UserModel {
   public _birthday:string;
   public _adultContent:boolean;
   public _terms:boolean;
-  public _date:Date;
 
     constructor() {
         this._email = "";
@@ -15,7 +14,6 @@ export class UserModel {
         this._nickname = "";
         this._name = "";
         this._repPass = "";
-        this._date = new Date(0);
         this._adultContent = false;
         this._terms = false;
         this._birthday = "";
@@ -23,5 +21,15 @@ export class UserModel {
     constructorLogIn(email:string, password:string){
         this._email = email;
         this._password = password;
+    }
+    constructorRegister(email:string, password:string, nickname:string, name:string, repPass:string, birthday:string, adultContent:boolean, terms:boolean) {
+        this._email = email;
+        this._password = password;
+        this._nickname = nickname;
+        this._name = name;
+        this._repPass = repPass;
+        this._adultContent = adultContent;
+        this._terms = terms;
+        this._birthday = birthday;
     }
 }
