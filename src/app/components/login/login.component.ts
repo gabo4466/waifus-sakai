@@ -8,6 +8,7 @@ import {Router} from "@angular/router";
 import {UserModel} from "../../model/user.model";
 import Swal from 'sweetalert2';
 import {Constants} from "../../common/constants";
+import { MessageService } from "primeng/api";
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -28,29 +29,40 @@ import {Constants} from "../../common/constants";
       margin-right: 1rem;
       color: var(--primary-color) !important;
     }
-  `]
+
+    :host ::ng-deep .p-message {
+        margin-left: .25em;
+    }
+
+    :host ::ng-deep .p-toast{
+        margin-top: 5.70em;
+        z-index:99999;
+    }
+
+  `], providers: [MessageService]
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
     valCheck: string[] = ['remember'];
 
     fg: FormGroup;
-    password: string;
     config: AppConfig;
     private user: UserModel;
     subscription: Subscription;
-    private url:string = Constants.apiURL;
+    private readonly url:string = Constants.apiURL;
 
     constructor( public configService: ConfigService,
                  private fb: FormBuilder,
                  private http: HttpClient,
-                 private router: Router){
+                 private router: Router,
+                 private serviceMessage: MessageService){
         this.createForm();
         this.user = new UserModel();
         this.url += 'login';
     }
 
     ngOnInit(): void {
+
         this.config = this.configService.config;
         this.subscription = this.configService.configUpdate$.subscribe(config => {
           this.config = config;
@@ -83,6 +95,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     send(){
+
         if (this.fg.valid){
             this.user.constructorLogIn(this.fg.get('email').value, this.fg.get('password').value);
             this.http.post<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {
@@ -102,8 +115,14 @@ export class LoginComponent implements OnInit, OnDestroy {
                     confirmButtonText: 'Ok'
                 });
             });
+        }else{
+            this.showErrorViaToast();
         }
 
+    }
+
+    showErrorViaToast() {
+        this.serviceMessage.add({ key: 'tst', severity: 'error', summary: 'Hay errores en el formulario', detail: 'Campos inválidos' });
     }
 
     get emailInvalid(){

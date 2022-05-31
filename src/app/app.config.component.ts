@@ -52,15 +52,6 @@ export class AppConfigComponent implements OnInit, OnDestroy {
         document.documentElement.style.fontSize = this.scale + 'px';
     }
 
-    onRippleChange(ripple) {
-        this.primengConfig.ripple = ripple;
-        this.configService.updateConfig({...this.config, ...{ripple}});
-    }
-
-    onInputStyleChange() {
-        this.configService.updateConfig(this.config);
-    }
-
     changeTheme(theme:string, dark:boolean){
         let themeElement = document.getElementById('theme-css');
         themeElement.setAttribute('href', 'assets/theme/' + theme + '/theme.css');
