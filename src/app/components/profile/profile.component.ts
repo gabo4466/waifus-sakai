@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AppConfig} from "../../api/appconfig";
 import {ConfigService} from "../../service/app.config.service";
@@ -15,15 +15,14 @@ import {Constants} from "../../common/constants";
     styleUrls: ['./profile.component.scss'],
     providers: [MessageService]
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
 
     selectedState:any;
     fg: FormGroup;
     config: AppConfig;
     private user: UserModel;
-    subscripcion: Subscription;
+    subscription: Subscription;
     private readonly url:string = Constants.apiURL;
-
 
     constructor( private configService: ConfigService,
                  private fb: FormBuilder,
@@ -32,7 +31,7 @@ export class ProfileComponent implements OnInit {
                  private serviceMessage: MessageService){
         this.createForm();
         this.user = new UserModel();
-        this.url += 'register';
+        this.url += 'profile';
     }
 
     formatDateYYYYMMDD(date:Date) {
@@ -132,8 +131,20 @@ export class ProfileComponent implements OnInit {
 
 
   ngOnInit(): void {
+      this.config = this.configService.config;
+      this.subscription = this.configService.configUpdate$.subscribe(config => {
+          this.config = config;
+      });
 
+      this.http.get(this.url, {observe: 'response'}).subscribe((resp:any)=>{
+         console.log(resp);
+      });
   }
+    ngOnDestroy(): void {
+        if(this.subscription){
+            this.subscription.unsubscribe();
+        }
+    }
 
 
 }
