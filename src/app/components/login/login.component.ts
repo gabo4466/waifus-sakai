@@ -62,7 +62,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-
         this.config = this.configService.config;
         this.subscription = this.configService.configUpdate$.subscribe(config => {
           this.config = config;

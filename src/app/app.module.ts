@@ -142,6 +142,7 @@ import { NotfoundComponent } from './components/notfound/notfound.component';
 import { AccessComponent } from './components/access/access.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import {HttpInterceptorService} from "./service/http-interceptor.service";
+import { OtpAuthComponent } from './components/otp-auth/otp-auth.component';
 
 @NgModule({
     imports: [
@@ -277,6 +278,7 @@ import {HttpInterceptorService} from "./service/http-interceptor.service";
         NotfoundComponent,
         AccessComponent,
         ProfileComponent,
+        OtpAuthComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},
