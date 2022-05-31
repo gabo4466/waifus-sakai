@@ -53,6 +53,8 @@ export class AppConfigComponent implements OnInit, OnDestroy {
     }
 
     changeTheme(theme:string, dark:boolean){
+        localStorage.setItem("theme", theme);
+        localStorage.setItem("dark", String(dark));
         let themeElement = document.getElementById('theme-css');
         themeElement.setAttribute('href', 'assets/theme/' + theme + '/theme.css');
         this.configService.updateConfig({...this.config, ...{theme, dark}});
