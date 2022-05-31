@@ -104,7 +104,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                     this.router.navigate(['/']);
                 }else if (resp.status === 202){
                     console.log(resp.body['user']);
-                    this.router.navigate(['/auth/code', resp.body['user']['idUser']]);
+                    this.router.navigate(['/auth/code'], { queryParams: { id: resp.body['user']['idUser'] } });
                 }
 
             }, (resp:HttpErrorResponse) => {

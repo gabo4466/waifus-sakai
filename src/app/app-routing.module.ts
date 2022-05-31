@@ -74,7 +74,7 @@ import {OtpAuthComponent} from "./components/otp-auth/otp-auth.component";
                 path: 'auth',
                 children: [
                     {path: 'login', component: LoginComponent},
-                    { path: 'code/:id', component: OtpAuthComponent },
+                    { path: 'code', component: OtpAuthComponent },
                 ],
             },
             {
