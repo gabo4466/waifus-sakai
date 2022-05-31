@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfigService } from '../../service/app.config.service';
 import { AppConfig } from '../../api/appconfig';
 import { Subscription } from 'rxjs';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {UserModel} from "../../model/user.model";
@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     subscription: Subscription;
     private readonly url:string = Constants.apiURL;
 
-    constructor( public configService: ConfigService,
+    constructor( private configService: ConfigService,
                  private fb: FormBuilder,
                  private http: HttpClient,
                  private router: Router,
@@ -76,6 +76,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     createForm(){
+
         this.fg = this.fb.group({
             email: [
                 '',
