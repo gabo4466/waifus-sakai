@@ -143,6 +143,8 @@ import { AccessComponent } from './components/access/access.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import {HttpInterceptorService} from "./service/http-interceptor.service";
+import { OtpAuthComponent } from './components/otp-auth/otp-auth.component';
+import {ProgressSpinnerModule} from "primeng/progressspinner";
 
 @NgModule({
     imports: [
@@ -233,7 +235,8 @@ import {HttpInterceptorService} from "./service/http-interceptor.service";
         VirtualScrollerModule,
         AppCodeModule,
         StyleClassModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        ProgressSpinnerModule
     ],
     declarations: [
         AppComponent,
@@ -279,6 +282,7 @@ import {HttpInterceptorService} from "./service/http-interceptor.service";
         AccessComponent,
         RegisterComponent,
         ProfileComponent,
+        OtpAuthComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},
