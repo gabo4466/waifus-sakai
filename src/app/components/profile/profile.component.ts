@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AppConfig} from "../../api/appconfig";
 import {ConfigService} from "../../service/app.config.service";
@@ -8,6 +8,7 @@ import {MessageService} from "primeng/api";
 import {UserModel} from "../../model/user.model";
 import {Subscription} from "rxjs";
 import {Constants} from "../../common/constants";
+import {UserService} from "../../service/user.service";
 
 @Component({
     selector: 'app-profile',
@@ -15,24 +16,24 @@ import {Constants} from "../../common/constants";
     styleUrls: ['./profile.component.scss'],
     providers: [MessageService]
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
 
     selectedState:any;
     fg: FormGroup;
     config: AppConfig;
     private user: UserModel;
-    subscripcion: Subscription;
+    subscription: Subscription;
     private readonly url:string = Constants.apiURL;
-
 
     constructor( private configService: ConfigService,
                  private fb: FormBuilder,
                  private http: HttpClient,
                  private router: Router,
-                 private serviceMessage: MessageService){
+                 private serviceMessage: MessageService,
+                 private userService: UserService){
         this.createForm();
         this.user = new UserModel();
-        this.url += 'register';
+        this.url += 'profile';
     }
 
     formatDateYYYYMMDD(date:Date) {
@@ -132,8 +133,29 @@ export class ProfileComponent implements OnInit {
 
 
   ngOnInit(): void {
-        
+      this.config = this.configService.config;
+      this.subscription = this.configService.configUpdate$.subscribe(config => {
+          this.config = config;
+      });
+
+     this.userService.getProfile().subscribe((resp:any)=>{
+
+         this.user.constructorProfile(resp.activated, resp.admin, resp.adultContent, resp.banned, resp.birthday, resp.country, resp.description, resp.email, resp.gender, resp.idUser, resp.karma, resp.name, resp.nickname, resp.theme);
+
+         console.log(this.user._birthday);
+         console.log(this.user._description);
+         console.log(this.user._nickname);
+         console.log(this.user._banned);
+         console.log(this.user._admin);
+         console.log(this.user._gender);
+     });
+
   }
+    ngOnDestroy(): void {
+        if(this.subscription){
+            this.subscription.unsubscribe();
+        }
+    }
 
 
 }
