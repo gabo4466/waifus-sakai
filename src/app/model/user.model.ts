@@ -41,6 +41,20 @@ export class UserModel {
 
     }
     constructorProfile(activated:boolean, admin:boolean, adultContent: boolean, banned:boolean, birthday: string, country: string, description: string, email: string, gender: string, idUser: number, karma: number, name: string, nickname:string, theme: string){
+        this._activated = activated;
+        this._admin = admin;
+        this._adultContent = adultContent;
+        this._banned = banned;
+        this._birthday = birthday;
+        this._country = country;
+        this._description = description;
+        this._email = email;
+        this._gender = gender;
+        this._idUser = idUser;
+        this._karma = karma;
+        this._name = name;
+        this._nickname = nickname;
+        this._theme = theme;
 
 }
     constructorLogIn(email:string, password:string){
