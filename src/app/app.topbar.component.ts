@@ -20,7 +20,7 @@ export class AppTopBarComponent implements OnInit{
     }
 
     ngOnInit(): void {
-        this.userService.isLogged().subscribe((resp:any)=>this.logged=true,(error:any)=>this.logged=false);
+        this.userService.getProfile().subscribe((resp:any)=>this.logged=true,(error:any)=>this.logged=false);
 
     }
 
