@@ -139,7 +139,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
       });
 
      this.userService.getProfile().subscribe((resp:any)=>{
-         console.log(resp);
+
+         this.user.constructorProfile(resp.activated, resp.admin, resp.adultContent, resp.banned, resp.birthday, resp.country, resp.description, resp.email, resp.gender, resp.idUser, resp.karma, resp.name, resp.nickname, resp.theme);
+
+         console.log(this.user._birthday);
+         console.log(this.user._description);
+         console.log(this.user._nickname);
+         console.log(this.user._banned);
+         console.log(this.user._admin);
+         console.log(this.user._gender);
      });
 
   }
