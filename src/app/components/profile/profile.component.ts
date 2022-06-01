@@ -5,10 +5,11 @@ import {ConfigService} from "../../service/app.config.service";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {MessageService} from "primeng/api";
-import {UserModel} from "../../model/user.model";
+
 import {Subscription} from "rxjs";
 import {Constants} from "../../common/constants";
 import {UserService} from "../../service/user.service";
+import {UserModel} from "../../model/user.model";
 
 @Component({
     selector: 'app-profile',
@@ -21,7 +22,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     selectedState:any;
     fg: FormGroup;
     config: AppConfig;
-    private user: UserModel;
+    user: UserModel;
     subscription: Subscription;
     private readonly url:string = Constants.apiURL;
 
@@ -142,12 +143,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
          this.user.constructorProfile(resp.activated, resp.admin, resp.adultContent, resp.banned, resp.birthday, resp.country, resp.description, resp.email, resp.gender, resp.idUser, resp.karma, resp.name, resp.nickname, resp.theme);
 
-         console.log(this.user._birthday);
-         console.log(this.user._description);
-         console.log(this.user._nickname);
-         console.log(this.user._banned);
-         console.log(this.user._admin);
-         console.log(this.user._gender);
+
      });
 
   }
