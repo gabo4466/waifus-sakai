@@ -13,7 +13,7 @@
     </a>
 
     <div class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active':appMain.topMenuActive}">
-        <a href="#" class="p-link layout-topbar-button">
+        <a *ngIf="logged" href="#" class="p-link layout-topbar-button">
             <i class="pi pi-cog"></i>
             <span>Settings</span>
         </a>

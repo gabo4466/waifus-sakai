@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Constants} from "../common/constants";
+import {Observable} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -12,14 +13,8 @@ export class UserService {
     constructor(private http: HttpClient) {
     }
 
-    isLogged():boolean{
-        let logged = false;
-        this.http.get(this.url+"profile").subscribe((resp:any)=>{
-            logged = true;
-        },(errorResp:any)=>{
-            logged = false;
-        });
-        return logged;
+    getProfile():Observable<any>{
+        return this.http.get(this.url + "profile");
     }
 
 
