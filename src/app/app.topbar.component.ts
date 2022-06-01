@@ -1,15 +1,31 @@
-import { Component, OnDestroy } from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import { AppMainComponent } from './app.main.component';
 import { Subscription } from 'rxjs';
 import { MenuItem } from 'primeng/api';
+import {UserService} from "./service/user.service";
 
 @Component({
     selector: 'app-topbar',
     templateUrl: './app.topbar.component.html'
 })
-export class AppTopBarComponent {
+export class AppTopBarComponent implements OnInit{
 
     items: MenuItem[];
 
-    constructor(public appMain: AppMainComponent) { }
+    logged:boolean;
+
+    constructor(public appMain: AppMainComponent,
+                private userService: UserService) {
+
+    }
+
+    ngOnInit(): void {
+        this.userService.isLogged().subscribe((resp:any)=>this.logged=true,(error:any)=>this.logged=false);
+
+    }
+
+
+
+
+
 }
