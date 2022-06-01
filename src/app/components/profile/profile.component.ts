@@ -8,6 +8,7 @@ import {MessageService} from "primeng/api";
 import {UserModel} from "../../model/user.model";
 import {Subscription} from "rxjs";
 import {Constants} from "../../common/constants";
+import {UserService} from "../../service/user.service";
 
 @Component({
     selector: 'app-profile',
@@ -28,7 +29,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
                  private fb: FormBuilder,
                  private http: HttpClient,
                  private router: Router,
-                 private serviceMessage: MessageService){
+                 private serviceMessage: MessageService,
+                 private userService: UserService){
         this.createForm();
         this.user = new UserModel();
         this.url += 'profile';
@@ -136,9 +138,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.config = config;
       });
 
-      this.http.get(this.url, {observe: 'response'}).subscribe((resp:any)=>{
+     this.userService.getProfile().subscribe((resp:any)=>{
          console.log(resp);
-      });
+     });
+
   }
     ngOnDestroy(): void {
         if(this.subscription){
