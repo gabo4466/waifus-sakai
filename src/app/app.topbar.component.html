@@ -1,5 +1,13 @@
+<p-dialog [closable]="false" header="Bye-Bye" [(visible)]="displayModal" [style]="{width: '50vw'}" class="mx-auto">
+    <div class="mx-auto">
+        <img src="assets/layout/images/zeroTwoSad.gif" width="100%">
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="goToDashBoard()" label="Continuar" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>
 <div class="layout-topbar">
-    <a class="layout-topbar-logo" routerLink="">
+    <a class="p-link layout-topbar-logo" [routerLink]="" (click)="goToDashBoard()">
         <img src="assets/layout/images/zeroTwoLogo.png" alt="logo">
         <span>Waifus</span>
     </a>
@@ -13,11 +21,19 @@
     </a>
 
     <div class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active':appMain.topMenuActive}">
-        <a *ngIf="logged" href="#" class="p-link layout-topbar-button">
+        <a *ngIf="logged" [routerLink]="" (click)="goToProfileSettings()" class="p-link layout-topbar-button">
             <i class="pi pi-cog"></i>
             <span>Settings</span>
         </a>
-        <a href="#" class="p-link layout-topbar-button">
+        <a *ngIf="logged" [routerLink]="" (click)="goToProfile()" class="p-link layout-topbar-button">
+            <i class="pi pi-user"></i>
+            <span>Profile</span>
+        </a>
+        <a *ngIf="logged" [routerLink]="" (click)="logOut()" class="p-link layout-topbar-button">
+            <i class="pi pi-sign-out"></i>
+            <span>Cerrar sesión</span>
+        </a>
+        <a *ngIf="!logged" [routerLink]="" (click)="goToLogIn()" class="p-link layout-topbar-button">
             <i class="pi pi-user"></i>
             <span>Profile</span>
         </a>
