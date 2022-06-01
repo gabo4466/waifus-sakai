@@ -1,8 +1,10 @@
 <p-toast key="tst"></p-toast>
-<p-dialog [closable]="false" header="Inicio de sesión exitoso" [(visible)]="displayModal" [style]="{width: '50vw'}" class="mx-auto">
-    <p>Bienvenido oni-chan</p>
+<p-dialog [closable]="false" header="Bienvenido Darling!" [(visible)]="displayModal" [style]="{width: '50vw'}" class="mx-auto">
+    <div class="mx-auto">
+        <img src="assets/layout/images/zeroTwoHappy.gif" width="100%">
+    </div>
     <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="navigateToDashboard()" label="Ok" styleClass="p-button-text"></p-button>
+        <p-button icon="pi pi-check" (click)="navigateToDashboard()" label="Continuar" styleClass="p-button-text"></p-button>
     </ng-template>
 </p-dialog>
 <div class="surface-0 flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
