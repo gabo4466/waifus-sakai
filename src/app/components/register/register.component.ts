@@ -3,7 +3,7 @@ import { ConfigService } from '../../service/app.config.service';
 import { AppConfig } from '../../api/appconfig';
 import {Observable, Subscription} from 'rxjs';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {UserModel} from "../../model/user.model";
 import Swal from 'sweetalert2';
@@ -132,9 +132,15 @@ export class RegisterComponent implements OnInit {
             return Promise.resolve(null);
         }
         return new Promise((resolve, reject)=>{
-            this.user.constructorEmail(control.value)
-            this.http.get<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {});
+            let param: HttpParams = new HttpParams();
+            param = param.append('email', control.value);
+            param = param.append('nickname', '');
+            this.http.get<Object>(this.url, {params: param, observe: 'response'}).subscribe( (resp:any) => {
+                if(resp.body['email']!=true){
+                    control.setErrors({used : true});
+                }
             });
+        });
     }
 
     nicknameCheck(control:FormControl): Promise<Error>|Observable<Error>{
@@ -142,8 +148,14 @@ export class RegisterComponent implements OnInit {
             return Promise.resolve(null);
         }
         return new Promise((resolve, reject)=>{
-            this.user.constructorNickname(control.value)
-            this.http.get<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {});
+            let param: HttpParams = new HttpParams();
+            param = param.append('nickname', control.value);
+            param = param.append('email', '');
+            this.http.get<Object>(this.url, {params: param, observe: 'response'}).subscribe( (resp:any) => {
+                if(resp.body['nickname']!=true){
+                    control.setErrors({used : true});
+                }
+            });
         });
     }
 
