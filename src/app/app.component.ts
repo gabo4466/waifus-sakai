@@ -13,5 +13,8 @@ export class AppComponent {
     ngOnInit() {
         this.primengConfig.ripple = true;
         document.documentElement.style.fontSize = '14px';
+        let cacheTheme:string = localStorage.getItem('theme');
+        let themeElement = document.getElementById('theme-css');
+        themeElement.setAttribute('href', 'assets/theme/' + cacheTheme + '/theme.css');
     }
 }
