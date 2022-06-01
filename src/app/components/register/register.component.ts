@@ -260,7 +260,15 @@ export class RegisterComponent implements OnInit {
             this.http.post<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {
                 console.log(JSON.stringify(this.user).replace(/[/_/]/g, ''));
                 if (resp.status === 200){
-                    this.router.navigate(['/auth/login']);
+                    Swal.fire({
+                        title:`Su cuenta ha sido creada con éxito`,
+                        html: `A continuación será redirigido a la página de inicio de sesión<br>
+                                La primera vez que inicie sesión se le enviará un código de activación al correo electrónico asociado`,
+                        icon: "success",
+                        confirmButtonText: 'Ok'
+                    }).then((result:any)=>{
+                        this.router.navigate(['/auth/login']);
+                    });
                 }
 
             }, (resp:HttpErrorResponse) => {
