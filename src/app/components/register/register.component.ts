@@ -74,31 +74,34 @@ export class RegisterComponent implements OnInit {
     }
 
     ageValidator(control: AbstractControl){
-        let birthday: Date = control.get('birthday').value;
-        let birthdayD = birthday.getDate();
-        let birthdayM = birthday.getMonth() + 1;
-        let birthdayY = birthday.getFullYear();
-        let date: Date = new Date();
-        let dateD = date.getDate();
-        let dateM = date.getMonth() + 1;
-        let dateY = date.getFullYear();
+        return(formGroup:FormGroup)=> {
+            let adult = control.get('adultContent')
+            let birthday: Date = control.get('birthday').value;
+            let birthdayD = birthday.getDate();
+            let birthdayM = birthday.getMonth() + 1;
+            let birthdayY = birthday.getFullYear();
+            let date: Date = new Date();
+            let dateD = date.getDate();
+            let dateM = date.getMonth() + 1;
+            let dateY = date.getFullYear();
 
-        if (dateY-birthdayY<18){
-
-        }else if (dateY-birthdayY==18){
-            if(dateM>birthdayM){
-
-            }else if(dateM==birthdayM){
-                if(dateD<birthdayD){
-
-                }else {
-
+            if (dateY - birthdayY < 18) {
+                adult.disable();
+            } else if (dateY - birthdayY == 18) {
+                if (dateM > birthdayM) {
+                    adult.setErrors({minor: true});
+                } else if (dateM == birthdayM) {
+                    if (dateD < birthdayD) {
+                        adult.setErrors({minor: true});
+                    } else {
+                        adult.setErrors(null);
+                    }
+                } else {
+                    adult.setErrors(null);
                 }
-            }else {
-
+            } else {
+                adult.setErrors(null);
             }
-        }else {
-
         }
     }
 
@@ -135,10 +138,14 @@ export class RegisterComponent implements OnInit {
             let param: HttpParams = new HttpParams();
             param = param.append('email', control.value);
             param = param.append('nickname', '');
-            this.http.get<Object>(this.url, {params: param, observe: 'response'}).subscribe( (resp:any) => {
+            console.log(param);
+            this.http.get(this.url, {params: param, observe: 'response'}).subscribe( (resp:any) => {
+                console.log(resp);
                 if(resp.body['email']!=true){
                     control.setErrors({used : true});
                 }
+            }, (resp:HttpErrorResponse) => {
+
             });
         });
     }
@@ -151,10 +158,17 @@ export class RegisterComponent implements OnInit {
             let param: HttpParams = new HttpParams();
             param = param.append('nickname', control.value);
             param = param.append('email', '');
-            this.http.get<Object>(this.url, {params: param, observe: 'response'}).subscribe( (resp:any) => {
+            this.http.get(this.url, {params: param, observe: 'response'}).subscribe( (resp:any) => {
                 if(resp.body['nickname']!=true){
                     control.setErrors({used : true});
                 }
+            }, (resp:HttpErrorResponse) => {
+                Swal.fire({
+                    title:`${resp.error['message']}`,
+                    html: ``,
+                    icon: "error",
+                    confirmButtonText: 'Ok'
+                });
             });
         });
     }
@@ -192,7 +206,7 @@ export class RegisterComponent implements OnInit {
                     Validators.maxLength(20),
                     Validators.pattern('[a-zA-Z0-9._-]+')
                 ],
-                this.nicknameCheck
+                //this.nicknameCheck
             ],
             name: [
               '',
@@ -217,21 +231,20 @@ export class RegisterComponent implements OnInit {
             ]
         },
             {
-                validators: this.passwordCheck('password', 'repPass')
+                validators: [
+                    this.passwordCheck('password', 'repPass'),
+                    //this.ageValidator
+                ]
             });
     }
 
     send(){
-        console.log(this.formatDateYYYYMMDD(this.fg.get('birthday').value),);
         if (this.fg.valid){
             this.user.constructorRegister(this.fg.get('email').value, this.fg.get('password').value, this.fg.get('nickname').value, this.fg.get('name').value, this.fg.get('repPass').value, this.formatDateYYYYMMDD(this.fg.get('birthday').value), this.fg.get('adultContent').value, this.fg.get('terms').value);
             this.http.post<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {
+                console.log(JSON.stringify(this.user).replace(/[/_/]/g, ''));
                 if (resp.status === 200){
-                    localStorage.setItem("access", resp.body['access']);
-                    this.router.navigate(['/']);
-                }else if (resp.status === 202){
-                    console.log(resp.body['user']);
-                    this.router.navigate(['/auth/code', resp.body['user']['idUser']]);
+                    this.router.navigate(['/auth/login']);
                 }
 
             }, (resp:HttpErrorResponse) => {
