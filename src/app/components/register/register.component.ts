@@ -258,7 +258,6 @@ export class RegisterComponent implements OnInit {
         if (this.fg.valid && !this.fg.pending){
             this.user.constructorRegister(this.fg.get('email').value, this.fg.get('password').value, this.fg.get('nickname').value, this.fg.get('name').value, this.fg.get('repPass').value, this.formatDateYYYYMMDD(this.fg.get('birthday').value), this.fg.get('adultContent').value, this.fg.get('terms').value);
             this.http.post<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {
-                console.log(JSON.stringify(this.user).replace(/[/_/]/g, ''));
                 if (resp.status === 200){
                     Swal.fire({
                         title:`Su cuenta ha sido creada con éxito`,
