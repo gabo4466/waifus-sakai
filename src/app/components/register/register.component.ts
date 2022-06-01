@@ -1,14 +1,22 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfigService } from '../../service/app.config.service';
 import { AppConfig } from '../../api/appconfig';
-import {Observable, Subscription} from 'rxjs';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {catchError, debounceTime, Observable, of, Subscription, switchMap, tap} from 'rxjs';
+import {
+    AbstractControl,
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    Validators
+} from "@angular/forms";
 import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {UserModel} from "../../model/user.model";
 import Swal from 'sweetalert2';
 import {Constants} from "../../common/constants";
 import { MessageService } from "primeng/api";
+import {map} from "rxjs/operators";
+
 
 @Component({
   selector: 'app-register',
@@ -74,6 +82,9 @@ export class RegisterComponent implements OnInit {
     }
 
     ageValidator(control: AbstractControl){
+        let adultcontent = control.value;
+
+        /*
         return(formGroup:FormGroup)=> {
             let adult = control.get('adultContent')
             let birthday: Date = control.get('birthday').value;
@@ -103,6 +114,8 @@ export class RegisterComponent implements OnInit {
                 adult.setErrors(null);
             }
         }
+        */
+
     }
 
     passwordCheck(password:string, repPass:string){
@@ -130,47 +143,50 @@ export class RegisterComponent implements OnInit {
         return [year, month, day].join('');
     }
 
-    emailCheck(control:FormControl): Promise<Error>|Observable<Error>{
-        if(!control.value){
-            return Promise.resolve(null);
+    emailCheck(control: FormControl): Observable<{ emailForbidden: boolean } | null> {
+        const emailToCheck = control.value;
+        if(!emailToCheck) {
+            return of(null);
         }
-        return new Promise((resolve, reject)=>{
-            let param: HttpParams = new HttpParams();
-            param = param.append('email', control.value);
-            param = param.append('nickname', '');
-            console.log(param);
-            this.http.get(this.url, {params: param, observe: 'response'}).subscribe( (resp:any) => {
-                console.log(resp);
-                if(resp.body['email']!=true){
-                    control.setErrors({used : true});
-                }
-            }, (resp:HttpErrorResponse) => {
-
-            });
-        });
+        let queryParams = new HttpParams().set('email', emailToCheck);
+        queryParams = queryParams.set('nickname', '');
+        // @ts-ignore
+        return of(emailToCheck).pipe(
+            debounceTime(400),
+            switchMap(emailToCheck => {
+                return this.http.get<{ email: boolean, nickname: boolean }>(this.url, {params: queryParams})
+                    .pipe(
+                        map(resp => {
+                            if (!resp.email) {
+                                return {emailForbidden: true};
+                            }
+                            return null;
+                        }), catchError(() => of(null)));
+            })
+        );
     }
 
-    nicknameCheck(control:FormControl): Promise<Error>|Observable<Error>{
-        if(!control.value){
-            return Promise.resolve(null);
+    nicknameCheck(control: FormControl): Observable<{ emailForbidden: boolean } | null> {
+        const nicknameToCheck = control.value;
+        if(!nicknameToCheck) {
+            return of(null);
         }
-        return new Promise((resolve, reject)=>{
-            let param: HttpParams = new HttpParams();
-            param = param.append('nickname', control.value);
-            param = param.append('email', '');
-            this.http.get(this.url, {params: param, observe: 'response'}).subscribe( (resp:any) => {
-                if(resp.body['nickname']!=true){
-                    control.setErrors({used : true});
-                }
-            }, (resp:HttpErrorResponse) => {
-                Swal.fire({
-                    title:`${resp.error['message']}`,
-                    html: ``,
-                    icon: "error",
-                    confirmButtonText: 'Ok'
-                });
-            });
-        });
+        let queryParams = new HttpParams().set('nickname', nicknameToCheck);
+        queryParams = queryParams.set('email', '');
+        // @ts-ignore
+        return of(nicknameToCheck).pipe(
+            debounceTime(400),
+            switchMap(emailToCheck => {
+                return this.http.get<{ nickname: boolean, email: boolean }>(this.url, {params: queryParams})
+                    .pipe(
+                        map(resp => {
+                            if (!resp.nickname) {
+                                return {nicknameForbidden: true};
+                            }
+                            return null;
+                        }), catchError(() => of(null)));
+            })
+        );
     }
 
     createForm(){
@@ -181,7 +197,7 @@ export class RegisterComponent implements OnInit {
                     Validators.required,
                     Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$')
                 ],
-                this.emailCheck
+                this.emailCheck.bind(this)
             ],
             password: [
                 '',
@@ -206,7 +222,7 @@ export class RegisterComponent implements OnInit {
                     Validators.maxLength(20),
                     Validators.pattern('[a-zA-Z0-9._-]+')
                 ],
-                //this.nicknameCheck
+                this.nicknameCheck.bind(this)
             ],
             name: [
               '',
@@ -228,18 +244,18 @@ export class RegisterComponent implements OnInit {
             ],
             adultContent: [
                 false,
+                [ this.ageValidator ]
             ]
         },
             {
                 validators: [
-                    this.passwordCheck('password', 'repPass'),
-                    //this.ageValidator
+                    this.passwordCheck('password', 'repPass')
                 ]
             });
     }
 
     send(){
-        if (this.fg.valid){
+        if (this.fg.valid && !this.fg.pending){
             this.user.constructorRegister(this.fg.get('email').value, this.fg.get('password').value, this.fg.get('nickname').value, this.fg.get('name').value, this.fg.get('repPass').value, this.formatDateYYYYMMDD(this.fg.get('birthday').value), this.fg.get('adultContent').value, this.fg.get('terms').value);
             this.http.post<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {
                 console.log(JSON.stringify(this.user).replace(/[/_/]/g, ''));
