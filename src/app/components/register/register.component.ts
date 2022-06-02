@@ -81,41 +81,47 @@ export class RegisterComponent implements OnInit {
         }
     }
 
-    ageValidator(control: AbstractControl){
-        let adultcontent = control.value;
+    ageValidator():boolean{
+        let result :boolean;
+        let age = 18;
+        let birthday: Date = this.fg.get('birthday').value;
 
-        /*
-        return(formGroup:FormGroup)=> {
-            let adult = control.get('adultContent')
-            let birthday: Date = control.get('birthday').value;
-            let birthdayD = birthday.getDate();
-            let birthdayM = birthday.getMonth() + 1;
-            let birthdayY = birthday.getFullYear();
-            let date: Date = new Date();
-            let dateD = date.getDate();
-            let dateM = date.getMonth() + 1;
-            let dateY = date.getFullYear();
+        console.log("date "+birthday);
 
-            if (dateY - birthdayY < 18) {
-                adult.disable();
-            } else if (dateY - birthdayY == 18) {
-                if (dateM > birthdayM) {
-                    adult.setErrors({minor: true});
-                } else if (dateM == birthdayM) {
-                    if (dateD < birthdayD) {
-                        adult.setErrors({minor: true});
-                    } else {
-                        adult.setErrors(null);
-                    }
-                } else {
-                    adult.setErrors(null);
-                }
+        let birthdayD = birthday.getDate();
+        let birthdayM = birthday.getMonth() + 1;
+        let birthdayY = birthday.getFullYear();
+        let date: Date = new Date();
+        let dateD = date.getDate();
+        let dateM = date.getMonth() + 1;
+        let dateY = date.getFullYear();
+
+        if (dateY - birthdayY < age) {
+            result = false;
+        } else if (dateY - birthdayY == age) {
+            if (dateM > birthdayM) {
+                result = false;
+            } else if (dateM == birthdayM) {
+                result = dateD >= birthdayD;
             } else {
-                adult.setErrors(null);
+                result = true;
+            }
+        } else {
+            result = true;
+        }
+
+        console.log("res "+result);
+
+        return result;
+    }
+
+    adultContentVal(adultContent:string){
+        return(formGroup:FormGroup)=>{
+            let adultContentControl = formGroup.controls[adultContent];
+            if(!this.ageValidator){
+                adultContentControl.setValue(false);
             }
         }
-        */
-
     }
 
     passwordCheck(password:string, repPass:string){
@@ -166,7 +172,7 @@ export class RegisterComponent implements OnInit {
         );
     }
 
-    nicknameCheck(control: FormControl): Observable<{ emailForbidden: boolean } | null> {
+    nicknameCheck(control: FormControl): Observable<{ nicknameForbidden: boolean } | null> {
         const nicknameToCheck = control.value;
         if(!nicknameToCheck) {
             return of(null);
@@ -176,7 +182,7 @@ export class RegisterComponent implements OnInit {
         // @ts-ignore
         return of(nicknameToCheck).pipe(
             debounceTime(400),
-            switchMap(emailToCheck => {
+            switchMap(nicknameToCheck => {
                 return this.http.get<{ nickname: boolean, email: boolean }>(this.url, {params: queryParams})
                     .pipe(
                         map(resp => {
@@ -188,6 +194,13 @@ export class RegisterComponent implements OnInit {
             })
         );
     }
+
+    /*hash():string{
+        let hashObj = new jsSHA("sha-512", "text", {numRounds : 1}).update(this.fg.get('password').value);
+        return hashObj.getHash("hex");
+    }*/
+
+
 
     createForm(){
         this.fg = this.fb.group({
@@ -244,12 +257,12 @@ export class RegisterComponent implements OnInit {
             ],
             adultContent: [
                 false,
-                [ this.ageValidator ]
             ]
         },
             {
                 validators: [
-                    this.passwordCheck('password', 'repPass')
+                    this.passwordCheck('password', 'repPass'),
+                    this.adultContentVal('adultContent')
                 ]
             });
     }

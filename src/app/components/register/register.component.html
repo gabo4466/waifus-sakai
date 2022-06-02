@@ -11,7 +11,7 @@
                     <span class="text-600 font-medium">Ingresa tus datos para continuar</span>
                 </div>
 
-                <div class="flex align-items-center justify-content-end mb-2 w-full">
+                <div class="flex align-items-center justify-content-end w-full md:w-10 mx-auto">
                     <a [routerLink]="'/pages'" class="text-xl font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Volver a inicio</a>
                 </div>
 
@@ -99,7 +99,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <p-inputSwitch formControlName="adultContent" id="aC"></p-inputSwitch>
+                            <p-inputSwitch [disabled]="!ageValidator" formControlName="adultContent" id="aC"></p-inputSwitch>
                             <label for="aC" class="p-3 vertical-align-bottom md:vertical-align-top">Contenido Adulto</label>
                         </div>
 
