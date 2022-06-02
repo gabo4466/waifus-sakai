@@ -4,6 +4,7 @@ import {AppConfig} from "../../api/appconfig";
 import {Subscription} from "rxjs";
 import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-create-channel',
@@ -14,9 +15,11 @@ export class CreateChannelComponent implements OnInit, OnDestroy {
 
     config: AppConfig;
     subscription: Subscription;
-    constructor(private configService: ConfigService,
-                private userService: UserService,
-                private router: Router) { }
+    fg: FormGroup;
+    constructor( private configService: ConfigService,
+                 private userService: UserService,
+                 private router: Router,
+                 private fb: FormBuilder) { }
 
     ngOnInit(): void {
         this.config = this.configService.config;
@@ -41,6 +44,21 @@ export class CreateChannelComponent implements OnInit, OnDestroy {
 
     goToUnAuthorized(){
         this.router.navigate(['/pages/access']);
+    }
+
+    createForm(){
+        this.fg = this.fb.group({
+            name: [
+                "",
+                [
+                    Validators.required,
+                    Validators.minLength(3),
+                    Validators.maxLength(254),
+                    Validators.pattern("")
+                ],
+
+            ],
+        });
     }
 
 }
