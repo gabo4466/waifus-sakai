@@ -195,13 +195,6 @@ export class RegisterComponent implements OnInit {
         );
     }
 
-    /*hash():string{
-        let hashObj = new jsSHA("sha-512", "text", {numRounds : 1}).update(this.fg.get('password').value);
-        return hashObj.getHash("hex");
-    }*/
-
-
-
     createForm(){
         this.fg = this.fb.group({
             email: [
