@@ -54,11 +54,23 @@ export class CreateChannelComponent implements OnInit, OnDestroy {
                     Validators.required,
                     Validators.minLength(3),
                     Validators.maxLength(254),
-                    Validators.pattern("")
+                    Validators.pattern("[a-zA-Z0-9]+")
                 ],
-
+                []
             ],
+            description: [
+                "",[],[]
+            ],
+            dateChannel: [
+
+            ]
         });
+    }
+
+    send(){
+        if (this.fg.valid && !this.fg.pending){
+
+        }
     }
 
 }

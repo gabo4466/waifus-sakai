@@ -1,5 +1,5 @@
 <div class="grid">
-    <form>
+    <form [formGroup]="fg" (ngSubmit)="send()">
         <div class="col-10 col-offset-1">
             <div class="card">
                 <h5>Creación de Canal</h5>

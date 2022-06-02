@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 import {Constants} from "../../common/constants";
 import { MessageService } from "primeng/api";
 import {map} from "rxjs/operators";
+import {DateService} from "../../service/date.service";
 
 
 @Component({
@@ -62,7 +63,8 @@ export class RegisterComponent implements OnInit {
                  private fb: FormBuilder,
                  private http: HttpClient,
                  private router: Router,
-                 private serviceMessage: MessageService){
+                 private serviceMessage: MessageService,
+                 private dateService: DateService){
         this.createForm();
         this.user = new UserModel();
         this.url += 'register';
@@ -129,18 +131,6 @@ export class RegisterComponent implements OnInit {
                 repPassControl.setErrors({notEqual : true});
             }
         }
-    }
-
-    formatDateYYYYMMDD(date:Date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-        if (month.length < 2)
-            month = '0' + month;
-        if (day.length < 2)
-            day = '0' + day;
-        return [year, month, day].join('');
     }
 
     emailCheck(control: FormControl): Observable<{ emailForbidden: boolean } | null> {
@@ -256,7 +246,7 @@ export class RegisterComponent implements OnInit {
 
     send(){
         if (this.fg.valid && !this.fg.pending){
-            this.user.constructorRegister(this.fg.get('email').value, this.fg.get('password').value, this.fg.get('nickname').value, this.fg.get('name').value, this.fg.get('repPass').value, this.formatDateYYYYMMDD(this.fg.get('birthday').value), this.fg.get('adultContent').value, this.fg.get('terms').value);
+            this.user.constructorRegister(this.fg.get('email').value, this.fg.get('password').value, this.fg.get('nickname').value, this.fg.get('name').value, this.fg.get('repPass').value, this.dateService.formatDateYYYYMMDD(this.fg.get('birthday').value), this.fg.get('adultContent').value, this.fg.get('terms').value);
             this.http.post<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {
                 if (resp.status === 200){
                     Swal.fire({
