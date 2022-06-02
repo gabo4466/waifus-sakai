@@ -56,7 +56,7 @@ export class AppTopBarComponent implements OnInit{
         let currentUrl = this.router.url;
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate([currentUrl]);
+        this.router.navigate(['/pages']);
     }
 
 

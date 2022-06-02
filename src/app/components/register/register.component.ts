@@ -1,14 +1,22 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfigService } from '../../service/app.config.service';
 import { AppConfig } from '../../api/appconfig';
-import { Subscription } from 'rxjs';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {catchError, debounceTime, Observable, of, Subscription, switchMap, tap} from 'rxjs';
+import {
+    AbstractControl,
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    Validators
+} from "@angular/forms";
+import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {UserModel} from "../../model/user.model";
 import Swal from 'sweetalert2';
 import {Constants} from "../../common/constants";
 import { MessageService } from "primeng/api";
+import {map} from "rxjs/operators";
+
 
 @Component({
   selector: 'app-register',
@@ -73,40 +81,53 @@ export class RegisterComponent implements OnInit {
         }
     }
 
-    passwordMatchValidator(control: AbstractControl) {
-        let password: string = control.get('password').value;
-        let confirmPassword: string = control.get('repPass').value;
-        if (password !== confirmPassword) {
-            control.get('repPass').setErrors({ NoPassswordMatch: true });
+    ageValidator(control: AbstractControl){
+        let adultcontent = control.value;
+
+        /*
+        return(formGroup:FormGroup)=> {
+            let adult = control.get('adultContent')
+            let birthday: Date = control.get('birthday').value;
+            let birthdayD = birthday.getDate();
+            let birthdayM = birthday.getMonth() + 1;
+            let birthdayY = birthday.getFullYear();
+            let date: Date = new Date();
+            let dateD = date.getDate();
+            let dateM = date.getMonth() + 1;
+            let dateY = date.getFullYear();
+
+            if (dateY - birthdayY < 18) {
+                adult.disable();
+            } else if (dateY - birthdayY == 18) {
+                if (dateM > birthdayM) {
+                    adult.setErrors({minor: true});
+                } else if (dateM == birthdayM) {
+                    if (dateD < birthdayD) {
+                        adult.setErrors({minor: true});
+                    } else {
+                        adult.setErrors(null);
+                    }
+                } else {
+                    adult.setErrors(null);
+                }
+            } else {
+                adult.setErrors(null);
+            }
         }
+        */
+
     }
 
-    ageValidator(control: AbstractControl){
-        let birthday: Date = control.get('birthday').value;
-        let birthdayD = birthday.getDate();
-        let birthdayM = birthday.getMonth() + 1;
-        let birthdayY = birthday.getFullYear();
-        let date: Date = new Date();
-        let dateD = date.getDate();
-        let dateM = date.getMonth() + 1;
-        let dateY = date.getFullYear();
+    passwordCheck(password:string, repPass:string){
+        return(formGroup:FormGroup)=>{
+            let passwordControl = formGroup.controls[password];
+            let repPassControl = formGroup.controls[repPass];
 
-        if (dateY-birthdayY<18){
-
-        }else if (dateY-birthdayY==18){
-            if(dateM>birthdayM){
-
-            }else if(dateM==birthdayM){
-                if(dateD<birthdayD){
-
-                }else {
-
-                }
+            if (passwordControl.value === repPassControl.value){
+                repPassControl.setErrors(null);
             }else {
-
+                repPassControl.setErrors({notEqual : true});
             }
-        }else {
-
         }
     }
 
@@ -122,6 +143,52 @@ export class RegisterComponent implements OnInit {
         return [year, month, day].join('');
     }
 
+    emailCheck(control: FormControl): Observable<{ emailForbidden: boolean } | null> {
+        const emailToCheck = control.value;
+        if(!emailToCheck) {
+            return of(null);
+        }
+        let queryParams = new HttpParams().set('email', emailToCheck);
+        queryParams = queryParams.set('nickname', '');
+        // @ts-ignore
+        return of(emailToCheck).pipe(
+            debounceTime(400),
+            switchMap(emailToCheck => {
+                return this.http.get<{ email: boolean, nickname: boolean }>(this.url, {params: queryParams})
+                    .pipe(
+                        map(resp => {
+                            if (!resp.email) {
+                                return {emailForbidden: true};
+                            }
+                            return null;
+                        }), catchError(() => of(null)));
+            })
+        );
+    }
+
+    nicknameCheck(control: FormControl): Observable<{ emailForbidden: boolean } | null> {
+        const nicknameToCheck = control.value;
+        if(!nicknameToCheck) {
+            return of(null);
+        }
+        let queryParams = new HttpParams().set('nickname', nicknameToCheck);
+        queryParams = queryParams.set('email', '');
+        // @ts-ignore
+        return of(nicknameToCheck).pipe(
+            debounceTime(400),
+            switchMap(emailToCheck => {
+                return this.http.get<{ nickname: boolean, email: boolean }>(this.url, {params: queryParams})
+                    .pipe(
+                        map(resp => {
+                            if (!resp.nickname) {
+                                return {nicknameForbidden: true};
+                            }
+                            return null;
+                        }), catchError(() => of(null)));
+            })
+        );
+    }
+
     createForm(){
         this.fg = this.fb.group({
             email: [
@@ -129,7 +196,8 @@ export class RegisterComponent implements OnInit {
                 [
                     Validators.required,
                     Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$')
-                ]
+                ],
+                this.emailCheck.bind(this)
             ],
             password: [
                 '',
@@ -153,7 +221,8 @@ export class RegisterComponent implements OnInit {
                     Validators.minLength(4),
                     Validators.maxLength(20),
                     Validators.pattern('[a-zA-Z0-9._-]+')
-                ]
+                ],
+                this.nicknameCheck.bind(this)
             ],
             name: [
               '',
@@ -175,24 +244,30 @@ export class RegisterComponent implements OnInit {
             ],
             adultContent: [
                 false,
+                [ this.ageValidator ]
             ]
         },
             {
-            Validators:this.passwordMatchValidator
-        });
+                validators: [
+                    this.passwordCheck('password', 'repPass')
+                ]
+            });
     }
 
     send(){
-        console.log(this.formatDateYYYYMMDD(this.fg.get('birthday').value),);
-        if (this.fg.valid){
+        if (this.fg.valid && !this.fg.pending){
             this.user.constructorRegister(this.fg.get('email').value, this.fg.get('password').value, this.fg.get('nickname').value, this.fg.get('name').value, this.fg.get('repPass').value, this.formatDateYYYYMMDD(this.fg.get('birthday').value), this.fg.get('adultContent').value, this.fg.get('terms').value);
             this.http.post<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {
                 if (resp.status === 200){
-                    localStorage.setItem("access", resp.body['access']);
-                    this.router.navigate(['/']);
-                }else if (resp.status === 202){
-                    console.log(resp.body['user']);
-                    this.router.navigate(['/auth/code', resp.body['user']['idUser']]);
+                    Swal.fire({
+                        title:`Su cuenta ha sido creada con éxito`,
+                        html: `A continuación será redirigido a la página de inicio de sesión<br>
+                                La primera vez que inicie sesión se le enviará un código de activación al correo electrónico asociado`,
+                        icon: "success",
+                        confirmButtonText: 'Ok'
+                    }).then((result:any)=>{
+                        this.router.navigate(['/auth/login']);
+                    });
                 }
 
             }, (resp:HttpErrorResponse) => {
@@ -226,7 +301,9 @@ export class RegisterComponent implements OnInit {
     }
 
     get repPassInvalid(){
-        return this.fg.get('repPass').invalid && this.fg.get('repPass').touched
+        let password = this.fg.get('password').value;
+        let repPass = this.fg.get('repPass').value;
+        return (this.fg.get('repPass').invalid && this.fg.get('repPass').touched) || password !== repPass
     }
 
     get nameInvalid(){

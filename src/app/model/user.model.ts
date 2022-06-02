@@ -71,4 +71,10 @@ export class UserModel {
         this._terms = terms;
         this._birthday = birthday;
     }
+    constructorEmail(email:string) {
+        this._email = email;
+    }
+    constructorNickname(nickname:string) {
+        this._nickname = nickname;
+    }
 }
