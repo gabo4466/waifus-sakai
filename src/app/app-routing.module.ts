@@ -9,6 +9,8 @@ import { AccessComponent } from './components/access/access.component';
 import {RegisterComponent} from "./components/register/register.component";
 import {ProfileComponent} from "./components/profile/profile.component";
 import {OtpAuthComponent} from "./components/otp-auth/otp-auth.component";
+import {ChannelComponent} from "./components/channel/channel.component";
+import {CreateChannelComponent} from "./components/create-channel/create-channel.component";
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -23,8 +25,10 @@ import {OtpAuthComponent} from "./components/otp-auth/otp-auth.component";
             {
                 path: 'pages', component: AppMainComponent,
                 children: [
-                    {path: 'profile', component: ProfileComponent},
                     {path: '', component: DashboardComponent},
+                    {path: 'channel/:id', component: ChannelComponent},
+                    {path: 'createChannel', component: CreateChannelComponent},
+                    {path: 'profile', component: ProfileComponent},
                     {path:'error', component: ErrorComponent},
                     {path:'notfound', component: NotfoundComponent},
                     {path:'access', component: AccessComponent},
