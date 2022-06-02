@@ -1,16 +1,24 @@
 <p-toast key="tst"></p-toast>
-<div class="col-12">
-    <div class="grid">
-        <div class="col-6">Apodo: {{user._nickname}}</div>
-        <div class="col-6">Nombre: {{user._name}}</div>
-        <div class="col-6">Descripcion: {{user._description}}</div>
-        <div class="col-6">Cumpleaños: {{user._birthday}}</div>
-        <div class="col-6">Karma: {{user._karma}}</div>
-        <div class="col-6">Tema: {{user._theme}}</div>
-        <div class="col-6">Pais: {{user._country}}</div>
-        <div class="col-6">Género: {{user._gender}}</div>
-        <div class="col-6">Contenido adulto: {{user._adultContent}}</div>
-        <div class="col-6">Admin Fachero: {{user._admin}}</div>
-    </div>
 
+<div class="grid">
+    <div class="col-8">
+        <div class="grid">
+            <div class="col-10 card">
+                <div class="col-2">Nombre: <br />{{user._name}}</div>
+                <div class="col-6">Contenido adulto: <br />{{user._adultContent ? "Sí":"No"}}</div>
+                <div class="col-8">Cumpleaños:  <br />{{user._birthday}}</div>
+                <div class="col-8">Pais: <br />{{user._country}}</div>
+                <div class="col-8">Sexo: <br />{{user._gender}}</div>
+                <div class="col-6">Karma: <br />{{user._karma}}</div>
+            </div>
+            <div class="col-10 card mt-3">
+                <div class="col-2">Descripcion: <br />{{user._description}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 card">
+        <div class="col-2" > <img style="width: 452px; height: 500px" src="{{user._profile_photo}}"> </div>
+        <div class="col-2">Apodo: <br />{{user._nickname}}</div>
+
+    </div>
 </div>
