@@ -14,12 +14,10 @@ export class ChannelModel{
         this._name = "";
     }
 
-    constructorCreateChannel(dateChannel: string, description: string, photo: string, banner: string, name: string) {
+    constructorCreateChannel(dateChannel: string, description: string, name: string) {
         this._dateChannel = dateChannel;
-        this._description = description;
-        this._photo = photo;
-        this._banner = banner;
-        this._name = name;
+        this._description = description.trim();
+        this._name = name.trim();
     }
 
 

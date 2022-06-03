@@ -18,7 +18,7 @@ export class CreateChannelComponent implements OnInit, OnDestroy {
     config: AppConfig;
     subscription: Subscription;
     items: MenuItem[];
-
+    activeIndex: number = 1;
     constructor( private configService: ConfigService,
                  private userService: UserService,
                  private router: Router,
@@ -31,11 +31,12 @@ export class CreateChannelComponent implements OnInit, OnDestroy {
         this.items = [
             {
                 label: 'Creación de canal',
-                routerLink: 'paso1'
+                routerLink: 'step1'
+
             },
             {
                 label: 'Imágenes',
-                routerLink: 'paso2'
+                routerLink: 'step2'
             }
         ];
         this.config = this.configService.config;

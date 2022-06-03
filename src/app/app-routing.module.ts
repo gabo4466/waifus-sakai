@@ -31,10 +31,20 @@ import {CreateChannelStep2Component} from "./components/create-channel-step2/cre
                     {path: 'channel/:id', component: ChannelComponent},
                     {
                         path: 'createChannel', component: CreateChannelComponent,
-                        children: [
-                            {path: 'paso1', component: CreateChannelStep1Component},
-                            {path: 'paso2', component: CreateChannelStep2Component}
-                        ]
+                        children: [{
+                            path: '',
+                            redirectTo: 'step1',
+                            pathMatch: 'full'
+                        },
+                            {
+                                path: 'step1',
+                                component: CreateChannelStep1Component
+                            },
+                            {
+                                path: 'step2',
+                                component: CreateChannelStep2Component
+                            }
+                        ],
                     },
                     {path: 'profile', component: ProfileComponent},
                     {path:'error', component: ErrorComponent},

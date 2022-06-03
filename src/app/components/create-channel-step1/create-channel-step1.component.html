@@ -1,32 +1,35 @@
-<div class="grid">
-    <form autocomplete="off" class="col-12 p-0" [formGroup]="fg" (ngSubmit)="send()">
-        <div class="col-12">
-            <div class="card">
-                <h5>Creación de Canal</h5>
-                <div class="p-fluid p-formgrid grid">
-                    <div class="field col-12 md:col-4">
-                        <label htmlFor="channelName">Nombre del canal</label>
-                        <input pInputText
-                               id="channelName"
-                               type="text"
-                               formControlName="name"/>
-                    </div>
-                    <div class="field col-12 md:col-8">
-                        <label htmlFor="channelDescription">Descripción</label>
-                        <textarea id="channelDescription"
-                                  rows="2"
-                                  pInputTextarea
-                                  autoResize="autoResize"
-                                  formControlName="description"></textarea>
-                    </div>
+<div class="createchannel-content">
+    <div class="grid">
+        <form autocomplete="off" class="col-12 p-0" [formGroup]="fg" (ngSubmit)="send()">
+            <div class="col-12">
+                <div class="card">
+                    <h5>Creación de Canal</h5>
+                    <div class="p-fluid p-formgrid grid">
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="channelName">Nombre del canal</label>
+                            <input pInputText
+                                   id="channelName"
+                                   type="text"
+                                   formControlName="name"/>
+                        </div>
+                        <div class="field col-12 md:col-8">
+                            <label htmlFor="channelDescription">Descripción</label>
+                            <textarea id="channelDescription"
+                                      rows="2"
+                                      pInputTextarea
+                                      autoResize="autoResize"
+                                      formControlName="description"></textarea>
+                        </div>
 
-                    <div class="col-12 md:col-3 md:col-offset-9">
-                        <button type="submit" pButton pRipple label="Crear y continuar" class="p-2 text-xl"></button>
-                    </div>
+                        <div class="col-12 md:col-2 md:col-offset-9">
+                            <p-button type="submit" label="Crear" icon="pi pi-angle-right" iconPos="right"></p-button>
+                        </div>
 
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+
+    </div>
 
 </div>
