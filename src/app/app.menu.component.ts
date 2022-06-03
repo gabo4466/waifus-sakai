@@ -36,7 +36,7 @@ export class AppMenuComponent implements OnInit {
             }
             if (resp['admin'] == true){
                 this.admin = true;
-                this.channels.items.push({label: 'Crear canal',icon: 'pi pi-fw pi-plus', routerLink: ['/pages/createChannel']});
+                this.channels.items.push({label: 'Crear canal',icon: 'pi pi-fw pi-plus', routerLink: ['/pages/createChannel/paso1']});
             }
             this.model.push(this.channels)
         },(error:any)=>this.logged=false);

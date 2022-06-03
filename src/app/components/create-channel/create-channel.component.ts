@@ -6,6 +6,7 @@ import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DateService} from "../../service/date.service";
+import {MenuItem} from "primeng/api";
 
 @Component({
   selector: 'app-create-channel',
@@ -16,19 +17,27 @@ export class CreateChannelComponent implements OnInit, OnDestroy {
 
     config: AppConfig;
     subscription: Subscription;
-    fg: FormGroup;
-    today: string;
+    items: MenuItem[];
+
     constructor( private configService: ConfigService,
                  private userService: UserService,
                  private router: Router,
                  private fb: FormBuilder,
                  private dateService: DateService) {
-        this.createForm();
-        this.today = dateService.formatDateYYYYMMDD(new Date());
-        console.log(this.today.toString())
+
     }
 
     ngOnInit(): void {
+        this.items = [
+            {
+                label: 'Creación de canal',
+                routerLink: 'paso1'
+            },
+            {
+                label: 'Imágenes',
+                routerLink: 'paso2'
+            }
+        ];
         this.config = this.configService.config;
         this.subscription = this.configService.configUpdate$.subscribe(config => {
             this.config = config;
@@ -51,47 +60,6 @@ export class CreateChannelComponent implements OnInit, OnDestroy {
 
     goToUnAuthorized(){
         this.router.navigate(['/pages/access']);
-    }
-
-    createForm(){
-        this.fg = this.fb.group({
-            name: [
-                "",
-                [
-                    Validators.required,
-                    Validators.minLength(3),
-                    Validators.maxLength(254),
-                    Validators.pattern("[a-zA-Z0-9]+")
-                ]
-            ],
-            description: [
-                "",
-                Validators.required
-            ],
-            dateChannel: [
-                this.today,
-                Validators.required
-            ],
-            photo: [
-                "",
-                [],[]
-            ],
-            banner: [
-                "",
-                [],[]
-            ]
-        });
-    }
-
-    send(){
-        if (this.fg.valid && !this.fg.pending){
-
-        }
-    }
-
-    mainPhotoHandler(event){
-        let files = event.currentFiles[0];
-        console.log(files);
     }
 
 }

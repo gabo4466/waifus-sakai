@@ -1,31 +1,4 @@
-<div class="grid">
-    <form autocomplete="off" class="col-12" [formGroup]="fg" (ngSubmit)="send()">
-        <div class="col-10 col-offset-1">
-            <div class="card">
-                <h5>Creación de Canal</h5>
-                <div class="p-fluid p-formgrid grid">
-                    <div class="field col-12 md:col-4">
-                        <label htmlFor="channelName">Nombre del canal</label>
-                        <input pInputText
-                               id="channelName"
-                               type="text"
-                               formControlName="name"/>
-                    </div>
-                    <div class="field col-12 md:col-8">
-                        <label htmlFor="channelDescription">Descripción</label>
-                        <textarea id="channelDescription"
-                                  rows="2"
-                                  pInputTextarea
-                                  autoResize="autoResize"
-                                  formControlName="description"></textarea>
-                    </div>
-                    <div class="field col-12 md:col-12">
-                        <p-fileUpload chooseLabel="Foto principal" mode="basic" #mainPhoto accept="image/*" id="mainPhotoChannel" showUploadButton="false" (onSelect)="mainPhotoHandler($event)"></p-fileUpload>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </form>
-
+<div class="card">
+    <p-steps [model]="items" [readonly]="true"></p-steps>
 </div>
+<router-outlet></router-outlet>
