@@ -1,15 +1,18 @@
 <p-toast key="tst"></p-toast>
 
 <div class="grid">
+
     <div class="col-8">
         <div class="grid">
             <div class="col-10 card">
                 <div class="col-2">Nombre: <br />{{user._name}}</div>
-                <div class="col-6">Contenido adulto: <br />{{user._adultContent ? "Sí":"No"}}</div>
+                <div class="col-8">Sexo: <br />{{user._gender}}</div>
                 <div class="col-8">Cumpleaños:  <br />{{user._birthday}}</div>
                 <div class="col-8">Pais: <br />{{user._country}}</div>
-                <div class="col-8">Sexo: <br />{{user._gender}}</div>
-                <div class="col-6">Karma: <br />{{user._karma}}</div>
+            </div>
+            <div class="col-10 card mt-3">
+                <div class="col-6">Contenido adulto: <br />{{user._adultContent ? "Sí 😈":"No👼🏻"}}</div>
+                <div class="col-6">Karma: <br />{{user._karma}} ☯️</div>
             </div>
             <div class="col-10 card mt-3">
                 <div class="col-2">Descripcion: <br />{{user._description}}</div>
