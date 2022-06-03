@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
 import {DateService} from "../../service/date.service";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {ChannelModel} from "../../model/channel.model";
 import {Constants} from "../../common/constants";
 import Swal from "sweetalert2";
@@ -20,8 +20,6 @@ export class CreateChannelStep1Component implements OnInit {
     today: string;
     private channel: ChannelModel;
     private readonly url:string = Constants.apiURL;
-    submitted: boolean = false;
-    @Output() changeIndex = new EventEmitter<number>();
     constructor( private userService: UserService,
                  private router: Router,
                  private fb: FormBuilder,
@@ -64,27 +62,36 @@ export class CreateChannelStep1Component implements OnInit {
             this.http.post(this.url, JSON.stringify(this.channel).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe((resp:any)=>{
                 if (resp.status === 200){
                     Swal.fire({
-                        title:`La concha de tu hermana todo fue bien SOS UN GRANDE`,
-                        html: ``,
+                        title:`¡Has creado el canal con éxito!`,
+                        html: `A continuación serás redirigido a la página para subir las imágenes del canal.`,
                         icon: "success",
                         confirmButtonText: 'Continuar'
                     }).then(()=>{
-                        this.changeIndex.emit(1);
-                        this.router.navigate(['/pages/createChannel/step2']);
+                        this.router.navigate(['/pages/createChannel/step2'], { queryParams: { id: resp.body['channel']['idChannel'] } });
                     });
                 }
             },(resp:any)=>{
-                Swal.fire({
-                    title:`Error`,
-                    html: `${resp.error['message']}`,
-                    icon: "error",
-                    confirmButtonText: 'Ok'
-                }).then(()=>{
-                    this.router.navigate(['/pages/createChannel/step1']);
-                });
+                if (resp.status == 401){
+                    this.goToUnAuthorized();
+                }
+                this.errorPopUp(resp.body['message']);
             });
         }
-        this.submitted = true;
+    }
+
+    goToUnAuthorized(){
+        this.router.navigate(['/pages/access']);
+    }
+
+    errorPopUp(message:string){
+        Swal.fire({
+            title:`Error`,
+            html: `${message}`,
+            icon: "error",
+            confirmButtonText: 'Ok'
+        }).then(()=>{
+            this.router.navigate(['/pages/createChannel/step1']);
+        });
     }
 
 }
