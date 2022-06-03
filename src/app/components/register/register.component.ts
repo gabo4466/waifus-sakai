@@ -59,6 +59,8 @@ export class RegisterComponent implements OnInit {
     subscription: Subscription;
     private readonly url:string = Constants.apiURL;
 
+    date : Date;
+
     constructor( private configService: ConfigService,
                  private fb: FormBuilder,
                  private http: HttpClient,
@@ -75,54 +77,17 @@ export class RegisterComponent implements OnInit {
         this.subscription = this.configService.configUpdate$.subscribe(config => {
             this.config = config;
         });
+
+        let today = new Date();
+        this.date= new Date();
+        this.date.setDate(today.getDate());
+        this.date.setMonth(today.getMonth());
+        this.date.setFullYear(today.getFullYear() - 18);
     }
 
     ngOnDestroy(): void {
         if(this.subscription){
             this.subscription.unsubscribe();
-        }
-    }
-
-    ageValidator():boolean{
-        let result :boolean;
-        let age = 18;
-        let birthday: Date = this.fg.get('birthday').value;
-
-        console.log("date "+birthday);
-
-        let birthdayD = birthday.getDate();
-        let birthdayM = birthday.getMonth() + 1;
-        let birthdayY = birthday.getFullYear();
-        let date: Date = new Date();
-        let dateD = date.getDate();
-        let dateM = date.getMonth() + 1;
-        let dateY = date.getFullYear();
-
-        if (dateY - birthdayY < age) {
-            result = false;
-        } else if (dateY - birthdayY == age) {
-            if (dateM > birthdayM) {
-                result = false;
-            } else if (dateM == birthdayM) {
-                result = dateD >= birthdayD;
-            } else {
-                result = true;
-            }
-        } else {
-            result = true;
-        }
-
-        console.log("res "+result);
-
-        return result;
-    }
-
-    adultContentVal(adultContent:string){
-        return(formGroup:FormGroup)=>{
-            let adultContentControl = formGroup.controls[adultContent];
-            if(!this.ageValidator){
-                adultContentControl.setValue(false);
-            }
         }
     }
 
@@ -244,8 +209,7 @@ export class RegisterComponent implements OnInit {
         },
             {
                 validators: [
-                    this.passwordCheck('password', 'repPass'),
-                    this.adultContentVal('adultContent')
+                    this.passwordCheck('password', 'repPass')
                 ]
             });
     }
