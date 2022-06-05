@@ -73,8 +73,9 @@ export class CreateChannelStep1Component implements OnInit {
             },(resp:any)=>{
                 if (resp.status == 401){
                     this.goToUnAuthorized();
+                }else{
+                    this.errorPopUp(resp.error['message']);
                 }
-                this.errorPopUp(resp.body['message']);
             });
         }
     }

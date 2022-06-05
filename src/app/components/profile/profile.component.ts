@@ -145,9 +145,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
          }
           this.user.constructorProfile(photo ,resp.activated, resp.admin, resp.adultContent, resp.banned, resp.birthday, resp.country, resp.description, resp.email, resp.gender, resp.idUser, resp.karma, resp.name, resp.nickname, resp.theme);
 
-          if (resp['admin']!=true){
-              this.goToUnAuthorized();
-          }
       },()=>{
           this.goToUnAuthorized();
       });
