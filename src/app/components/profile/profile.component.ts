@@ -32,64 +32,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
                  private router: Router,
                  private serviceMessage: MessageService,
                  private userService: UserService){
-        this.createForm();
+
         this.user = new UserModel();
         this.url += 'profile';
     }
 
-    formatDateYYYYMMDD(date:Date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-        if (month.length < 2)
-            month = '0' + month;
-        if (day.length < 2)
-            day = '0' + day;
-        return [year, month, day].join('');
-    }
 
-    createForm(){
-        this.fg = this.fb.group( {
-            email: [
-                '',
-                [
-                    Validators.required,
-                    Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$')
-                ]
-            ],
-            nickname: [
-                '',
-                [
-                    Validators.required,
-                    Validators.minLength(4),
-                    Validators.maxLength(20),
-                    Validators.pattern('[a-zA-Z0-9._-]+')
-                ]
-            ],
-            name: [
-                '',
-                [
-                    Validators.required
-                ]
-            ],
-            birthday: [
-                '',
-                [
-                    Validators.required
-                ]
-            ],
-            terms: [
-                false,
-                [
-                    Validators.required
-                ]
-            ],
-            adultContent: [
-                false,
-            ]
-        })
-    }
 
     send(){
         if (this.fg.valid){
