@@ -5,6 +5,8 @@ import {Subscription} from "rxjs";
 import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {DateService} from "../../service/date.service";
+import {MenuItem} from "primeng/api";
 
 @Component({
   selector: 'app-create-channel',
@@ -15,13 +17,28 @@ export class CreateChannelComponent implements OnInit, OnDestroy {
 
     config: AppConfig;
     subscription: Subscription;
-    fg: FormGroup;
+    items: MenuItem[];
+    activeIndex: number = 1;
     constructor( private configService: ConfigService,
                  private userService: UserService,
                  private router: Router,
-                 private fb: FormBuilder) { }
+                 private fb: FormBuilder,
+                 private dateService: DateService) {
+
+    }
 
     ngOnInit(): void {
+        this.items = [
+            {
+                label: 'Creación de canal',
+                routerLink: 'step1'
+
+            },
+            {
+                label: 'Imágenes',
+                routerLink: 'step2'
+            }
+        ];
         this.config = this.configService.config;
         this.subscription = this.configService.configUpdate$.subscribe(config => {
             this.config = config;
@@ -44,33 +61,6 @@ export class CreateChannelComponent implements OnInit, OnDestroy {
 
     goToUnAuthorized(){
         this.router.navigate(['/pages/access']);
-    }
-
-    createForm(){
-        this.fg = this.fb.group({
-            name: [
-                "",
-                [
-                    Validators.required,
-                    Validators.minLength(3),
-                    Validators.maxLength(254),
-                    Validators.pattern("[a-zA-Z0-9]+")
-                ],
-                []
-            ],
-            description: [
-                "",[],[]
-            ],
-            dateChannel: [
-
-            ]
-        });
-    }
-
-    send(){
-        if (this.fg.valid && !this.fg.pending){
-
-        }
     }
 
 }

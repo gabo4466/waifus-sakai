@@ -138,19 +138,26 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.subscription = this.configService.configUpdate$.subscribe(config => {
           this.config = config;
       });
+      this.userService.getProfile().subscribe((resp:any)=>{
+         let photo = "assets/layout/images/noprofilepic.png";
+          if(resp['profile_photo']!=undefined){
+             photo = resp['profile_photo'];
+         }
+          this.user.constructorProfile(photo ,resp.activated, resp.admin, resp.adultContent, resp.banned, resp.birthday, resp.country, resp.description, resp.email, resp.gender, resp.idUser, resp.karma, resp.name, resp.nickname, resp.theme);
 
-     this.userService.getProfile().subscribe((resp:any)=>{
+      },()=>{
+          this.goToUnAuthorized();
+      });
 
-         this.user.constructorProfile(resp.activated, resp.admin, resp.adultContent, resp.banned, resp.birthday, resp.country, resp.description, resp.email, resp.gender, resp.idUser, resp.karma, resp.name, resp.nickname, resp.theme);
-
-
-     });
 
   }
     ngOnDestroy(): void {
         if(this.subscription){
             this.subscription.unsubscribe();
         }
+    }
+    goToUnAuthorized(){
+        this.router.navigate(['/pages/access']);
     }
 
 
