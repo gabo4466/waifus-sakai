@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 import {Constants} from "../../common/constants";
 import { MessageService } from "primeng/api";
 import {map} from "rxjs/operators";
+import {DateService} from "../../service/date.service";
 
 
 @Component({
@@ -58,11 +59,14 @@ export class RegisterComponent implements OnInit {
     subscription: Subscription;
     private readonly url:string = Constants.apiURL;
 
+    date : Date;
+
     constructor( private configService: ConfigService,
                  private fb: FormBuilder,
                  private http: HttpClient,
                  private router: Router,
-                 private serviceMessage: MessageService){
+                 private serviceMessage: MessageService,
+                 private dateService: DateService){
         this.createForm();
         this.user = new UserModel();
         this.url += 'register';
@@ -73,49 +77,18 @@ export class RegisterComponent implements OnInit {
         this.subscription = this.configService.configUpdate$.subscribe(config => {
             this.config = config;
         });
+
+        let today = new Date();
+        this.date= new Date();
+        this.date.setDate(today.getDate());
+        this.date.setMonth(today.getMonth());
+        this.date.setFullYear(today.getFullYear() - 18);
     }
 
     ngOnDestroy(): void {
         if(this.subscription){
             this.subscription.unsubscribe();
         }
-    }
-
-    ageValidator(control: AbstractControl){
-        let adultcontent = control.value;
-
-        /*
-        return(formGroup:FormGroup)=> {
-            let adult = control.get('adultContent')
-            let birthday: Date = control.get('birthday').value;
-            let birthdayD = birthday.getDate();
-            let birthdayM = birthday.getMonth() + 1;
-            let birthdayY = birthday.getFullYear();
-            let date: Date = new Date();
-            let dateD = date.getDate();
-            let dateM = date.getMonth() + 1;
-            let dateY = date.getFullYear();
-
-            if (dateY - birthdayY < 18) {
-                adult.disable();
-            } else if (dateY - birthdayY == 18) {
-                if (dateM > birthdayM) {
-                    adult.setErrors({minor: true});
-                } else if (dateM == birthdayM) {
-                    if (dateD < birthdayD) {
-                        adult.setErrors({minor: true});
-                    } else {
-                        adult.setErrors(null);
-                    }
-                } else {
-                    adult.setErrors(null);
-                }
-            } else {
-                adult.setErrors(null);
-            }
-        }
-        */
-
     }
 
     passwordCheck(password:string, repPass:string){
@@ -129,18 +102,6 @@ export class RegisterComponent implements OnInit {
                 repPassControl.setErrors({notEqual : true});
             }
         }
-    }
-
-    formatDateYYYYMMDD(date:Date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-        if (month.length < 2)
-            month = '0' + month;
-        if (day.length < 2)
-            day = '0' + day;
-        return [year, month, day].join('');
     }
 
     emailCheck(control: FormControl): Observable<{ emailForbidden: boolean } | null> {
@@ -166,7 +127,7 @@ export class RegisterComponent implements OnInit {
         );
     }
 
-    nicknameCheck(control: FormControl): Observable<{ emailForbidden: boolean } | null> {
+    nicknameCheck(control: FormControl): Observable<{ nicknameForbidden: boolean } | null> {
         const nicknameToCheck = control.value;
         if(!nicknameToCheck) {
             return of(null);
@@ -176,7 +137,7 @@ export class RegisterComponent implements OnInit {
         // @ts-ignore
         return of(nicknameToCheck).pipe(
             debounceTime(400),
-            switchMap(emailToCheck => {
+            switchMap(nicknameToCheck => {
                 return this.http.get<{ nickname: boolean, email: boolean }>(this.url, {params: queryParams})
                     .pipe(
                         map(resp => {
@@ -244,7 +205,6 @@ export class RegisterComponent implements OnInit {
             ],
             adultContent: [
                 false,
-                [ this.ageValidator ]
             ]
         },
             {
@@ -256,7 +216,7 @@ export class RegisterComponent implements OnInit {
 
     send(){
         if (this.fg.valid && !this.fg.pending){
-            this.user.constructorRegister(this.fg.get('email').value, this.fg.get('password').value, this.fg.get('nickname').value, this.fg.get('name').value, this.fg.get('repPass').value, this.formatDateYYYYMMDD(this.fg.get('birthday').value), this.fg.get('adultContent').value, this.fg.get('terms').value);
+            this.user.constructorRegister(this.fg.get('email').value, this.fg.get('password').value, this.fg.get('nickname').value, this.fg.get('name').value, this.fg.get('repPass').value, this.dateService.formatDateYYYYMMDD(this.fg.get('birthday').value), this.fg.get('adultContent').value, this.fg.get('terms').value);
             this.http.post<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {
                 if (resp.status === 200){
                     Swal.fire({

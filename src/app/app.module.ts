@@ -147,6 +147,12 @@ import { OtpAuthComponent } from './components/otp-auth/otp-auth.component';
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import { ChannelComponent } from './components/channel/channel.component';
 import { CreateChannelComponent } from './components/create-channel/create-channel.component';
+import { CreateChannelStep1Component } from './components/create-channel-step1/create-channel-step1.component';
+import { CreateChannelStep2Component } from './components/create-channel-step2/create-channel-step2.component';
+import { CreateThreadsStepsComponent } from './components/create-threads-steps/create-threads-steps.component';
+import { CreateThreads1Component } from './components/create-threads1/create-threads1.component';
+import { CreateThreads2Component } from './components/create-threads2/create-threads2.component';
+import { ThreadComponent } from './components/thread/thread.component';
 import { ProfileUpdateComponent } from './components/profile-update/profile-update.component';
 
 @NgModule({
@@ -288,6 +294,12 @@ import { ProfileUpdateComponent } from './components/profile-update/profile-upda
         OtpAuthComponent,
         ChannelComponent,
         CreateChannelComponent,
+        CreateChannelStep1Component,
+        CreateChannelStep2Component,
+        CreateThreadsStepsComponent,
+        CreateThreads1Component,
+        CreateThreads2Component,
+        ThreadComponent,
         ProfileUpdateComponent,
     ],
     providers: [

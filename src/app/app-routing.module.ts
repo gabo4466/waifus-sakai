@@ -11,6 +11,13 @@ import {ProfileComponent} from "./components/profile/profile.component";
 import {OtpAuthComponent} from "./components/otp-auth/otp-auth.component";
 import {ChannelComponent} from "./components/channel/channel.component";
 import {CreateChannelComponent} from "./components/create-channel/create-channel.component";
+import {CreateChannelStep1Component} from "./components/create-channel-step1/create-channel-step1.component";
+import {CreateChannelStep2Component} from "./components/create-channel-step2/create-channel-step2.component";
+import {CreateThreadsStepsComponent} from "./components/create-threads-steps/create-threads-steps.component";
+import {CreateThreads1Component} from "./components/create-threads1/create-threads1.component";
+import {CreateThreads2Component} from "./components/create-threads2/create-threads2.component";
+import {ThreadComponent} from "./components/thread/thread.component";
+
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -27,7 +34,42 @@ import {CreateChannelComponent} from "./components/create-channel/create-channel
                 children: [
                     {path: '', component: DashboardComponent},
                     {path: 'channel/:id', component: ChannelComponent},
-                    {path: 'createChannel', component: CreateChannelComponent},
+                    {
+                        path: 'createChannel', component: CreateChannelComponent,
+                        children: [{
+                            path: '',
+                            redirectTo: 'step1',
+                            pathMatch: 'full'
+                        },
+                            {
+                                path: 'step1',
+                                component: CreateChannelStep1Component
+                            },
+                            {
+                                path: 'step2',
+                                component: CreateChannelStep2Component
+                            }
+                        ],
+                    },
+                    {path: 'thread/:id', component: ThreadComponent},
+                    {
+                        path: 'createThread', component: CreateThreadsStepsComponent,
+                        children: [{
+                            path: '',
+                            redirectTo: 'threads1',
+                            pathMatch: 'full'
+                        },
+                            {
+                                path: 'threads1',
+                                component: CreateThreads1Component
+                            },
+                            {
+                                path: 'threads2',
+                                component: CreateThreads2Component
+                            }
+
+                        ],
+                    },
                     {path: 'profile', component: ProfileComponent},
                     {path:'error', component: ErrorComponent},
                     {path:'notfound', component: NotfoundComponent},

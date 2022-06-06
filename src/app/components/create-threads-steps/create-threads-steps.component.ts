@@ -1,19 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ConfigService} from "../../service/app.config.service";
+import { Component, OnInit } from '@angular/core';
 import {AppConfig} from "../../api/appconfig";
 import {Subscription} from "rxjs";
+import {MenuItem} from "primeng/api";
+import {ConfigService} from "../../service/app.config.service";
 import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder} from "@angular/forms";
 import {DateService} from "../../service/date.service";
-import {MenuItem} from "primeng/api";
 
 @Component({
-  selector: 'app-create-channel',
-  templateUrl: './create-channel.component.html',
-  styleUrls: ['./create-channel.component.scss']
+  selector: 'app-create-threads-steps',
+  templateUrl: './create-threads-steps.component.html',
+  styleUrls: ['./create-threads-steps.component.scss']
 })
-export class CreateChannelComponent implements OnInit, OnDestroy {
+export class CreateThreadsStepsComponent implements OnInit {
 
     config: AppConfig;
     subscription: Subscription;
@@ -30,13 +30,13 @@ export class CreateChannelComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.items = [
             {
-                label: 'Creación de canal',
-                routerLink: 'step1'
+                label: 'Creación de hilo',
+                routerLink: 'threads1'
 
             },
             {
                 label: 'Imágenes',
-                routerLink: 'step2'
+                routerLink: 'threads2'
             }
         ];
         this.config = this.configService.config;
@@ -44,7 +44,7 @@ export class CreateChannelComponent implements OnInit, OnDestroy {
             this.config = config;
         });
         this.userService.getProfile().subscribe((resp:any)=>{
-            if (resp['admin']!=true){
+            if (/*resp['karma']>??*/true){
                 this.goToUnAuthorized();
             }
         },()=>{
