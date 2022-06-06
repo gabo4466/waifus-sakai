@@ -152,6 +152,7 @@ import { CreateChannelStep2Component } from './components/create-channel-step2/c
 import { CreateThreadsStepsComponent } from './components/create-threads-steps/create-threads-steps.component';
 import { CreateThreads1Component } from './components/create-threads1/create-threads1.component';
 import { CreateThreads2Component } from './components/create-threads2/create-threads2.component';
+import { ThreadComponent } from './components/thread/thread.component';
 
 @NgModule({
     imports: [
@@ -297,6 +298,7 @@ import { CreateThreads2Component } from './components/create-threads2/create-thr
         CreateThreadsStepsComponent,
         CreateThreads1Component,
         CreateThreads2Component,
+        ThreadComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},
