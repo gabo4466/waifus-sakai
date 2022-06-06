@@ -1,4 +1,9 @@
-<span class="w-full p-input-icon-left">
-    <i class="pi pi-search"></i>
-    <input type="text" class="w-full p-inputtext-lg" placeholder="Término de busqueda..."  pInputText />
-</span>
+<form [formGroup]="fg" (ngSubmit)="keyPress()">
+    <div class="card">
+        <span class="w-full p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input formControlName="term" (keyup)="keyPress()" type="text" class="w-full p-inputtext-lg" placeholder="Término de busqueda..."  pInputText />
+        </span>
+    </div>
+</form>
+
