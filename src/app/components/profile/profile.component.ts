@@ -52,34 +52,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.serviceMessage.add({ key: 'tst', severity: 'error', summary: 'Hay errores en el formulario', detail: 'Campos inválidos' });
     }
 
-    get emailInvalid(){
-        return this.fg.get('email').invalid && this.fg.get('email').touched
-    }
-
-    get passwordInvalid(){
-        return this.fg.get('password').invalid && this.fg.get('password').touched
-    }
-
-    get nicknameInvalid(){
-        return this.fg.get('nickname').invalid && this.fg.get('nickname').touched
-    }
-
-    get repPassInvalid(){
-        return this.fg.get('repPass').invalid && this.fg.get('repPass').touched
-    }
-
-    get nameInvalid(){
-        return this.fg.get('name').invalid && this.fg.get('name').touched
-    }
-
-    get birthdayInvalid(){
-        return this.fg.get('birthday').invalid && this.fg.get('birthday').touched
-    }
-
-    get termsInvalid(){
-        return !this.fg.get('terms').value && this.fg.get('terms').touched
-    }
-
 
   ngOnInit(): void {
       this.config = this.configService.config;
@@ -107,6 +79,5 @@ export class ProfileComponent implements OnInit, OnDestroy {
     goToUnAuthorized(){
         this.router.navigate(['/pages/access']);
     }
-
 
 }
