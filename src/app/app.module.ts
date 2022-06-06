@@ -147,6 +147,7 @@ import { OtpAuthComponent } from './components/otp-auth/otp-auth.component';
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import { ChannelComponent } from './components/channel/channel.component';
 import { CreateChannelComponent } from './components/create-channel/create-channel.component';
+import { ProfileUpdateComponent } from './components/profile-update/profile-update.component';
 
 @NgModule({
     imports: [
@@ -287,6 +288,7 @@ import { CreateChannelComponent } from './components/create-channel/create-chann
         OtpAuthComponent,
         ChannelComponent,
         CreateChannelComponent,
+        ProfileUpdateComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},

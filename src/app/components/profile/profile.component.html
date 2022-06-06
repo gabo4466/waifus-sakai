@@ -1,42 +1,39 @@
 <p-toast key="tst"></p-toast>
 
 <div class="grid col-12">
-    <div class="card xl:col-4 md:col-12 sm:col-12 xl:mr-5">
-        <div > <img class="col-12 md:col-6 lg:col-3"  src="{{user._profile_photo}}"> </div>
-        <div class=" text-2xl md:text-xl ">
-            <span class="identifier  font-semibold">Apodo:</span> <br />{{user._nickname}}
+        <div class="card xl:col-4 md:col-12 sm:col-12 ">
+            <div > <img class="col-12"  src="{{user._profile_photo}}"> </div>
+            <div class="col-12 text-2xl md:text-xl ">
+                <span class="identifier  font-semibold">Apodo:</span> <br />{{user._nickname}}
+            </div>
         </div>
-    </div>
-    <div class="xl:col-7 sm:col-12">
-        <div class="grid">
-            <div class="card col-12 md:col-6 lg:col-3">
-                <div class="text-2xl md:text-xl">
-                    <span class="identifier  font-semibold">Nombre:</span> <br />{{user._name}}
-                </div>
-                <div class="text-2xl md:text-xl">
-                    <span class="identifier  font-semibold">Sexo:</span> <br />{{user._gender}}
-                </div>
-                <div class="text-2xl md:text-xl">
-                    <span class="identifier  font-semibold">Cumpleaños:</span>  <br />{{user._birthday}}
-                </div>
-                <div class="text-2xl md:text-xl">
-                    <span class="identifier  font-semibold">Pais:</span> <br />{{user._country}}
-                </div>
+        <div class="card xl:col-7 xl:col-offset-1  col-12">
+            <div class="col-12 text-2xl md:text-xl">
+                <span class="identifier  font-semibold">Nombre:</span> <br />{{user._name}}
             </div>
-            <div class="card col-12 md:col-6 lg:col-3">
-                <div class="text-2xl md:text-xl ">
-                    <span class="identifier  font-semibold">Contenido adulto:</span> <br />{{user._adultContent ? "Sí 😈":"No👼🏻"}}
-                </div>
-                <div class="text-2xl md:text-xl ">
-                    <span class="identifier  font-semibold">Karma:</span> <br />{{user._karma}} ☯️
-                </div>
+            <div class="col-12 text-2xl md:text-xl">
+                <span class="identifier  font-semibold">Sexo:</span> <br />{{user._gender}}
             </div>
-            <div class="card col-12 md:col-6 lg:col-3">
-                <div class="text-2xl md:text-xl">
-                    <span class="identifier  font-semibold">Descripcion:</span> <br />{{user._description}}
-                </div>
+            <div class="col-12 text-2xl md:text-xl">
+                <span class="identifier  font-semibold">Cumpleaños:</span>  <br />{{user._birthday}}
+            </div>
+            <div class="col-12 text-2xl md:text-xl">
+                <span class="identifier  font-semibold">Pais:</span> <br />{{user._country}}
+            </div>
+        </div>
+        <div class="card col-12">
+            <div class=" w-full text-2xl md:text-xl ">
+                <span class="identifier  font-semibold">Contenido adulto:</span> <br />{{user._adultContent ? "Sí 😈":"No👼🏻"}}
+            </div>
+            <div class="w-full text-2xl md:text-xl ">
+                <span class="identifier  font-semibold">Karma:</span> <br />{{user._karma}} ☯️
+            </div>
+        </div>
+        <div class="card col-12">
+            <div class="w-full text-2xl md:text-xl">
+                <span class="identifier  font-semibold">Descripcion:</span> <br />{{user._description}}
             </div>
         </div>
     </div>
 
-</div>
+
