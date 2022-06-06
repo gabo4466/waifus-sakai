@@ -1,1 +1,22 @@
-<p>create-threads2 works!</p>
+<p-toast></p-toast>
+<div class="createchannel-content">
+    <div class="grid">
+        <div class="col-12">
+            <div class="card">
+                <div class="p-fluid grid">
+                    <div class="col-12">
+                        <h5>Foto del canal</h5>
+                        <p-fileUpload [showCancelButton]="false" [headers]="header" chooseLabel="Foto del Canal" name="mainPhoto" [url]="mainPhotoChannel" accept="image/*" maxFileSize="1000000" (onSelect)="showPreview($event, 'previewMainPhoto', 'mainPhotoBox')" (onUpload)="onBasicUpload($event, 1)" (onRemove)="removePreview('previewMainPhoto', 'mainPhotoBox')"></p-fileUpload>
+                        <div class="text-center col-12" id="mainPhotoBox" style="display: none">
+                            <h5>Vista previa:</h5>
+                            <p-avatar class="w-full" id="previewMainPhoto" image="#" severity="danger" styleClass="mr-2" size="xlarge"></p-avatar>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-4 md:col-offset-8">
+                        <p-button type="button" (onClick)="finish()" label="Terminar" icon="pi pi-angle-right" iconPos="right"></p-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

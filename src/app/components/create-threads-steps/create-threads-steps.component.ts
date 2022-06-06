@@ -43,13 +43,13 @@ export class CreateThreadsStepsComponent implements OnInit {
         this.subscription = this.configService.configUpdate$.subscribe(config => {
             this.config = config;
         });
-        this.userService.getProfile().subscribe((resp:any)=>{
-            if (/*resp['karma']>??*/true){
+        /*this.userService.getProfile().subscribe((resp:any)=>{
+            if (resp['karma']<??){
                 this.goToUnAuthorized();
             }
         },()=>{
             this.goToUnAuthorized();
-        });
+        });*/
 
     }
 
