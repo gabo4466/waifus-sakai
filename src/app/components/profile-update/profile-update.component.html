@@ -1,24 +1,24 @@
 <div class="card">
-    <h5>Actualizar informacion del perfil</h5>
+    <h5 class="font-semibold">Actualizar informacion del perfil</h5>
     <div class="formgrid grid">
         <div class="field col-12 md:col-6">
-            <label for="firstname6">Nombre y Apellidos</label>
+            <label for="firstname6"><span class="identifier  font-semibold">Nombre y Apellidos:</span></label>
             <input id="firstname6" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
         </div>
         <div class="field col-12 md:col-6">
-            <label for="lastname6">Apodo</label>
+            <label for="lastname6"><span class="identifier  font-semibold">Apodo:</span></label>
             <input id="lastname6" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
         </div>
         <div class="field col-12">
-            <label for="address">Descripción</label>
+            <label for="address"><span class="identifier  font-semibold">Descripción:</span></label>
             <textarea id="address" type="text" rows="4" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>
         </div>
         <div class="field col-12 md:col-6">
-            <label for="city">Pais</label>
+            <label for="city"><span class="identifier  font-semibold">Pais:</span></label>
             <input id="city" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
         </div>
         <div class="field col-12 md:col-3">
-            <label for="sex">Sexo</label>
+            <label for="sex"><span class="identifier  font-semibold">Sexo:</span></label>
             <select id="sex" class="w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round outline-none focus:border-primary" style="appearance: auto">
                 <option>Hombre</option>
                 <option>Mujer</option>
@@ -27,8 +27,9 @@
             </select>
         </div>
         <div class="field col-12 md:col-3">
-            <label for="zip">Zip</label>
-            <input id="zip" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+            <label for="aC" class="p-3 vertical-align-bottom md:vertical-align-bot"><span class="identifier  font-semibold">Contenido Adulto:</span></label>
+            <p-inputSwitch  formControlName="adultContent" id="aC"></p-inputSwitch>
+
         </div>
     </div>
 </div>
