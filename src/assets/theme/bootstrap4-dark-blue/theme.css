@@ -137,7 +137,7 @@
   --yellow-200:#ffe494;
   --yellow-300:#ffd965;
   --yellow-400:#ffcd36;
-  --yellow-500:#ffc107;
+  --yellow-500: #FFB6C1;
   --yellow-600:#d9a406;
   --yellow-700:#b38705;
   --yellow-800:#8c6a04;
@@ -2017,7 +2017,7 @@ p-treeselect.ng-invalid.ng-dirty > .p-treeselect {
 .p-button.p-button-warning:enabled:active, .p-buttonset.p-button-warning > .p-button:enabled:active, .p-splitbutton.p-button-warning > .p-button:enabled:active {
   background: #ffca28;
   color: #151515;
-  border-color: #ffc107;
+  border-color: #FFB6C1;
 }
 .p-button.p-button-warning.p-button-outlined, .p-buttonset.p-button-warning > .p-button.p-button-outlined, .p-splitbutton.p-button-warning > .p-button.p-button-outlined {
   background-color: transparent;
