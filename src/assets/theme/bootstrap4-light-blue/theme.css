@@ -137,7 +137,7 @@
   --yellow-200:#ffe494;
   --yellow-300:#ffd965;
   --yellow-400:#ffcd36;
-  --yellow-500:#ffc107;
+  --yellow-500: #FFB6C1;
   --yellow-600:#d9a406;
   --yellow-700:#b38705;
   --yellow-800:#8c6a04;
@@ -1398,7 +1398,7 @@ p-password.ng-invalid.ng-dirty > .p-password > .p-inputtext {
   background: #dc3545;
 }
 .p-password-panel .p-password-meter .p-password-strength.medium {
-  background: #ffc107;
+  background: #FFB6C1;
 }
 .p-password-panel .p-password-meter .p-password-strength.strong {
   background: #28a745;
@@ -2003,8 +2003,8 @@ p-treeselect.ng-invalid.ng-dirty > .p-treeselect {
 
 .p-button.p-button-warning, .p-buttonset.p-button-warning > .p-button, .p-splitbutton.p-button-warning > .p-button {
   color: #212529;
-  background: #ffc107;
-  border: 1px solid #ffc107;
+  background: #FFB6C1;
+  border: 1px solid #FFB6C1;
 }
 .p-button.p-button-warning:enabled:hover, .p-buttonset.p-button-warning > .p-button:enabled:hover, .p-splitbutton.p-button-warning > .p-button:enabled:hover {
   background: #e0a800;
@@ -2021,33 +2021,33 @@ p-treeselect.ng-invalid.ng-dirty > .p-treeselect {
 }
 .p-button.p-button-warning.p-button-outlined, .p-buttonset.p-button-warning > .p-button.p-button-outlined, .p-splitbutton.p-button-warning > .p-button.p-button-outlined {
   background-color: transparent;
-  color: #ffc107;
+  color: #FFB6C1;
   border: 1px solid;
 }
 .p-button.p-button-warning.p-button-outlined:enabled:hover, .p-buttonset.p-button-warning > .p-button.p-button-outlined:enabled:hover, .p-splitbutton.p-button-warning > .p-button.p-button-outlined:enabled:hover {
   background: rgba(255, 193, 7, 0.04);
-  color: #ffc107;
+  color: #FFB6C1;
   border: 1px solid;
 }
 .p-button.p-button-warning.p-button-outlined:enabled:active, .p-buttonset.p-button-warning > .p-button.p-button-outlined:enabled:active, .p-splitbutton.p-button-warning > .p-button.p-button-outlined:enabled:active {
   background: rgba(255, 193, 7, 0.16);
-  color: #ffc107;
+  color: #FFB6C1;
   border: 1px solid;
 }
 .p-button.p-button-warning.p-button-text, .p-buttonset.p-button-warning > .p-button.p-button-text, .p-splitbutton.p-button-warning > .p-button.p-button-text {
   background-color: transparent;
-  color: #ffc107;
+  color: #FFB6C1;
   border-color: transparent;
 }
 .p-button.p-button-warning.p-button-text:enabled:hover, .p-buttonset.p-button-warning > .p-button.p-button-text:enabled:hover, .p-splitbutton.p-button-warning > .p-button.p-button-text:enabled:hover {
   background: rgba(255, 193, 7, 0.04);
   border-color: transparent;
-  color: #ffc107;
+  color: #FFB6C1;
 }
 .p-button.p-button-warning.p-button-text:enabled:active, .p-buttonset.p-button-warning > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-warning > .p-button.p-button-text:enabled:active {
   background: rgba(255, 193, 7, 0.16);
   border-color: transparent;
-  color: #ffc107;
+  color: #FFB6C1;
 }
 
 .p-button.p-button-help, .p-buttonset.p-button-help > .p-button, .p-splitbutton.p-button-help > .p-button {
@@ -5532,7 +5532,7 @@ p-treeselect.ng-invalid.ng-dirty > .p-treeselect {
   color: #ffffff;
 }
 .p-badge.p-badge-warning {
-  background-color: #ffc107;
+  background-color: #FFB6C1;
   color: #212529;
 }
 .p-badge.p-badge-danger {
@@ -5659,7 +5659,7 @@ p-treeselect.ng-invalid.ng-dirty > .p-treeselect {
   color: #ffffff;
 }
 .p-tag.p-tag-warning {
-  background-color: #ffc107;
+  background-color: #FFB6C1;
   color: #212529;
 }
 .p-tag.p-tag-danger {
