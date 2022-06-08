@@ -18,6 +18,7 @@ import {CreateThreads1Component} from "./components/create-threads1/create-threa
 import {CreateThreads2Component} from "./components/create-threads2/create-threads2.component";
 import {ThreadComponent} from "./components/thread/thread.component";
 import {ProfileUpdateComponent} from "./components/profile-update/profile-update.component";
+import {SearchChannelComponent} from "./components/search-channel/search-channel.component";
 
 @NgModule({
     imports: [
@@ -73,6 +74,7 @@ import {ProfileUpdateComponent} from "./components/profile-update/profile-update
                     },
                     {path: 'profile', component: ProfileComponent},
                     {path: 'profileUpdate', component: ProfileUpdateComponent},
+                    {path: 'searchChannel', component: SearchChannelComponent},
                     {path:'error', component: ErrorComponent},
                     {path:'notfound', component: NotfoundComponent},
                     {path:'access', component: AccessComponent},
