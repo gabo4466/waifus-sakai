@@ -3,6 +3,7 @@ import {MessageService} from "primeng/api";
 import {AppConfig} from "../../api/appconfig";
 import {Subscription} from "rxjs";
 import {ConfigService} from "../../service/app.config.service";
+import {Constants} from "../../common/constants";
 
 @Component({
     selector: 'app-search-channel',
@@ -14,6 +15,7 @@ export class SearchChannelComponent implements OnInit, OnDestroy {
 
     config: AppConfig;
     subscription: Subscription;
+    imgUrl: string = Constants.imgURL;
     constructor( private configService: ConfigService,
                  private serviceMessage: MessageService ) {
 
