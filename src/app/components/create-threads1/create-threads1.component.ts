@@ -4,32 +4,37 @@ import Swal from "sweetalert2";
 
 import {Constants} from "../../common/constants";
 import {UserService} from "../../service/user.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {DateService} from "../../service/date.service";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {ThreadModel} from "../../model/thread.model";
+import {MessageService} from "primeng/api";
 
 @Component({
     selector: 'app-create-threads1',
     templateUrl: './create-threads1.component.html',
-    styleUrls: ['./create-threads1.component.scss']
+    styleUrls: ['./create-threads1.component.scss'],
+    providers: [MessageService]
 })
 export class CreateThreads1Component implements OnInit {
 
-    
+
     fg: FormGroup;
     today: string;
     private thread : ThreadModel;
+    private idChannel:string;
     private readonly url:string = Constants.apiURL;
     constructor( private userService: UserService,
                  private router: Router,
                  private fb: FormBuilder,
                  private dateService: DateService,
-                 private http: HttpClient) {
+                 private http: HttpClient,
+                 private route: ActivatedRoute) {
         this.today = dateService.formatDateYYYYMMDD(new Date());
         this.thread = new ThreadModel();
         this.url += "threadCreation";
         this.createForm();
+        this.route.queryParams.subscribe(params => this.idChannel = params.idChannel);
     }
 
 
@@ -51,7 +56,7 @@ export class CreateThreads1Component implements OnInit {
                 "",
                 Validators.required
             ],
-            dateChannel: [
+            dateThread: [
                 this.today,
                 Validators.required
             ]
@@ -60,8 +65,10 @@ export class CreateThreads1Component implements OnInit {
 
     send(){
         if (this.fg.valid && !this.fg.pending){
+            let param: HttpParams = new HttpParams();
+            param = param.append('idChannel', this.idChannel);
             this.thread.constructorCreateThread(this.fg.get("dateThread").value, this.fg.get("name").value, this.fg.get("content").value);
-            this.http.post(this.url, JSON.stringify(this.thread).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe((resp:any)=>{
+            this.http.post(this.url, JSON.stringify(this.thread).replace(/[/_/]/g, ''), {params: param, observe: 'response'}).subscribe((resp:any)=>{
                 if (resp.status === 200){
                     Swal.fire({
                         title:`¡Has creado el texto del hilo con éxito!`,

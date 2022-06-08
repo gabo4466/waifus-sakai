@@ -6,36 +6,31 @@ import {ActivatedRoute, Router} from "@angular/router";
 import Swal from "sweetalert2";
 
 @Component({
-  selector: 'app-create-threads2',
-  templateUrl: './create-threads2.component.html',
-  styleUrls: ['./create-threads2.component.scss']
+    selector: 'app-create-threads2',
+    templateUrl: './create-threads2.component.html',
+    styleUrls: ['./create-threads2.component.scss'],
+    providers: [MessageService]
 })
 export class CreateThreads2Component implements OnInit {
 
-    mainPhotoChannel: string = Constants.apiURL;
-    bannerChannel: string = Constants.apiURL;
-    private channel:string;
+    photoThread: string = Constants.apiURL;
+    private thread:string;
     header: HttpHeaders;
-    banner:boolean;
     photo:boolean;
 
     constructor( private messageService: MessageService,
                  private route: ActivatedRoute,
                  private router: Router) {
-        this.mainPhotoChannel += "mainPhotoChannel";
-        this.bannerChannel += "bannerChannel";
-        this.route.queryParams.subscribe(params => this.channel = params.id);
+        this.photoThread += "multimediaCreation";
+        this.route.queryParams.subscribe(params => this.thread = params.id);
         this.header = new HttpHeaders();
-        this.header = this.header.append('idChannel', this.channel);
-        this.banner = false;
+        this.header = this.header.append('idThread', this.thread);
         this.photo = false;
     }
 
     onBasicUpload(event, box) {
         if (box ===1){
             this.photo = true;
-        }else if(box === 2){
-            this.banner = true;
         }
         this.messageService.add({severity: 'success', summary: 'Imagen actualizada', detail: ''});
     }
@@ -56,7 +51,7 @@ export class CreateThreads2Component implements OnInit {
     }
 
     finish(){
-        if (this.photo && this.banner){
+        if (this.photo){
             Swal.fire({
                 title:`¡Has terminado el proceso!`,
                 html: ``,
@@ -67,7 +62,7 @@ export class CreateThreads2Component implements OnInit {
             });
         }else {
             Swal.fire({
-                title: '¡Aún no ha terminado de subir todas las imágenes!',
+                title: '¡Aún no ha subido imágenes!',
                 text: "¿Desea salir de todas maneras? Las imágenes podrán ser modificadas luego.",
                 icon: 'warning',
                 showCancelButton: true,
