@@ -153,6 +153,8 @@ import { CreateThreadsStepsComponent } from './components/create-threads-steps/c
 import { CreateThreads1Component } from './components/create-threads1/create-threads1.component';
 import { CreateThreads2Component } from './components/create-threads2/create-threads2.component';
 import { ThreadComponent } from './components/thread/thread.component';
+import { SearchChannelComponent } from './components/search-channel/search-channel.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import {EditorModule} from "primeng/editor";
 
 @NgModule({
@@ -301,6 +303,8 @@ import {EditorModule} from "primeng/editor";
         CreateThreads1Component,
         CreateThreads2Component,
         ThreadComponent,
+        SearchChannelComponent,
+        SearchBarComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},
