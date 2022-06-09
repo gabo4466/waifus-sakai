@@ -20,5 +20,14 @@ export class ChannelModel{
         this._name = name.trim();
     }
 
+    constructorShowChannel(dateChannel: string, description: string, name: string, photo:string) {
+        this._dateChannel = dateChannel;
+        this._description = description.trim();
+        this._name = name.trim();
+        this._photo = photo;
+    }
+
+
+
 
 }
