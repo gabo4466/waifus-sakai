@@ -44,9 +44,9 @@ export class CreateThreadsStepsComponent implements OnInit {
             this.config = config;
         });
         this.userService.getProfile().subscribe((resp:any)=>{
-            if (/*resp['karma']>??*/true){
+            /*if (resp['karma']<??){
                 this.goToUnAuthorized();
-            }
+            }*/
         },()=>{
             this.goToUnAuthorized();
         });

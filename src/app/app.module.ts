@@ -155,6 +155,7 @@ import { CreateThreads2Component } from './components/create-threads2/create-thr
 import { ThreadComponent } from './components/thread/thread.component';
 import { SearchChannelComponent } from './components/search-channel/search-channel.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import {EditorModule} from "primeng/editor";
 import { ProfileUpdateComponent } from './components/profile-update/profile-update.component';
 
 @NgModule({
@@ -247,7 +248,8 @@ import { ProfileUpdateComponent } from './components/profile-update/profile-upda
         AppCodeModule,
         StyleClassModule,
         ReactiveFormsModule,
-        ProgressSpinnerModule
+        ProgressSpinnerModule,
+        EditorModule
     ],
     declarations: [
         AppComponent,
