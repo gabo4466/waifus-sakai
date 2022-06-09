@@ -35,6 +35,11 @@ export class CreateThreads2Component implements OnInit {
         this.messageService.add({severity: 'success', summary: 'Imagen actualizada', detail: ''});
     }
 
+    uploadImages(event, box){
+        this.onBasicUpload(event, box);
+
+    }
+
     ngOnInit(): void {
     }
 
