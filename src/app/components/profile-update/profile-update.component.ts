@@ -133,15 +133,9 @@ export class ProfileUpdateComponent implements OnInit {
 
     createForm(){
         this.fg = this.fb.group( {
-            email: [
-                '',
-                [
-                    Validators.required,
-                    Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$')
-                ]
-            ],
+
             nickname: [
-                '',
+                '{{user._nickname}}',
                 [
                     Validators.required,
                     Validators.minLength(4),
@@ -150,19 +144,25 @@ export class ProfileUpdateComponent implements OnInit {
                 ]
             ],
             name: [
-                '',
+                '{{user._name}}',
                 [
                     Validators.required
                 ]
             ],
-            birthday: [
-                '',
+            description: [
+                '{{user._description}}',
                 [
                     Validators.required
                 ]
             ],
-            terms: [
+            country: [
                 false,
+                [
+                    Validators.required
+                ]
+            ],
+            sex: [
+                '',
                 [
                     Validators.required
                 ]
@@ -207,9 +207,6 @@ export class ProfileUpdateComponent implements OnInit {
         this.serviceMessage.add({ key: 'tst', severity: 'error', summary: 'Hay errores en el formulario', detail: 'Campos inválidos' });
     }
 
-    get emailInvalid(){
-        return this.fg.get('email').invalid && this.fg.get('email').touched
-    }
 
     get passwordInvalid(){
         return this.fg.get('password').invalid && this.fg.get('password').touched
