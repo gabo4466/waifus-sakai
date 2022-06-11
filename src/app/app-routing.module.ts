@@ -73,6 +73,7 @@ import {SearchChannelComponent} from "./components/search-channel/search-channel
                     },
                     {path: 'profile', component: ProfileComponent},
                     {path: 'searchChannel', component: SearchChannelComponent},
+                    {path: 'channel', component: ChannelComponent},
                     {path:'error', component: ErrorComponent},
                     {path:'notfound', component: NotfoundComponent},
                     {path:'access', component: AccessComponent},
