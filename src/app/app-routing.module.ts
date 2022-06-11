@@ -52,7 +52,6 @@ import {SearchChannelComponent} from "./components/search-channel/search-channel
                             }
                         ],
                     },
-                    {path: 'thread/:id', component: ThreadComponent},
                     {
                         path: 'createThread', component: CreateThreadsStepsComponent,
                         children: [{
@@ -74,6 +73,7 @@ import {SearchChannelComponent} from "./components/search-channel/search-channel
                     {path: 'profile', component: ProfileComponent},
                     {path: 'searchChannel', component: SearchChannelComponent},
                     {path: 'channel', component: ChannelComponent},
+                    {path: 'thread', component: ThreadComponent},
                     {path:'error', component: ErrorComponent},
                     {path:'notfound', component: NotfoundComponent},
                     {path:'access', component: AccessComponent},
