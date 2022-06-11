@@ -43,6 +43,7 @@
   --maskbg: rgba(0, 0, 0, 0.4);
   --focus-ring: 0 0 0 0.2rem #df9eea;
     --background2: rgba(186, 104, 200, 0.6);
+    --threadBackground: rgba(186, 104, 200, 0.31);
 }
 
 * {

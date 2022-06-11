@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {MessageService} from "primeng/api";
 import {Constants} from "../../common/constants";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {MultimediaModel} from "../../model/multimedia.model";
 import {ActivatedRoute, Router} from "@angular/router";
+import {ThreadModel} from "../../model/thread.model";
 
 @Component({
     selector: 'app-thread',
@@ -20,6 +21,7 @@ export class ThreadComponent implements OnInit {
     photo:boolean;
     emptyArray:boolean=false;
     multimedia:MultimediaModel[] = [];
+    thread:ThreadModel;
 
 
     constructor( private messageService: MessageService,
@@ -35,6 +37,40 @@ export class ThreadComponent implements OnInit {
     }
 
   ngOnInit(): void {
+      let param = new HttpParams();
+      this.multimediaPetition(param);
+      this.threadPetition(param);
+  }
+
+  multimediaPetition(param){
+      this.multimedia=[];
+      this.emptyArray = false;
+      param = param.append("idThread", this.idThread);
+      this.http.get<Object>(this.multimediaUrl, {observe: 'response', params: param}).subscribe( (resp:any) => {
+          resp.body['multimediaArray'].forEach((media:any)=>{
+              let mediaAux = new MultimediaModel();
+              let photo = "";
+              if (media['directory']!==""){
+                  photo = this.imgUrl + media['directory'];
+              }
+              mediaAux.constructorCreateMultimedia(photo);
+              this.multimedia.push(mediaAux);
+          })
+          if(resp.body['multimediaArray'].length===0){
+              this.emptyArray = true;
+          }
+      },()=>{
+          this.emptyArray = true;
+      });
+  }
+
+  threadPetition(param){
+      param = param.append("idThread", this.idThread);
+      this.http.get<Object>(this.threadUrl, {observe: 'response', params: param}).subscribe((resp:any)=>{
+          
+      }, ()=>{
+
+      });
   }
 
 }
