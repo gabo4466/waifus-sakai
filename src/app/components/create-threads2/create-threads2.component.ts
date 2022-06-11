@@ -16,6 +16,7 @@ import {error} from "protractor";
 export class CreateThreads2Component implements OnInit {
 
     url: string = Constants.apiURL;
+    imgUrl:string = Constants.imgURL;
     private thread:string;
     header: HttpHeaders;
     photo:boolean;
@@ -43,11 +44,17 @@ export class CreateThreads2Component implements OnInit {
     uploadImages(event, box){
         this.emptyArray = false;
         this.onBasicUpload(event, box);
-        this.http.get<Object>(this.url, {observe: 'response'}).subscribe( (resp:any) => {
+        let param = new HttpParams();
+        param = param.append("idThread", this.thread);
+        this.http.get<Object>(this.url, {observe: 'response', params: param}).subscribe( (resp:any) => {
             resp.body['multimediaArray'].forEach((media:any)=>{
-                media = new MultimediaModel();
-                media.constructorCreateThread(media['directory']);
-                this.multimedia.push(media);
+                let mediaAux = new MultimediaModel();
+                let photo = "";
+                if (media['directory']!==""){
+                    photo = this.imgUrl + media['directory'];
+                }
+                mediaAux.constructorCreateMultimedia(photo);
+                this.multimedia.push(mediaAux);
             })
             if(resp.body['multimediaArray'].length===0){
                 this.emptyArray = true;
