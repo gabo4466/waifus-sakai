@@ -1,1 +1,37 @@
-<p>thread works!</p>
+<p-toast></p-toast>
+<div class="thread-content">
+    <div class="grid">
+        <div class="col-12">
+            <div class="card">
+                <div class="p-fluid grid">
+                    <div class="col-12">
+                        <div class="threadChannel text-sm text-color-secondary">
+                            isavdufovpsadf
+                        </div>
+                        <div class="flex flex-row flex-wrap justify-content-between">
+                            <div class="threadTitle text-2xl flex text-primary">
+                                iysadvgdas
+                            </div>
+                            <div class="threadUser flex text-sm text-color-secondary mt-2">
+                                asvdasalsidvf
+                            </div>
+                        </div>
+                        <div class="card threadContent mt-3 text-color" style="background: var(--threadBackground)">
+                            idasldfaslfdsasad
+                        </div>
+                        <div class="threadPhotos">
+                            <span *ngIf="!emptyArray">
+                            <div class="text-center col-12 flex flex-row flex-wrap card-container" id="photosBox" style="display: none">
+                                <div *ngFor="let media of multimedia; index as i; first as isFirst" class="flex align-items-center justify-content-center w-4rem h-4rem border-round m-2" style="display: none">
+                                    <p-image width="100%" id="photo" src="{{media._directory}}" alt="preview" [preview]="true"></p-image>
+                                </div>
+                            </div>
+                        </span>
+                            <span *ngIf="emptyArray"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

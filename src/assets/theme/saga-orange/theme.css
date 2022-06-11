@@ -47,6 +47,7 @@
     --background2: rgba(255, 161, 175, 0.55);
     --background3: #ffa6b2;
     --background4: rgba(255, 161, 175, 0.55);
+    --threadBackground: rgba(255, 161, 175, 0.24);
 }
 
 * {

@@ -22,6 +22,7 @@ export class AppMenuComponent implements OnInit {
 
     model: any[];
     channels:MenuItem = {};
+    threads:MenuItem = {};
     logged:boolean;
     admin:boolean;
     constructor(public appMain: AppMainComponent,
@@ -39,6 +40,15 @@ export class AppMenuComponent implements OnInit {
                 this.channels.items.push({label: 'Crear canal',icon: 'pi pi-fw pi-plus', routerLink: ['/pages/createChannel/step1']});
             }
             this.model.push(this.channels)
+            this.threads = {
+                label: 'Hilos',
+                items: []
+            }
+            if (resp['admin'] == true){
+                this.admin = true;
+                this.threads.items.push({label: 'Crear hilo',icon: 'pi pi-fw pi-plus', routerLink: ['/pages/createThread']});
+            }
+            this.model.push(this.threads)
         },(error:any)=>this.logged=false);
 
         this.model = [
