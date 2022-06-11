@@ -6,16 +6,19 @@
                 <div class="p-fluid grid">
                     <div class="col-12">
                         <h5>Fotos del hilo</h5>
-                        <p-fileUpload [showCancelButton]="false" [headers]="header" chooseLabel="Foto del Hilo" name="mainPhoto" [url]="photoThread" accept="image/*" maxFileSize="1000000" (onSelect)="showPreview($event, 'previewPhoto', 'photoBox')" (onUpload)="uploadImages($event, 1)" (onRemove)="removePreview('previewPhoto', 'photoBox')"></p-fileUpload>
+                        <p-fileUpload [showCancelButton]="false" [headers]="header" chooseLabel="Foto del Hilo" name="mainPhoto" [url]="url" accept="image/*" maxFileSize="1000000" (onSelect)="showPreview($event, 'previewPhoto', 'photoBox')" (onUpload)="uploadImages($event, 1)" (onRemove)="removePreview('previewPhoto', 'photoBox')"></p-fileUpload>
                         <div class="text-center col-12" id="photoBox" style="display: none">
                             <h5>Vista previa:</h5>
                             <p-image width="100%" id="previewPhoto" src="#" alt="preview " [preview]="false"></p-image>
                         </div>
-                        <div class="text-center col-12 flex flex-row flex-wrap card-container" id="photosBox" style="display: none">
-                            <div class="flex align-items-center justify-content-center w-4rem h-4rem border-round m-2">
-                                <p-image width="100%" id="photo" src="#" alt="preview" [preview]="true"></p-image>
+                        <span *ngIf="!emptyArray">
+                            <div *ngFor="let media of multimedia; index as i; first as isFirst" class="text-center col-12 flex flex-row flex-wrap card-container" id="photosBox" style="display: none">
+                                <div class="flex align-items-center justify-content-center w-4rem h-4rem border-round m-2" style="display: none">
+                                    <p-image width="100%" id="photo" src="#" alt="preview" [preview]="true"></p-image>
+                                </div>
                             </div>
-                        </div>
+                        </span>
+                        <span *ngIf="emptyArray"></span>
                     </div>
                     <div class="col-12 md:col-4 md:col-offset-8">
                         <p-button type="button" (onClick)="finish()" label="Terminar" icon="pi pi-angle-right" iconPos="right"></p-button>
