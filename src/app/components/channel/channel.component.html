@@ -1,1 +1,44 @@
-<p>channel works!</p>
+<div class="card">
+    <div class="grid">
+        <div class="col-3">
+            <img class="w-full" [src]="thread._photo" style="border-radius: 1000px; border: 3px solid var(--primary-color)">
+        </div>
+        <div class="col-8 col-offset-1">
+            <p class="w-full text-6xl md:text-8xl">
+                {{thread._name}}
+            </p>
+        </div>
+        <div class="col-12">
+            <p-panel header="Descripción" [toggleable]="true">
+                <p class="text-xl md:text-2xl">{{thread._description}}</p>
+            </p-panel>
+        </div>
+    </div>
+</div>
+<app-search-bar></app-search-bar>
+
+<div class="card">
+    <div class="grid">
+            <span *ngIf="!notFounEntries" class="col-12">
+                <div *ngFor="let thread of threads; index as i; first as isFirst" (click)="goToThread(thread._idThread)" class="card w-full mb-5" style="cursor: pointer;background-color: var(--surface-border); background-image: url({{thread._banner}}); background-position: center; background-size: cover;">
+                    <div class="grid">
+                        <div class="col-2 md:col-1 borderR">
+                            <p-avatar [style]="{'border': '3px solid var(--primary-color)'}" shape="circle" class="w-full" id="previewMainPhoto" [image]="thread._photo" severity="danger" styleClass="mr-2" size="xlarge"></p-avatar>
+                        </div>
+                        <div class="col-9 col-offset-1 md:col-11 md:col-offset-0 white-space-nowrap overflow-hidden text-overflow-ellipsis">
+                            <span class="w-full text-4xl md:text-6xl" style="color: var(--text-color); background-color: var(--background2); border-radius: 10px;">{{ thread._name }}</span>
+                        </div>
+                    </div>
+                </div>
+            </span>
+        <div *ngIf="notFounEntries" class="card col-12" style="background-color: var(--surface-border)">
+            <div class="grid">
+                <div class="col-12 text-center">
+                    <span class="text-4xl md:text-6xl">No se han encontrado resultados</span>
+                </div>
+            </div>
+        </div>
+        <p-paginator class="w-full mb-2" [rows]="pag" [totalRecords]="totalRecords" pageLinkSize="3" (onPageChange)="paginate($event)"></p-paginator>
+    </div>
+
+</div>

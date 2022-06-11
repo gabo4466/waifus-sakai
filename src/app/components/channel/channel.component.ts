@@ -3,7 +3,10 @@ import {ChannelModel} from "../../model/channel.model";
 import {AppConfig} from "../../api/appconfig";
 import {Subscription} from "rxjs";
 import {ConfigService} from "../../service/app.config.service";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Constants} from "../../common/constants";
+import {ThreadModel} from "../../model/thread.model";
 
 @Component({
   selector: 'app-channel',
@@ -12,12 +15,28 @@ import {HttpClient} from "@angular/common/http";
 })
 export class ChannelComponent implements OnInit, OnDestroy {
 
-    channel:ChannelModel;
+    thread:ChannelModel;
     config: AppConfig;
     subscription: Subscription;
+    idChannel:number;
+    url: string = Constants.apiURL;
+    imgUrl: string = Constants.imgURL;
+    pag:number = 10;
+    idx:number;
+    term:string;
+    notFounEntries: boolean = false;
+    totalRecords:number;
+    threads: ThreadModel[] = [];
     constructor( private configService: ConfigService,
-                 private http: HttpClient) {
-      this.channel = new ChannelModel();
+                 private http: HttpClient,
+                 private route: ActivatedRoute,
+                 private router: Router) {
+        this.thread = new ChannelModel();
+        this.route.queryParams.subscribe(params => this.idChannel = params.id);
+        this.url += "channel";
+        this.idx = 1;
+        this.totalRecords = 0;
+        this.term = "";
     }
 
     ngOnInit(): void {
@@ -25,7 +44,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
         this.subscription = this.configService.configUpdate$.subscribe(config => {
             this.config = config;
         });
-
+        this.loadChannel()
     }
 
     ngOnDestroy(): void {
@@ -33,5 +52,39 @@ export class ChannelComponent implements OnInit, OnDestroy {
             this.subscription.unsubscribe();
         }
     }
+
+    search(event) {
+        this.term = event;
+        this.requestThread();
+    }
+
+    paginate(event){
+        this.idx = event.first+1;
+        this.requestThread();
+    }
+
+    goToThread(id:number){
+        this.router.navigate(['/pages/thread'], { queryParams: { id: id } });
+    }
+
+    loadChannel(){
+        let param = new HttpParams();
+        param = param.append("idChannel", this.idChannel);
+        this.http.get(this.url, { observe : 'response', params : param }).subscribe((resp:any)=>{
+            let photo = "";
+            let banner = "";
+            if (resp.body['photo'] !==""){
+                photo = this.imgUrl + resp.body['photo'];
+            }
+            if (resp.body['banner'] !== ""){
+                banner = this.imgUrl + resp.body['banner'];
+
+            }
+            this.thread.constructorShowChannel(resp.body['dateChannel'], resp.body['description'], resp.body['name'], photo, banner, resp.body['idChannel']);
+        });
+    }
+
+    requestThread(){}
+
 
 }
