@@ -23,8 +23,9 @@
 </div>
 
 <div class="card" style="background-color: var(--background2)">
-    <div class="mb-2">
-        <span class="text-3xl md:text-5xl">Hilos</span>
+    <div class="mb-2 flex flex-row flex-wrap justify-content-between">
+        <span class="flex text-3xl md:text-5xl">Hilos</span>
+        <p-button (click)="goToCreateThread(idChannel)" icon="pi pi-plus" label="Crear" [style]="{ 'background-color' : 'var(--primary-color)' }"></p-button>
     </div>
     <app-search-bar (term)="search($event)"></app-search-bar>
     <div class="card">

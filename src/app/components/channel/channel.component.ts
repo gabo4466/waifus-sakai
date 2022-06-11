@@ -70,6 +70,12 @@ export class ChannelComponent implements OnInit, OnDestroy {
         this.router.navigate(['/pages/thread'], { queryParams: { id: id } });
     }
 
+    goToCreateThread(id){
+        this.router.navigate(['/pages/createThread/threads1'], { queryParams: { idChannel: id } });
+
+    }
+
+
     loadChannel(){
         let param = new HttpParams();
         param = param.append("idChannel", this.idChannel);
