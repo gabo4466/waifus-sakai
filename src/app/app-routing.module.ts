@@ -34,7 +34,6 @@ import {SearchChannelComponent} from "./components/search-channel/search-channel
                 path: 'pages', component: AppMainComponent,
                 children: [
                     {path: '', component: DashboardComponent},
-                    {path: 'channel/:id', component: ChannelComponent},
                     {
                         path: 'createChannel', component: CreateChannelComponent,
                         children: [{
