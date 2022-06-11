@@ -13,6 +13,7 @@ export class ChannelModel{
         this._photo = "";
         this._banner = "";
         this._name = "";
+        this._idChannel = 0;
     }
 
     constructorCreateChannel(dateChannel: string, description: string, name: string) {
