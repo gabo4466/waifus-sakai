@@ -15,13 +15,15 @@ import {error} from "protractor";
 })
 export class CreateThreads2Component implements OnInit {
 
-    url: string = Constants.apiURL;
+    url:string = Constants.apiURL;
     imgUrl:string = Constants.imgURL;
     private thread:string;
-    header: HttpHeaders;
+    header:HttpHeaders;
     photo:boolean;
     emptyArray:boolean=false;
     multimedia:MultimediaModel[] = [];
+    photosReached:boolean=false;
+    photoCounter:number=0;
 
     constructor( private messageService: MessageService,
                  private route: ActivatedRoute,
@@ -42,8 +44,13 @@ export class CreateThreads2Component implements OnInit {
     }
 
     uploadImages(event, box){
+        this.multimedia=[];
+        this.photoCounter++;
         this.emptyArray = false;
         this.onBasicUpload(event, box);
+        if(this.photoCounter==5){
+            this.photosReached=true;
+        }
         let param = new HttpParams();
         param = param.append("idThread", this.thread);
         this.http.get<Object>(this.url, {observe: 'response', params: param}).subscribe( (resp:any) => {
