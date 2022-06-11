@@ -6,6 +6,7 @@ import {ConfigService} from "../../service/app.config.service";
 import {Constants} from "../../common/constants";
 import {ChannelModel} from "../../model/channel.model";
 import {HttpClient, HttpParams} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-search-channel',
@@ -27,7 +28,8 @@ export class SearchChannelComponent implements OnInit, OnDestroy {
     channels: ChannelModel[] = [];
     constructor( private configService: ConfigService,
                  private serviceMessage: MessageService,
-                 private http: HttpClient) {
+                 private http: HttpClient,
+                 private router: Router) {
         this.url += "channelSearch";
         this.idx = 1;
         this.totalRecords = 0;
@@ -91,7 +93,7 @@ export class SearchChannelComponent implements OnInit, OnDestroy {
     }
 
     goToChannel(id:number){
-
+        this.router.navigate(['/pages/channel'], { queryParams: { id: id } });
     }
 
 }

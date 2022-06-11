@@ -8,7 +8,7 @@
     <div class="card">
         <div class="grid">
             <span *ngIf="!notFounEntries" class="col-12">
-                <div *ngFor="let channel of channels; index as i; first as isFirst" class="card w-full mb-5" style="background-color: var(--surface-border); background-image: url({{channel._banner}}); background-position: center; background-size: cover;">
+                <div *ngFor="let channel of channels; index as i; first as isFirst" (click)="goToChannel(channel._idChannel)" class="card w-full mb-5" style="cursor: pointer;background-color: var(--surface-border); background-image: url({{channel._banner}}); background-position: center; background-size: cover;">
                     <div class="grid">
                         <div class="col-2 md:col-1">
                             <p-avatar shape="circle" class="w-full" id="previewMainPhoto" [image]="channel._photo" severity="danger" styleClass="mr-2" size="xlarge"></p-avatar>
