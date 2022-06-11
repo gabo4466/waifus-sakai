@@ -19,7 +19,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     config: AppConfig;
     subscription: Subscription;
     idChannel:number;
-    url: string = Constants.apiURL;
+    urlChannel: string = Constants.apiURL;
     imgUrl: string = Constants.imgURL;
     pag:number = 10;
     idx:number;
@@ -27,13 +27,15 @@ export class ChannelComponent implements OnInit, OnDestroy {
     notFounEntries: boolean = false;
     totalRecords:number;
     threads: ThreadModel[] = [];
+    urlThreads:string = Constants.apiURL;
     constructor( private configService: ConfigService,
                  private http: HttpClient,
                  private route: ActivatedRoute,
                  private router: Router) {
         this.channel = new ChannelModel();
         this.route.queryParams.subscribe(params => this.idChannel = params.id);
-        this.url += "channel";
+        this.urlChannel += "channel";
+        this.urlThreads += "threadSearch";
         this.idx = 1;
         this.totalRecords = 0;
         this.term = "";
@@ -44,7 +46,8 @@ export class ChannelComponent implements OnInit, OnDestroy {
         this.subscription = this.configService.configUpdate$.subscribe(config => {
             this.config = config;
         });
-        this.loadChannel()
+        this.loadChannel();
+        this.requestThread();
     }
 
     ngOnDestroy(): void {
@@ -70,7 +73,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     loadChannel(){
         let param = new HttpParams();
         param = param.append("idChannel", this.idChannel);
-        this.http.get(this.url, { observe : 'response', params : param }).subscribe((resp:any)=>{
+        this.http.get(this.urlChannel, { observe : 'response', params : param }).subscribe((resp:any)=>{
             let photo = "";
             let banner = "";
             if (resp.body['photo'] !==""){
@@ -84,7 +87,27 @@ export class ChannelComponent implements OnInit, OnDestroy {
         });
     }
 
-    requestThread(){}
+    requestThread(){
+        let param = new HttpParams();
+        param = param.append("idx", this.idx);
+        param = param.append("pag", this.pag);
+        param = param.append("term", this.term);
+        this.threads = [];
+        this.http.get(this.urlThreads, { observe: "response", params: param }).subscribe((resp:any)=>{
+            this.notFounEntries = false;
+            this.totalRecords = resp.body['count'];
+            resp.body['threads'].forEach((thread:any)=>{
+                let threadAux = new ThreadModel();
+                threadAux.constructorShowThread(thread['dateThread'], thread['name'], thread['content'], thread['idThread'], thread['channel'], thread['user']);
+                this.threads.push(threadAux);
+            });
+            if (resp.body['threads'].length === 0){
+                this.notFounEntries = true;
+            }
+        }, ()=>{
+            this.notFounEntries = true;
+        });
+    }
 
 
 }

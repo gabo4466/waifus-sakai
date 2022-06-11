@@ -21,30 +21,33 @@
 
     </div>
 </div>
-<app-search-bar></app-search-bar>
 
-<div class="card">
-    <div class="grid">
-            <span *ngIf="!notFounEntries" class="col-12">
-                <div *ngFor="let thread of threads; index as i; first as isFirst" (click)="goToThread(thread._idThread)" class="card w-full mb-5" style="cursor: pointer;background-color: var(--surface-border); background-image: url({{thread._banner}}); background-position: center; background-size: cover;">
-                    <div class="grid">
-                        <div class="col-2 md:col-1 borderR">
-                            <p-avatar [style]="{'border': '3px solid var(--primary-color)'}" shape="circle" class="w-full" id="previewMainPhoto" [image]="thread._photo" severity="danger" styleClass="mr-2" size="xlarge"></p-avatar>
-                        </div>
-                        <div class="col-9 col-offset-1 md:col-11 md:col-offset-0 white-space-nowrap overflow-hidden text-overflow-ellipsis">
-                            <span class="w-full text-4xl md:text-6xl" style="color: var(--text-color); background-color: var(--background2); border-radius: 10px;">{{ thread._name }}</span>
+<div class="card" style="background-color: var(--background2)">
+    <div class="mb-2">
+        <span class="text-3xl md:text-5xl">Hilos</span>
+    </div>
+    <app-search-bar (term)="search($event)"></app-search-bar>
+    <div class="card">
+        <div class="grid">
+                <span *ngIf="!notFounEntries" class="col-12">
+                    <div *ngFor="let thread of threads; index as i; first as isFirst" (click)="goToThread(thread._idThread)" class="card w-full mb-5" style="cursor: pointer;background-color: var(--surface-border); background-image: url({{thread._banner}}); background-position: center; background-size: cover;">
+                        <div class="grid">
+                            <div class="col-12 white-space-nowrap overflow-hidden text-overflow-ellipsis">
+                                <span class="w-full text-4xl md:text-6xl">{{ thread._name }}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </span>
-        <div *ngIf="notFounEntries" class="card col-12" style="background-color: var(--surface-border)">
-            <div class="grid">
-                <div class="col-12 text-center">
-                    <span class="text-4xl md:text-6xl">No se han encontrado resultados</span>
+                </span>
+            <div *ngIf="notFounEntries" class="card col-12" style="background-color: var(--surface-border)">
+                <div class="grid">
+                    <div class="col-12 text-center">
+                        <span class="text-4xl md:text-6xl">No se han encontrado resultados</span>
+                    </div>
                 </div>
             </div>
+            <p-paginator class="w-full mb-2" [rows]="pag" [totalRecords]="totalRecords" pageLinkSize="3" (onPageChange)="paginate($event)"></p-paginator>
         </div>
-        <p-paginator class="w-full mb-2" [rows]="pag" [totalRecords]="totalRecords" pageLinkSize="3" (onPageChange)="paginate($event)"></p-paginator>
+
     </div>
 
 </div>
