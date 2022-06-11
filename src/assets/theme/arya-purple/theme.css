@@ -212,6 +212,7 @@
   --purple-700:#6d1b7b;
   --purple-800:#561561;
   --purple-900:#3e1046;
+    --background2: rgba(186, 104, 200, 0.6);
 }
 
 .p-autocomplete .p-autocomplete-loader {

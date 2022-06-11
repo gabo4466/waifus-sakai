@@ -7,18 +7,17 @@
     </div>
     <div class="card">
         <div class="grid">
-            <span channels>
-                <div *ngFor="let channel of channels; index as i; first as isFirst" class="card col-12" style="background-color: var(--surface-border)">
+            <span *ngIf="!notFounEntries" class="col-12">
+                <div *ngFor="let channel of channels; index as i; first as isFirst" class="card w-full mb-5" style="background-color: var(--surface-border); background-image: url({{channel._banner}}); background-position: center; background-size: cover;">
                     <div class="grid">
                         <div class="col-2 md:col-1">
-                            <p-avatar shape="circle" class="w-full" id="previewMainPhoto" [image]="" severity="danger" styleClass="mr-2" size="xlarge"></p-avatar>
+                            <p-avatar shape="circle" class="w-full" id="previewMainPhoto" [image]="channel._photo" severity="danger" styleClass="mr-2" size="xlarge"></p-avatar>
                         </div>
-                        <div class="col-9 col-offset-1 md:col-11 md:col-offset-0">
-                            <span class="text-4xl md:text-6xl">{{ channel._name }}</span>
+                        <div class="col-9 col-offset-1 md:col-11 md:col-offset-0 white-space-nowrap overflow-hidden text-overflow-ellipsis">
+                            <span class="w-full text-4xl md:text-6xl" style="color: var(--text-color); background-color: var(--background2); border-radius: 10px;">{{ channel._name }}</span>
                         </div>
                     </div>
                 </div>
-
             </span>
             <div *ngIf="notFounEntries" class="card col-12" style="background-color: var(--surface-border)">
                 <div class="grid">
@@ -27,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <p-paginator class="w-full mb-2 mt-3" [rows]="10" [totalRecords]="100" pageLinkSize="5" (onPageChange)="paginate($event)"></p-paginator>
+            <p-paginator class="w-full mb-2" [rows]="pag" [totalRecords]="totalRecords" pageLinkSize="3" (onPageChange)="paginate($event)"></p-paginator>
         </div>
     </div>
 </div>

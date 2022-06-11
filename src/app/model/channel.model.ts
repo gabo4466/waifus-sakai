@@ -4,6 +4,7 @@ export class ChannelModel{
     public _photo: string;
     public _banner: string;
     public _name: string;
+    public _idChannel:number;
 
 
     constructor() {
@@ -20,11 +21,14 @@ export class ChannelModel{
         this._name = name.trim();
     }
 
-    constructorShowChannel(dateChannel: string, description: string, name: string, photo:string) {
+    constructorShowChannel(dateChannel: string, description: string, name: string, photo:string, banner:string, idChannel:number) {
         this._dateChannel = dateChannel;
         this._description = description.trim();
         this._name = name.trim();
         this._photo = photo;
+        this._banner = banner;
+        this._idChannel = idChannel;
+
     }
 
 

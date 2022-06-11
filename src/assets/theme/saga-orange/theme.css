@@ -44,7 +44,7 @@
   --focus-ring: 0 0 0 0.2rem #ffb6c1;
     --border-color: #FFB6C1;
     --background: #ffa6b2;
-    --background2: #ffa6b2;
+    --background2: rgba(255, 161, 175, 0.55);
     --background3: #ffa6b2;
     --background4: rgba(255, 161, 175, 0.55);
 }

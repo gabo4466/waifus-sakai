@@ -6,7 +6,6 @@ import {ConfigService} from "../../service/app.config.service";
 import {Constants} from "../../common/constants";
 import {ChannelModel} from "../../model/channel.model";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {any} from "codelyzer/util/function";
 
 @Component({
     selector: 'app-search-channel',
@@ -22,13 +21,17 @@ export class SearchChannelComponent implements OnInit, OnDestroy {
     imgUrl: string = Constants.imgURL;
     pag:number = 10;
     idx:number;
+    term:string;
     notFounEntries: boolean = false;
+    totalRecords:number;
     channels: ChannelModel[] = [];
     constructor( private configService: ConfigService,
                  private serviceMessage: MessageService,
                  private http: HttpClient) {
         this.url += "channelSearch";
         this.idx = 1;
+        this.totalRecords = 0;
+        this.term = "";
 
     }
 
@@ -37,27 +40,7 @@ export class SearchChannelComponent implements OnInit, OnDestroy {
         this.subscription = this.configService.configUpdate$.subscribe(config => {
             this.config = config;
         });
-        let param = new HttpParams();
-        param = param.append("idx", this.idx);
-        param = param.append("pag", this.pag);
-        param = param.append("term", "");
-        this.http.get(this.url, { observe: "response", params: param }).subscribe((resp:any)=>{
-            this.notFounEntries = false;
-
-            resp.body['channels'].forEach((channel:any)=>{
-                let photo = "";
-                if (channel['photo']){
-                    photo = this.imgUrl + channel['photo'];
-                }
-                let channelAux = new ChannelModel();
-                channelAux.constructorShowChannel(channel['dateChannel'], channel['description'], channel['name'], photo)
-                this.channels.push(channelAux);
-            })
-        }, ()=>{
-            this.notFounEntries = true;
-        });
-
-
+        this.requestChannels();
     }
 
     ngOnDestroy(): void {
@@ -67,11 +50,47 @@ export class SearchChannelComponent implements OnInit, OnDestroy {
     }
 
     search(event) {
-
+        this.term = event;
+        this.requestChannels();
     }
 
+    requestChannels(){
+        let param = new HttpParams();
+        param = param.append("idx", this.idx);
+        param = param.append("pag", this.pag);
+        param = param.append("term", this.term);
+        this.channels = [];
+        this.http.get(this.url, { observe: "response", params: param }).subscribe((resp:any)=>{
+            this.notFounEntries = false;
+            this.totalRecords = resp.body['count'];
+            resp.body['channels'].forEach((channel:any)=>{
+                let photo = "";
+                let banner = "";
+                if (channel['photo'] !==""){
+                    photo = this.imgUrl + channel['photo'];
+                }
+                if (channel['banner'] !== ""){
+                    banner = this.imgUrl + channel['banner'];
+
+                }
+                let channelAux = new ChannelModel();
+                channelAux.constructorShowChannel(channel['dateChannel'], channel['description'], channel['name'], photo, banner, channel['idChannel']);
+                this.channels.push(channelAux);
+            });
+            if (resp.body['channels'].length === 0){
+                this.notFounEntries = true;
+            }
+        }, ()=>{
+            this.notFounEntries = true;
+        });
+    }
 
     paginate(event){
+        this.idx = event.first+1;
+        this.requestChannels();
+    }
+
+    goToChannel(id:number){
 
     }
 
