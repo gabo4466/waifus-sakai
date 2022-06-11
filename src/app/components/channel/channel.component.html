@@ -1,18 +1,24 @@
 <div class="card">
     <div class="grid">
-        <div class="col-3">
-            <img class="w-full" [src]="thread._photo" style="border-radius: 1000px; border: 3px solid var(--primary-color)">
+        <div class="text-center col-12 md:col-3">
+            <img class="h-13rem w-13rem md:w-full md:h-auto md:h-auto" [src]="channel._photo" style="border-radius: 10000px; border: 3px solid var(--primary-color)">
         </div>
-        <div class="col-8 col-offset-1">
-            <p class="w-full text-6xl md:text-8xl">
-                {{thread._name}}
+        <div class="col-12 md:col-9">
+            <div class="col-12">
+                <img style="border-radius: 50px" class="w-full" [src]="channel._banner" alt="">
+            </div>
+        </div>
+        <div class="col-12">
+            <p class="text-center w-full text-5xl md:text-8xl white-space-nowrap overflow-hidden text-overflow-ellipsis">
+                {{channel._name}}
             </p>
         </div>
         <div class="col-12">
             <p-panel header="Descripción" [toggleable]="true">
-                <p class="text-xl md:text-2xl">{{thread._description}}</p>
+                <p class="text-xl md:text-2xl">{{channel._description}}</p>
             </p-panel>
         </div>
+
     </div>
 </div>
 <app-search-bar></app-search-bar>

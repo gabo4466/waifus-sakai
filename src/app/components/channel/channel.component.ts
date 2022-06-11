@@ -15,7 +15,7 @@ import {ThreadModel} from "../../model/thread.model";
 })
 export class ChannelComponent implements OnInit, OnDestroy {
 
-    thread:ChannelModel;
+    channel:ChannelModel;
     config: AppConfig;
     subscription: Subscription;
     idChannel:number;
@@ -31,7 +31,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
                  private http: HttpClient,
                  private route: ActivatedRoute,
                  private router: Router) {
-        this.thread = new ChannelModel();
+        this.channel = new ChannelModel();
         this.route.queryParams.subscribe(params => this.idChannel = params.id);
         this.url += "channel";
         this.idx = 1;
@@ -80,7 +80,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
                 banner = this.imgUrl + resp.body['banner'];
 
             }
-            this.thread.constructorShowChannel(resp.body['dateChannel'], resp.body['description'], resp.body['name'], photo, banner, resp.body['idChannel']);
+            this.channel.constructorShowChannel(resp.body['dateChannel'], resp.body['description'], resp.body['name'], photo, banner, resp.body['idChannel']);
         });
     }
 
