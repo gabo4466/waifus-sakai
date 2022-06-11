@@ -32,6 +32,10 @@ export class ChannelModel{
 
     }
 
+    constructorNameChannel(name:string){
+        this._name = name;
+    }
+
 
 
 

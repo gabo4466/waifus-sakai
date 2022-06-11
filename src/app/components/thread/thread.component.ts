@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {MessageService} from "primeng/api";
 import {Constants} from "../../common/constants";
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {MultimediaModel} from "../../model/multimedia.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ThreadModel} from "../../model/thread.model";
+import {ChannelModel} from "../../model/channel.model";
+import {UserModel} from "../../model/user.model";
 
 @Component({
     selector: 'app-thread',
@@ -16,12 +18,15 @@ export class ThreadComponent implements OnInit {
     multimediaUrl:string = Constants.apiURL;
     threadUrl:string = Constants.apiURL;
     imgUrl:string = Constants.imgURL;
+    channelUrl:string = Constants.apiURL;
+    userUrl:string = Constants.apiURL;
     private idThread:string;
-    header:HttpHeaders;
     photo:boolean;
     emptyArray:boolean=false;
     multimedia:MultimediaModel[] = [];
-    thread:ThreadModel;
+    thread:ThreadModel = new ThreadModel();
+    channel:ChannelModel = new ChannelModel();
+    user:UserModel = new UserModel();
 
 
     constructor( private messageService: MessageService,
@@ -30,19 +35,18 @@ export class ThreadComponent implements OnInit {
                  private router: Router) {
         this.multimediaUrl += "multimediaCreation";
         this.threadUrl += "threadCreation";
+        this.channelUrl += "channel";
+        this.userUrl += "profile";
         this.route.queryParams.subscribe(params => this.idThread = params.id);
-        this.header = new HttpHeaders();
-        this.header = this.header.append('idThread', this.idThread);
         this.photo = false;
     }
 
   ngOnInit(): void {
-      let param = new HttpParams();
-      this.multimediaPetition(param);
-      this.threadPetition(param);
+      this.threadPetition();
   }
 
-  multimediaPetition(param){
+  multimediaPetition(){
+      let param = new HttpParams();
       this.multimedia=[];
       this.emptyArray = false;
       param = param.append("idThread", this.idThread);
@@ -64,13 +68,63 @@ export class ThreadComponent implements OnInit {
       });
   }
 
-  threadPetition(param){
+  threadPetition(){
+      this.thread = new ThreadModel();
+      let param = new HttpParams();
       param = param.append("idThread", this.idThread);
       this.http.get<Object>(this.threadUrl, {observe: 'response', params: param}).subscribe((resp:any)=>{
-          
+          if(!resp.body['deleted']) {
+              this.thread.constructorShowThread(resp.body['dateThread'], resp.body['name'], resp.body['content'], resp.body['idThread'], resp.body['channel'], resp.body['user']);
+              this.multimediaPetition();
+              this.channelPetition();
+              //this.userPetition();
+              document.getElementById("asd").innerHTML = this.thread._content;
+          }else if(resp.body.length===0){
+
+          }else{
+
+          }
       }, ()=>{
 
       });
+  }
+
+  channelPetition(){
+      this.channel = new ChannelModel();
+      let param = new HttpParams();
+      param = param.append("idChannel", this.thread._idChannel);
+      this.http.get<Object>(this.channelUrl, {observe: 'response', params: param}).subscribe((resp:any)=>{
+          if(!resp.body['deleted']) {
+              this.channel.constructorNameChannel(resp.body['name']);
+          }else if(resp.body.length===0){
+
+          }else{
+
+          }
+      },()=>{
+
+      });
+  }
+
+  userPetition(){
+      this.user = new UserModel();
+      let param = new HttpParams();
+      param = param.append("idUser", this.thread._idUser);
+      this.http.get<Object>(this.userUrl, {observe: 'response', params: param}).subscribe((resp:any)=>{
+          if(!resp.body['banned']) {
+              this.user.constructorNickname(resp.body['nickname']);
+          }else if(resp.body.length===0){
+
+          }else{
+
+          }
+      }, ()=>{
+
+      });
+  }
+
+  goToChannel(id){
+      this.router.navigate(['/pages/channel'], { queryParams: { id: id } });
   }
 
 }
