@@ -26,6 +26,7 @@ export class ProfileUpdateComponent implements OnInit {
     config: AppConfig;
     user: UserModel;
     subscription: Subscription;
+    loading: boolean;
     private readonly url:string = Constants.apiURL;
 
     date : Date;
@@ -37,9 +38,20 @@ export class ProfileUpdateComponent implements OnInit {
                  private serviceMessage: MessageService,
                  private dateService: DateService,
                  private userService: UserService){
-        this.createForm();
+        this.loading = false;
         this.user = new UserModel();
         this.url += 'profileUpdate';
+        this.userService.getProfile().subscribe((resp:any)=>{
+            let photo = "";
+            if(resp['profile_photo']!=undefined){
+                photo = resp['profile_photo'];
+            }
+            this.user.constructorProfile(photo ,resp.activated, resp.admin, resp.adultContent, resp.banned, resp.birthday, resp.country, resp.description, resp.email, resp.gender, resp.idUser, resp.karma, resp.name, resp.nickname, resp.theme);
+            this.createForm();
+            this.loading = true;
+        },()=>{
+            this.goToUnAuthorized();
+        });
     }
     ngOnInit(): void {
         this.config = this.configService.config;
@@ -47,22 +59,7 @@ export class ProfileUpdateComponent implements OnInit {
             this.config = config;
         });
 
-        this.userService.getProfile().subscribe((resp:any)=>{
-            let photo = "assets/layout/images/noprofilepic.png";
-            if(resp['profile_photo']!=undefined){
-                photo = resp['profile_photo'];
-            }
-            this.user.constructorProfile(photo ,resp.activated, resp.admin, resp.adultContent, resp.banned, resp.birthday, resp.country, resp.description, resp.email, resp.gender, resp.idUser, resp.karma, resp.name, resp.nickname, resp.theme);
 
-        },()=>{
-            this.goToUnAuthorized();
-        });
-
-        let today = new Date();
-        this.date= new Date();
-        this.date.setDate(today.getDate());
-        this.date.setMonth(today.getMonth());
-        this.date.setFullYear(today.getFullYear() - 18);
 
     }
 
@@ -72,41 +69,7 @@ export class ProfileUpdateComponent implements OnInit {
         }
     }
 
-    passwordCheck(password:string, repPass:string){
-        return(formGroup:FormGroup)=>{
-            let passwordControl = formGroup.controls[password];
-            let repPassControl = formGroup.controls[repPass];
 
-            if (passwordControl.value === repPassControl.value){
-                repPassControl.setErrors(null);
-            }else {
-                repPassControl.setErrors({notEqual : true});
-            }
-        }
-    }
-
-    emailCheck(control: FormControl): Observable<{ emailForbidden: boolean } | null> {
-        const emailToCheck = control.value;
-        if(!emailToCheck) {
-            return of(null);
-        }
-        let queryParams = new HttpParams().set('email', emailToCheck);
-        queryParams = queryParams.set('nickname', '');
-        // @ts-ignore
-        return of(emailToCheck).pipe(
-            debounceTime(400),
-            switchMap(emailToCheck => {
-                return this.http.get<{ email: boolean, nickname: boolean }>(this.url, {params: queryParams})
-                    .pipe(
-                        map(resp => {
-                            if (!resp.email) {
-                                return {emailForbidden: true};
-                            }
-                            return null;
-                        }), catchError(() => of(null)));
-            })
-        );
-    }
 
     nicknameCheck(control: FormControl): Observable<{ nicknameForbidden: boolean } | null> {
         const nicknameToCheck = control.value;
@@ -134,8 +97,14 @@ export class ProfileUpdateComponent implements OnInit {
     createForm(){
         this.fg = this.fb.group( {
 
+            profilePhoto: [
+                this.user._profile_photo,
+                [
+                    Validators.required,
+                ]
+            ],
             nickname: [
-                '{{user._nickname}}',
+                this.user._nickname,
                 [
                     Validators.required,
                     Validators.minLength(4),
@@ -144,48 +113,50 @@ export class ProfileUpdateComponent implements OnInit {
                 ]
             ],
             name: [
-                '{{user._name}}',
+                this.user._name,
                 [
                     Validators.required
                 ]
             ],
             description: [
-                '{{user._description}}',
+                this.user._description,
                 [
                     Validators.required
                 ]
             ],
             country: [
-                false,
+                this.user._country,
                 [
                     Validators.required
                 ]
             ],
             sex: [
-                '',
+                this.user._gender,
                 [
                     Validators.required
                 ]
             ],
             adultContent: [
-                false,
+                ,
             ]
         })
     }
 
+
+
     send(){
         if (this.fg.valid && !this.fg.pending){
-            this.user.constructorRegister(this.fg.get('email').value, this.fg.get('password').value, this.fg.get('nickname').value, this.fg.get('name').value, this.fg.get('repPass').value, this.dateService.formatDateYYYYMMDD(this.fg.get('birthday').value), this.fg.get('adultContent').value, this.fg.get('terms').value);
+            this.user.constructorProfileUpdate(this.fg.get('profilePhoto').value, this.fg.get('adultContent').value, this.fg.get('country').value, this.fg.get('description').value, this.fg.get('sex').value, this.fg.get('name').value, this.fg.get('nickname').value);
+            console.log(this.fg)
             this.http.post<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {
                 if (resp.status === 200){
                     Swal.fire({
-                        title:`Su cuenta ha sido creada con éxito`,
-                        html: `A continuación será redirigido a la página de inicio de sesión<br>
-                                La primera vez que inicie sesión se le enviará un código de activación al correo electrónico asociado`,
+                        title:`Su cuenta ha sido actualizada con éxito`,
+                        html: `A continuación será redirigido al perfil`,
                         icon: "success",
                         confirmButtonText: 'Ok'
                     }).then((result:any)=>{
-                        this.router.navigate(['/auth/login']);
+                        this.router.navigate(['/pages/profile']);
                     });
                 }
 
@@ -208,10 +179,6 @@ export class ProfileUpdateComponent implements OnInit {
     }
 
 
-    get passwordInvalid(){
-        return this.fg.get('password').invalid && this.fg.get('password').touched
-    }
-
     get nicknameInvalid(){
         return this.fg.get('nickname').invalid && this.fg.get('nickname').touched
     }
@@ -224,13 +191,8 @@ export class ProfileUpdateComponent implements OnInit {
         return this.fg.get('name').invalid && this.fg.get('name').touched
     }
 
-    get birthdayInvalid(){
-        return this.fg.get('birthday').invalid && this.fg.get('birthday').touched
-    }
 
-    get termsInvalid(){
-        return !this.fg.get('terms').value && this.fg.get('terms').touched
-    }
+
 
 
 

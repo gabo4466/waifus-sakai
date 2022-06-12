@@ -24,6 +24,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     config: AppConfig;
     user: UserModel;
     subscription: Subscription;
+    private imgURL:string = Constants.imgURL;
     private readonly url:string = Constants.apiURL;
 
     constructor( private configService: ConfigService,
@@ -59,9 +60,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.config = config;
       });
       this.userService.getProfile().subscribe((resp:any)=>{
-         let photo = "assets/layout/images/noprofilepic.png";
-          if(resp['profile_photo']!=undefined){
-             photo = resp['profile_photo'];
+         let photo = "";
+          if(resp['profilePhoto']!=undefined){
+             photo = this.imgURL + resp['profilePhoto'];
          }
           this.user.constructorProfile(photo ,resp.activated, resp.admin, resp.adultContent, resp.banned, resp.birthday, resp.country, resp.description, resp.email, resp.gender, resp.idUser, resp.karma, resp.name, resp.nickname, resp.theme);
 
