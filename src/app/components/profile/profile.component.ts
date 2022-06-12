@@ -36,7 +36,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
                  private userService: UserService,
                  private route: ActivatedRoute){
         this.route.queryParams.subscribe(params => this.idUser = params.id);
-        this.createForm();
         this.user = new UserModel();
         this.url += 'profileSearch';
     }
@@ -62,8 +61,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.subscription = this.configService.configUpdate$.subscribe(config => {
           this.config = config;
       });
-      this.userService.getProfile().subscribe((resp:any)=>{
-         let photo = "assets/layout/images/noprofilepic.png";
+      let param = new HttpParams();
+      param = param.append("idUser", this.idUser);
+      this.http.get(this.url,{ params: param }).subscribe((resp:any)=>{
+          let photo = "assets/layout/images/noprofilepic.png";
           if(resp['profile_photo']!=undefined){
              photo = resp['profile_photo'];
          }
