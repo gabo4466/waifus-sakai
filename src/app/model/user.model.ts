@@ -42,6 +42,17 @@ export class UserModel {
         this._profile_photo= "";
 
     }
+
+    constructorProfileUpdate(profile_photo:string, adultContent: boolean, country: string, description: string, gender: string, name: string, nickname:string){
+        this._profile_photo = profile_photo;
+        this._adultContent = adultContent;
+        this._country = country;
+        this._description = description;
+        this._gender = gender;
+        this._name = name.trim();
+        this._nickname = nickname.trim();
+    }
+
     constructorProfile(profile_photo:string, activated:boolean, admin:boolean, adultContent: boolean, banned:boolean, birthday: string, country: string, description: string, email: string, gender: string, idUser: number, karma: number, name: string, nickname:string, theme: string){
         this._profile_photo = profile_photo;
         this._activated = activated;

@@ -32,7 +32,7 @@ export class AppTopBarComponent implements OnInit{
     }
 
     goToProfileSettings(){
-        this.router.navigate(['']);
+        this.router.navigate(['pages/profileUpdate']);
     }
 
     goToProfile(){
