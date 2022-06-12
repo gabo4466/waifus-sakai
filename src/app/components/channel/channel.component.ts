@@ -106,6 +106,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
             }
             this.channel.constructorShowChannel(resp.body['dateChannel'], resp.body['description'], resp.body['name'], photo, banner, resp.body['idChannel']);
+            document.getElementById("description").innerHTML = this.channel._description;
         });
     }
 
