@@ -8,7 +8,15 @@
                 <img style="border-radius: 50px" class="w-full" [src]="channel._banner" alt="">
             </div>
         </div>
-        <div class="col-12">
+        <div class="col-3 mt-2 md:mt-7">
+            <div class="flex justify-content-center flex-wrap">
+                <div class="flex align-items-center justify-content-center">
+                    <p-button *ngIf="canCreate" (click)="followChannel()" [label]="labelFollow" [style]="{ 'background-color' : 'var(--primary-color)' }"></p-button>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-9">
             <p class="text-center w-full text-5xl md:text-8xl white-space-nowrap overflow-hidden text-overflow-ellipsis">
                 {{channel._name}}
             </p>
@@ -23,8 +31,9 @@
 </div>
 
 <div class="card" style="background-color: var(--background2)">
-    <div class="mb-2">
-        <span class="text-3xl md:text-5xl">Hilos</span>
+    <div class="mb-2 flex flex-row flex-wrap justify-content-between">
+        <span class="flex text-3xl md:text-5xl">Hilos</span>
+        <p-button *ngIf="canCreate" (click)="goToCreateThread(idChannel)" icon="pi pi-plus" label="Crear" [style]="{ 'background-color' : 'var(--primary-color)' }"></p-button>
     </div>
     <app-search-bar (term)="search($event)"></app-search-bar>
     <div class="card">
