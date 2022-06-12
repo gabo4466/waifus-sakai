@@ -36,7 +36,7 @@ export class ThreadComponent implements OnInit {
         this.multimediaUrl += "multimediaCreation";
         this.threadUrl += "threadCreation";
         this.channelUrl += "channel";
-        this.userUrl += "profile";
+        this.userUrl += "profileSearch";
         this.route.queryParams.subscribe(params => this.idThread = params.id);
         this.photo = false;
     }
@@ -77,7 +77,7 @@ export class ThreadComponent implements OnInit {
               this.thread.constructorShowThread(resp.body['dateThread'], resp.body['name'], resp.body['content'], resp.body['idThread'], resp.body['channel'], resp.body['user']);
               this.multimediaPetition();
               this.channelPetition();
-              //this.userPetition();
+              this.userPetition();
               document.getElementById("asd").innerHTML = this.thread._content;
           }else if(resp.body.length===0){
 
@@ -113,6 +113,7 @@ export class ThreadComponent implements OnInit {
       this.http.get<Object>(this.userUrl, {observe: 'response', params: param}).subscribe((resp:any)=>{
           if(!resp.body['banned']) {
               this.user.constructorNickname(resp.body['nickname']);
+              this.user._idUser = resp.body['idUser'];
           }else if(resp.body.length===0){
 
           }else{
@@ -127,4 +128,7 @@ export class ThreadComponent implements OnInit {
       this.router.navigate(['/pages/channel'], { queryParams: { id: id } });
   }
 
+  goToProfile(){
+      this.router.navigate(['/pages/profile'], { queryParams: { id: this.user._idUser } });
+  }
 }
