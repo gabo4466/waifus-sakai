@@ -158,6 +158,7 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import {EditorModule} from "primeng/editor";
 import { CommentCreateComponent } from './components/comment-create/comment-create.component';
 import { CommentsListComponent } from './components/comments-list/comments-list.component';
+import { ProfileUpdateComponent } from './components/profile-update/profile-update.component';
 
 @NgModule({
     imports: [
@@ -309,6 +310,7 @@ import { CommentsListComponent } from './components/comments-list/comments-list.
         SearchBarComponent,
         CommentCreateComponent,
         CommentsListComponent,
+        ProfileUpdateComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},

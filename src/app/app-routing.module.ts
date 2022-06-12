@@ -17,6 +17,7 @@ import {CreateThreadsStepsComponent} from "./components/create-threads-steps/cre
 import {CreateThreads1Component} from "./components/create-threads1/create-threads1.component";
 import {CreateThreads2Component} from "./components/create-threads2/create-threads2.component";
 import {ThreadComponent} from "./components/thread/thread.component";
+import {ProfileUpdateComponent} from "./components/profile-update/profile-update.component";
 import {SearchChannelComponent} from "./components/search-channel/search-channel.component";
 
 @NgModule({
@@ -70,6 +71,7 @@ import {SearchChannelComponent} from "./components/search-channel/search-channel
                         ],
                     },
                     {path: 'profile', component: ProfileComponent},
+                    {path: 'profileUpdate', component: ProfileUpdateComponent},
                     {path: 'searchChannel', component: SearchChannelComponent},
                     {path: 'channel', component: ChannelComponent},
                     {path: 'thread', component: ThreadComponent},

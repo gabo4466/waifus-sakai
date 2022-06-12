@@ -12,8 +12,8 @@
                             <div class="threadTitle text-4xl flex text-primary">
                                 {{thread._name}}
                             </div>
-                            <div class="threadUser flex text-md text-color-secondary mt-2">
-                                <!--{{user._nickname}}-->
+                            <div style="cursor: pointer;" (click)="goToProfile()" class="threadUser flex text-md text-color-secondary mt-2">
+                                {{user._nickname}}
                             </div>
                         </div>
                         <div id="asd" class="card threadContent mt-3 text-color" style="background: var(--threadBackground)"></div>

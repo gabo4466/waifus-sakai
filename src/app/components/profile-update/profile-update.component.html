@@ -1,0 +1,43 @@
+<div class="card animation-duration-500">
+    <h5 class="font-semibold">Actualizar informacion del perfil</h5>
+    <form *ngIf="loading" autocomplete="off" [formGroup]="fg" (ngSubmit)="send()" class="formgrid grid">
+
+        <div class="p-fluid grid">
+            <div class="col-12">
+                <h5>Foto del perfil</h5>
+                <p-fileUpload [showCancelButton]="false" [headers]="header" uploadLabel="Subir" chooseLabel="Foto del Perfil" name="mainPhoto" [url]="mainPhotoProfile" accept="image/*" maxFileSize="1000000" (onSelect)="showPreview($event, 'previewMainPhoto', 'mainPhotoBox')" (onUpload)="onBasicUpload($event, 1)" (onRemove)="removePreview('previewMainPhoto', 'mainPhotoBox')"></p-fileUpload>
+                <div class="text-center col-12" id="mainPhotoBox" style="display: none">
+                <h5>Vista previa:</h5>
+                <p-avatar class="w-full" id="previewMainPhoto" image="#" severity="danger" styleClass="mr-2" size="xlarge"></p-avatar>
+                </div>
+            </div>
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="name"><span class="identifier  font-semibold">Nombre y Apellidos:</span></label>
+            <input id="name" formControlName="name" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="nickname"><span class="identifier  font-semibold">Apodo:</span></label>
+            <input id="nickname" formControlName="nickname" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+        </div>
+        <div class="field col-12">
+            <label for="description"><span class="identifier  font-semibold">Descripción:</span></label>
+            <textarea id="description" formControlName="description" type="text" rows="4" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="country"><span class="identifier  font-semibold">Pais:</span></label>
+            <input id="country" formControlName="country" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+        </div>
+        <div class="field col-12 md:col-3">
+            <label for="sex"><span class="identifier  font-semibold">Sexo:</span></label>
+            <input id="sex" formControlName="sex" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+        </div>
+        <div class="field col-12 md:col-3">
+            <label for="aC"  class="p-3 vertical-align-bottom md:vertical-align-bot"><span class="identifier  font-semibold">Contenido Adulto:</span></label>
+            <p-inputSwitch  formControlName="adultContent" id="aC"></p-inputSwitch>
+        </div>
+        <div class="col-12 md:col-2 md:col-offset-0">
+            <p-button type="submit" label="Actualizar datos" icon="pi pi-angle-right" iconPos="right"></p-button>
+        </div>
+    </form>
+</div>
