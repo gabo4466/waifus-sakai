@@ -7,6 +7,9 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Constants} from "../../common/constants";
 import {ThreadModel} from "../../model/thread.model";
+import {UserService} from "../../service/user.service";
+import {DateService} from "../../service/date.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-channel',
@@ -20,6 +23,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     subscription: Subscription;
     idChannel:number;
     urlChannel: string = Constants.apiURL;
+    urlFollow: string = Constants.apiURL;
     imgUrl: string = Constants.imgURL;
     pag:number = 10;
     idx:number;
@@ -28,17 +32,28 @@ export class ChannelComponent implements OnInit, OnDestroy {
     totalRecords:number;
     threads: ThreadModel[] = [];
     urlThreads:string = Constants.apiURL;
+    canCreate:boolean;
+    labelFollow:string = "Follow";
     constructor( private configService: ConfigService,
                  private http: HttpClient,
                  private route: ActivatedRoute,
-                 private router: Router) {
+                 private router: Router,
+                 private userService: UserService,
+                 private dateService: DateService) {
+        this.canCreate = false;
         this.channel = new ChannelModel();
         this.route.queryParams.subscribe(params => this.idChannel = params.id);
         this.urlChannel += "channel";
         this.urlThreads += "threadSearch";
+        this.urlFollow += "followChannel";
         this.idx = 1;
         this.totalRecords = 0;
         this.term = "";
+        userService.getProfile().subscribe((resp:any)=>{
+            if (resp['admin'] == true || resp['karma'] > 20){
+                this.canCreate = true;
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -48,6 +63,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
         });
         this.loadChannel();
         this.requestThread();
+        this.follows();
     }
 
     ngOnDestroy(): void {
@@ -112,6 +128,39 @@ export class ChannelComponent implements OnInit, OnDestroy {
             }
         }, ()=>{
             this.notFounEntries = true;
+        });
+    }
+
+    followChannel(){
+        let param = new HttpParams();
+        param = param.append("idChannel", this.idChannel);
+        param = param.append("dateFollow", this.dateService.formatDateYYYYMMDD(new Date()));
+        this.http.post(this.urlFollow, "",{ observe: 'response', params: param }).subscribe((resp:any)=>{
+            if (resp.body['follow']){
+                this.labelFollow = "Unfollow";
+            }else {
+                this.labelFollow = "Follow";
+            }
+        }, ()=>{
+            Swal.fire({
+                title: "Ha ocurido un error",
+                icon: "error",
+                confirmButtonText: 'ok'
+            })
+        });
+    }
+
+    follows(){
+        let param = new HttpParams();
+        param = param.append("idChannel", this.idChannel);
+        this.http.get(this.urlFollow,{ observe: 'response', params: param }).subscribe((resp:any)=>{
+            if (resp.body['follow']){
+                this.labelFollow = "Unfollow";
+            }else {
+                this.labelFollow = "Follow";
+            }
+        },()=>{
+            this.canCreate = false;
         });
     }
 
