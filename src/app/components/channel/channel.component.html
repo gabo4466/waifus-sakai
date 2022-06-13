@@ -1,1 +1,62 @@
-<p>channel works!</p>
+<div class="card">
+    <div class="grid">
+        <div class="text-center col-12 md:col-3">
+            <img class="h-13rem w-13rem md:w-full md:h-auto md:h-auto" [src]="channel._photo" style="border-radius: 10000px; border: 3px solid var(--primary-color)">
+        </div>
+        <div class="col-12 md:col-9">
+            <div class="col-12">
+                <img style="border-radius: 50px" class="w-full" [src]="channel._banner" alt="">
+            </div>
+        </div>
+        <div class="col-3 mt-2 md:mt-7">
+            <div class="flex justify-content-center flex-wrap">
+                <div class="flex align-items-center justify-content-center">
+                    <p-button *ngIf="canCreate" (click)="followChannel()" [label]="labelFollow" [style]="{ 'background-color' : 'var(--primary-color)' }"></p-button>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-9">
+            <p class="text-center w-full text-5xl md:text-8xl white-space-nowrap overflow-hidden text-overflow-ellipsis">
+                {{channel._name}}
+            </p>
+        </div>
+        <div class="col-12">
+            <p-panel header="Descripción" [toggleable]="true">
+                <p class="text-xl md:text-2xl">{{channel._description}}</p>
+            </p-panel>
+        </div>
+
+    </div>
+</div>
+
+<div class="card" style="background-color: var(--background2)">
+    <div class="mb-2 flex flex-row flex-wrap justify-content-between">
+        <span class="flex text-3xl md:text-5xl">Hilos</span>
+        <p-button *ngIf="canCreate" (click)="goToCreateThread(idChannel)" icon="pi pi-plus" label="Crear" [style]="{ 'background-color' : 'var(--primary-color)' }"></p-button>
+    </div>
+    <app-search-bar (term)="search($event)"></app-search-bar>
+    <div class="card">
+        <div class="grid">
+                <span *ngIf="!notFounEntries" class="col-12">
+                    <div *ngFor="let thread of threads; index as i; first as isFirst" (click)="goToThread(thread._idThread)" class="card w-full mb-5" style="cursor: pointer;background-color: var(--surface-border); background-image: url({{thread._banner}}); background-position: center; background-size: cover;">
+                        <div class="grid">
+                            <div class="col-12 white-space-nowrap overflow-hidden text-overflow-ellipsis">
+                                <span class="w-full text-4xl md:text-6xl">{{ thread._name }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+            <div *ngIf="notFounEntries" class="card col-12" style="background-color: var(--surface-border)">
+                <div class="grid">
+                    <div class="col-12 text-center">
+                        <span class="text-4xl md:text-6xl">No se han encontrado resultados</span>
+                    </div>
+                </div>
+            </div>
+            <p-paginator class="w-full mb-2" [rows]="pag" [totalRecords]="totalRecords" pageLinkSize="3" (onPageChange)="paginate($event)"></p-paginator>
+        </div>
+
+    </div>
+
+</div>

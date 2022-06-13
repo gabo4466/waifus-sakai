@@ -15,6 +15,7 @@ export class AppTopBarComponent implements OnInit{
 
     logged:boolean;
     displayModal:boolean;
+    idUserLogged:number;
 
     constructor(public appMain: AppMainComponent,
                 private userService: UserService,
@@ -23,7 +24,10 @@ export class AppTopBarComponent implements OnInit{
     }
 
     ngOnInit(): void {
-        this.userService.getProfile().subscribe((resp:any)=>this.logged=true,(error:any)=>this.logged=false);
+        this.userService.getProfile().subscribe((resp:any)=> {
+            this.logged = true
+            this.idUserLogged = resp['idUser'];
+        },(error:any)=>this.logged=false);
 
     }
 
@@ -32,7 +36,7 @@ export class AppTopBarComponent implements OnInit{
     }
 
     goToProfile(){
-        this.router.navigate(['pages/profile']);
+        this.router.navigate(['pages/profile'], { queryParams: { id: this.idUserLogged } });
     }
 
     logOut(){

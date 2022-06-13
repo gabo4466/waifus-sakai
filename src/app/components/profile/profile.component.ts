@@ -2,8 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AppConfig} from "../../api/appconfig";
 import {ConfigService} from "../../service/app.config.service";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Router} from "@angular/router";
+import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
+import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 
 import {Subscription} from "rxjs";
@@ -20,6 +20,7 @@ import {UserModel} from "../../model/user.model";
 export class ProfileComponent implements OnInit, OnDestroy {
 
     selectedState:any;
+    idUser:number;
     fg: FormGroup;
     config: AppConfig;
     user: UserModel;
@@ -32,10 +33,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
                  private http: HttpClient,
                  private router: Router,
                  private serviceMessage: MessageService,
-                 private userService: UserService){
-
+                 private userService: UserService,
+                 private route: ActivatedRoute){
+        this.route.queryParams.subscribe(params => this.idUser = params.id);
         this.user = new UserModel();
-        this.url += 'profile';
+        this.url += 'profileSearch';
     }
 
 
@@ -59,10 +61,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.subscription = this.configService.configUpdate$.subscribe(config => {
           this.config = config;
       });
-      this.userService.getProfile().subscribe((resp:any)=>{
-         let photo = "";
-          if(resp['profilePhoto']!=undefined){
-             photo = this.imgURL + resp['profilePhoto'];
+      let param = new HttpParams();
+      param = param.append("idUser", this.idUser);
+      this.http.get(this.url,{ params: param }).subscribe((resp:any)=>{
+          let photo = "assets/layout/images/noprofilepic.png";
+          if(resp['profile_photo']!=undefined){
+             photo = resp['profile_photo'];
          }
           this.user.constructorProfile(photo ,resp.activated, resp.admin, resp.adultContent, resp.banned, resp.birthday, resp.country, resp.description, resp.email, resp.gender, resp.idUser, resp.karma, resp.name, resp.nickname, resp.theme);
 

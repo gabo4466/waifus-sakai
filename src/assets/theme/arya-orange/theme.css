@@ -47,6 +47,7 @@
     --border-color2: #ffa6b2;
     --background: #ffa6b2;
     --background2: rgba(255, 161, 175, 0.55);
+    --threadBackground: rgba(255, 161, 175, 0.24);
 }
 
 * {

@@ -48,6 +48,7 @@
     --background: #FFB6C1;
     --color: #fdbcc5;
     --background2: rgba(255, 161, 175, 0.55);
+    --threadBackground: rgba(255, 161, 175, 0.24);
 }
 
 * {
