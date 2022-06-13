@@ -32,7 +32,6 @@ export class UserModel {
         this._birthday = "";
         this._idUser= 0;
         this._karma= 0;
-        this._activated= false;
         this._admin= false;
         this._banned= false;
         this._country= "";
@@ -43,8 +42,7 @@ export class UserModel {
 
     }
 
-    constructorProfileUpdate(profile_photo:string, adultContent: boolean, country: string, description: string, gender: string, name: string, nickname:string){
-        this._profilePhoto = profile_photo;
+    constructorProfileUpdate( adultContent: boolean, country: string, description: string, gender: string, name: string, nickname:string){
         this._adultContent = adultContent;
         this._country = country;
         this._description = description;

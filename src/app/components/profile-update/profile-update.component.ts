@@ -162,11 +162,11 @@ export class ProfileUpdateComponent implements OnInit {
     }
 
     send(){
+
         if (this.fg.valid){
-            this.http.get<Object>(this.url,{observe:'response'}).subscribe((resp:any)=>{
+            this.http.get<Object>(this.url,{observe:'response', }).subscribe((resp:any)=>{
                 this.user._profilePhoto=resp.body['profilePhoto'];
-                this.user.constructorProfileUpdate(this.user._profilePhoto, this.fg.get('adultContent').value, this.fg.get('country').value, this.fg.get('description').value, this.fg.get('sex').value, this.fg.get('name').value, this.fg.get('nickname').value);
-                console.log(JSON.stringify(this.user).replace(/[/_/]/g, ''))
+                this.user.constructorProfileUpdate(this.fg.get('adultContent').value, this.fg.get('country').value, this.fg.get('description').value, this.fg.get('sex').value, this.fg.get('name').value, this.fg.get('nickname').value);
                 this.http.post<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {
                     if (resp.status === 200){
                         Swal.fire({
