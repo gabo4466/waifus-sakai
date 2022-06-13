@@ -156,6 +156,8 @@ import { ThreadComponent } from './components/thread/thread.component';
 import { SearchChannelComponent } from './components/search-channel/search-channel.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import {EditorModule} from "primeng/editor";
+import { CommentCreateComponent } from './components/comment-create/comment-create.component';
+import { CommentsListComponent } from './components/comments-list/comments-list.component';
 import { ProfileUpdateComponent } from './components/profile-update/profile-update.component';
 
 @NgModule({
@@ -306,6 +308,8 @@ import { ProfileUpdateComponent } from './components/profile-update/profile-upda
         ThreadComponent,
         SearchChannelComponent,
         SearchBarComponent,
+        CommentCreateComponent,
+        CommentsListComponent,
         ProfileUpdateComponent,
     ],
     providers: [
