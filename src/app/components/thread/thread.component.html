@@ -13,8 +13,8 @@
                                 {{thread._name}}
                             </div>
                             <div style="cursor: pointer;" (click)="goToProfile()" class="threadUser flex text-md text-color-secondary mt-2">
-                                <img class="h-2rem w-2rem mx-2" [src]="user._profile_photo" style="border-radius: 100px; border: 1px solid var(--primary-color)">
-                                {{user._nickname}}
+                                <span class="mt-1">{{user._nickname}}</span>
+                                <p-avatar [image]="user._profilePhoto" styleClass="mx-2" [style]="{'border': '1px solid var(--primary-color)'}" shape="circle"></p-avatar>
                             </div>
                         </div>
                         <div id="asd" class="card threadContent mt-3 text-color" style="background: var(--threadBackground)"></div>
@@ -27,6 +27,11 @@
                             </div>
                         </span>
                             <span *ngIf="emptyArray"></span>
+                        </div>
+                        <div class="col-12 md:col-2 flex" style="cursor: pointer">
+                            <i class="pi pi-comment mx-1" style="font-size: 1.5rem"></i>
+                            <i class="pi pi-thumbs-up mx-1" style="font-size: 1.5rem"></i>
+                            <i class="pi pi-thumbs-down mx-1" style="font-size: 1.5rem"></i>
                         </div>
                     </div>
                 </div>
