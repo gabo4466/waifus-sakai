@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CommentsListComponent implements OnInit {
 
-  constructor() { }
 
-  ngOnInit(): void {
-  }
+
+
+    constructor() { }
+
+    ngOnInit(): void {
+    }
+
+
 
 }

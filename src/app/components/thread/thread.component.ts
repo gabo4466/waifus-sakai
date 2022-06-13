@@ -114,6 +114,7 @@ export class ThreadComponent implements OnInit {
           if(!resp.body['banned']) {
               this.user.constructorNickname(resp.body['nickname']);
               this.user._idUser = resp.body['idUser'];
+              this.user._profilePhoto = this.imgUrl + resp.body['profilePhoto'];
           }else if(resp.body.length===0){
 
           }else{
