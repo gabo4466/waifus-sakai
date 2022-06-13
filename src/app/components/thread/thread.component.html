@@ -13,6 +13,7 @@
                                 {{thread._name}}
                             </div>
                             <div style="cursor: pointer;" (click)="goToProfile()" class="threadUser flex text-md text-color-secondary mt-2">
+                                <img class="h-2rem w-2rem mx-2" [src]="user._profile_photo" style="border-radius: 100px; border: 1px solid var(--primary-color)">
                                 {{user._nickname}}
                             </div>
                         </div>
@@ -32,6 +33,9 @@
             </div>
             <div class="card col-12">
                 <app-comment-create></app-comment-create>
+            </div>
+            <div class="card col-12">
+                <app-comments-list></app-comments-list>
             </div>
         </div>
     </div>
