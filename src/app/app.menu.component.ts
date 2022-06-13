@@ -29,28 +29,6 @@ export class AppMenuComponent implements OnInit {
                 private userService: UserService) { }
 
     ngOnInit() {
-        this.userService.getProfile().subscribe((resp:any)=> {
-            this.logged = true;
-            this.channels = {
-                label: 'Canales',
-                items: []
-            }
-            if (resp['admin'] == true){
-                this.admin = true;
-                this.channels.items.push({label: 'Crear canal',icon: 'pi pi-fw pi-plus', routerLink: ['/pages/createChannel/step1']});
-            }
-            this.model.push(this.channels)
-            this.threads = {
-                label: 'Hilos',
-                items: []
-            }
-            if (resp['admin'] == true){
-                this.admin = true;
-                this.threads.items.push({label: 'Crear hilo',icon: 'pi pi-fw pi-plus', routerLink: ['/pages/createThread']});
-            }
-            this.model.push(this.threads)
-        },(error:any)=>this.logged=false);
-
         this.model = [
             {
                 label: 'Ohana',
@@ -59,22 +37,26 @@ export class AppMenuComponent implements OnInit {
                 ]
             },
             {
-                label: 'Pages',
+                label: 'Canales',
                 items: [
-                    {label: 'Login', icon: 'pi pi-fw pi-sign-in', routerLink: ['/auth/login']},
-                    {label: 'Error', icon: 'pi pi-fw pi-times-circle', routerLink: ['/pages/error']},
-                    {label: 'Not Found', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/pages/notfound']},
-                    {label: 'Access Denied', icon: 'pi pi-fw pi-lock', routerLink: ['/pages/access']},
-                    {
-                        label: 'Buquedas',
-                        icon: 'pi pi-fw pi-search',
-                        items: [
-                            {label: 'Canales', routerLink: ['/pages/searchChannel']}
-                        ]
-                    },
+                    {label: 'Buscar', icon: 'pi pi-fw pi-search', routerLink: ['/pages/searchChannel']},
+                    {label: 'Seguidos', icon: 'pi pi-fw pi-heart-fill',
+                    items: [
+
+                    ]},
                 ]
             },
         ];
+        this.userService.getProfile().subscribe((resp:any)=> {
+            this.logged = true;
+            if (resp['admin'] == true || resp['karma'] >= 1000){
+                this.admin = true;
+                this.model[1].items.push({label: 'Crear canal',icon: 'pi pi-fw pi-plus', routerLink: ['/pages/createChannel/step1']});
+            }
+
+        },(error:any)=>this.logged=false);
+
+
     }
 
     onKeydown(event: KeyboardEvent) {
