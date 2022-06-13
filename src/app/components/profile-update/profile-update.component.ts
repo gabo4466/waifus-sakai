@@ -28,19 +28,22 @@ export class ProfileUpdateComponent implements OnInit {
     subscription: Subscription;
     loading: boolean;
     private readonly url:string = Constants.apiURL;
+    urlPhoto:string = Constants.apiURL;
 
     date : Date;
+    photo: boolean;
 
     constructor( private configService: ConfigService,
                  private fb: FormBuilder,
                  private http: HttpClient,
                  private router: Router,
-                 private serviceMessage: MessageService,
+                 private messageService: MessageService,
                  private dateService: DateService,
                  private userService: UserService){
         this.loading = false;
         this.user = new UserModel();
-        this.url += 'profileUpdate';
+        this.url += 'profile';
+        this.urlPhoto += 'photoProfile';
         this.userService.getProfile().subscribe((resp:any)=>{
             let photo = "";
             if(resp['profile_photo']!=undefined){
@@ -97,16 +100,10 @@ export class ProfileUpdateComponent implements OnInit {
     createForm(){
         this.fg = this.fb.group( {
 
-            profilePhoto: [
-                this.user._profile_photo,
-                [
-                    Validators.required,
-                ]
-            ],
             nickname: [
                 this.user._nickname,
                 [
-                    Validators.required,
+
                     Validators.minLength(4),
                     Validators.maxLength(20),
                     Validators.pattern('[a-zA-Z0-9._-]+')
@@ -115,25 +112,25 @@ export class ProfileUpdateComponent implements OnInit {
             name: [
                 this.user._name,
                 [
-                    Validators.required
+
                 ]
             ],
             description: [
                 this.user._description,
                 [
-                    Validators.required
+
                 ]
             ],
             country: [
                 this.user._country,
                 [
-                    Validators.required
+
                 ]
             ],
             sex: [
                 this.user._gender,
                 [
-                    Validators.required
+
                 ]
             ],
             adultContent: [
@@ -144,30 +141,54 @@ export class ProfileUpdateComponent implements OnInit {
 
 
 
-    send(){
-        if (this.fg.valid && !this.fg.pending){
-            this.user.constructorProfileUpdate(this.fg.get('profilePhoto').value, this.fg.get('adultContent').value, this.fg.get('country').value, this.fg.get('description').value, this.fg.get('sex').value, this.fg.get('name').value, this.fg.get('nickname').value);
-            console.log(this.fg)
-            this.http.post<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {
-                if (resp.status === 200){
-                    Swal.fire({
-                        title:`Su cuenta ha sido actualizada con éxito`,
-                        html: `A continuación será redirigido al perfil`,
-                        icon: "success",
-                        confirmButtonText: 'Ok'
-                    }).then((result:any)=>{
-                        this.router.navigate(['/pages/profile']);
-                    });
-                }
+    onBasicUpload(event, box) {
+        if (box ===1){
+            this.photo = true;
+        }
+        this.messageService.add({severity: 'success', summary: 'Imagen actualizada', detail: ''});
 
-            }, (resp:HttpErrorResponse) => {
-                Swal.fire({
-                    title:`${resp.error['message']}`,
-                    html: ``,
-                    icon: "error",
-                    confirmButtonText: 'Ok'
+    }
+
+    showPreview(event, id, idBox){
+        document.getElementById(idBox).style.display = 'block';
+        let img = document.getElementById(id).querySelector("img");
+        let file = event.currentFiles[0];
+        img['src'] = URL.createObjectURL(file);
+    }
+
+    removePreview(id, idBox){
+        document.getElementById(idBox).style.display = 'none';
+        document.getElementById(id).querySelector("img")['src'] = "#";
+    }
+
+    send(){
+        if (this.fg.valid){
+            this.http.get<Object>(this.url,{observe:'response'}).subscribe((resp:any)=>{
+                this.user._profilePhoto=resp.body['profilePhoto'];
+                this.user.constructorProfileUpdate(this.user._profilePhoto, this.fg.get('adultContent').value, this.fg.get('country').value, this.fg.get('description').value, this.fg.get('sex').value, this.fg.get('name').value, this.fg.get('nickname').value);
+                console.log(JSON.stringify(this.user).replace(/[/_/]/g, ''))
+                this.http.post<Object>(this.url, JSON.stringify(this.user).replace(/[/_/]/g, ''), {observe: 'response'}).subscribe( (resp:any) => {
+                    if (resp.status === 200){
+                        Swal.fire({
+                            title:`Su cuenta ha sido actualizada con éxito`,
+                            html: `A continuación será redirigido al perfil`,
+                            icon: "success",
+                            confirmButtonText: 'Ok'
+                        }).then((result:any)=>{
+                            this.router.navigate(['/pages/profile']);
+                        });
+                    }
+
+                }, (resp:HttpErrorResponse) => {
+                    Swal.fire({
+                        title:`${resp.error['message']}`,
+                        html: ``,
+                        icon: "error",
+                        confirmButtonText: 'Ok'
+                    });
                 });
-            });
+            })
+
         }else{
             this.showErrorViaToast();
         }
@@ -175,7 +196,7 @@ export class ProfileUpdateComponent implements OnInit {
     }
 
     showErrorViaToast() {
-        this.serviceMessage.add({ key: 'tst', severity: 'error', summary: 'Hay errores en el formulario', detail: 'Campos inválidos' });
+        this.messageService.add({ key: 'tst', severity: 'error', summary: 'Hay errores en el formulario', detail: 'Campos inválidos' });
     }
 
 

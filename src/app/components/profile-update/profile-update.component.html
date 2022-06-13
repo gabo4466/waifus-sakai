@@ -1,17 +1,17 @@
-<div class="card animation-duration-500">
-    <h5 class="font-semibold">Actualizar informacion del perfil</h5>
+<div class="card animation-duration-500" xmlns="http://www.w3.org/1999/html">
+    <h5 class=" font-semibold">Actualizar informacion del perfil</h5>
+    <div class="field col-12">
+        <h5>
+            <span class="identifier font-semibold">Foto del perfil:</span>
+        </h5>
+        <p-fileUpload [showCancelButton]="false"  uploadLabel="Subir" chooseLabel="Foto del Perfil" name="mainPhoto" [url]="urlPhoto" accept="image/*" maxFileSize="1000000" (onSelect)="showPreview($event, 'previewMainPhoto', 'mainPhotoBox')" (onUpload)="onBasicUpload($event, 1)" (onRemove)="removePreview('previewMainPhoto', 'mainPhotoBox')"></p-fileUpload>
+        <div class="text-center col-12" id="mainPhotoBox" style="display: none">
+            <h5><span class="identifier font-semibold">Vista previa:</span></h5>
+            <p-avatar class="w-full" id="previewMainPhoto" image="#" severity="danger" styleClass="mr-2" size="xlarge"></p-avatar>
+        </div>
+    </div>
     <form *ngIf="loading" autocomplete="off" [formGroup]="fg" (ngSubmit)="send()" class="formgrid grid">
 
-        <div class="p-fluid grid">
-            <div class="col-12">
-                <h5>Foto del perfil</h5>
-                <p-fileUpload [showCancelButton]="false" [headers]="header" uploadLabel="Subir" chooseLabel="Foto del Perfil" name="mainPhoto" [url]="mainPhotoProfile" accept="image/*" maxFileSize="1000000" (onSelect)="showPreview($event, 'previewMainPhoto', 'mainPhotoBox')" (onUpload)="onBasicUpload($event, 1)" (onRemove)="removePreview('previewMainPhoto', 'mainPhotoBox')"></p-fileUpload>
-                <div class="text-center col-12" id="mainPhotoBox" style="display: none">
-                <h5>Vista previa:</h5>
-                <p-avatar class="w-full" id="previewMainPhoto" image="#" severity="danger" styleClass="mr-2" size="xlarge"></p-avatar>
-                </div>
-            </div>
-        </div>
         <div class="field col-12 md:col-6">
             <label for="name"><span class="identifier  font-semibold">Nombre y Apellidos:</span></label>
             <input id="name" formControlName="name" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
