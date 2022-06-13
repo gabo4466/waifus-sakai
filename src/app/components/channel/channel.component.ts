@@ -62,7 +62,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
             this.config = config;
         });
         this.loadChannel();
-        this.requestThread();
         this.follows();
     }
 
@@ -107,6 +106,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
             }
             this.channel.constructorShowChannel(resp.body['dateChannel'], resp.body['description'], resp.body['name'], photo, banner, resp.body['idChannel']);
             document.getElementById("description").innerHTML = this.channel._description;
+            this.requestThread();
         });
     }
 
@@ -115,6 +115,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
         param = param.append("idx", this.idx);
         param = param.append("pag", this.pag);
         param = param.append("term", this.term);
+        param = param.append("idChannel", this.channel._idChannel);
         this.threads = [];
         this.http.get(this.urlThreads, { observe: "response", params: param }).subscribe((resp:any)=>{
             this.notFounEntries = false;

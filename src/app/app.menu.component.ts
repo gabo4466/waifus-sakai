@@ -46,34 +46,34 @@ export class AppMenuComponent implements OnInit {
                 label: 'Canales',
                 items: [
                     {label: 'Buscar', icon: 'pi pi-fw pi-search', routerLink: ['/pages/searchChannel']},
-                    {label: 'Seguidos', icon: 'pi pi-fw pi-heart-fill',
-                    items: [
-
-                    ]},
                 ]
             },
         ];
         this.userService.getProfile().subscribe((resp:any)=> {
             this.logged = true;
+            let idx = 1;
             if (resp['admin'] == true || resp['karma'] >= 1000){
                 this.admin = true;
                 this.model[1].items.push({label: 'Crear canal',icon: 'pi pi-fw pi-plus', routerLink: ['/pages/createChannel/step1']});
+                idx = 2;
             }
+            this.model[1].items.push({label: 'Seguidos', icon: 'pi pi-fw pi-heart-fill',
+                items: []});
             this.http.get(this.urlFChannels).subscribe((resp:any)=>{
 
                 if (resp.length > 0){
                     resp.forEach((channel:any)=>{
-                        this.model[1].items[1].items.push({ label: channel['name'],command: (event) => {
+                        this.model[1].items[idx].items.push({ label: channel['name'],command: (event) => {
                                 this.router.navigate(['/pages/channel'], {queryParams:{id:channel['idChannel']}})
                             } });
                     });
                 }else{
-                    this.model[1].items[1].items.push({ label: 'No sigues canales' });
+                    this.model[1].items[idx].items.push({ label: 'No sigues canales' });
 
                 }
 
             }, ()=>{
-                this.model[1].items[1].items.push({ label: 'No sigues canales' });
+                this.model[1].items[idx].items.push({ label: 'No sigues canales' });
             });
 
 
