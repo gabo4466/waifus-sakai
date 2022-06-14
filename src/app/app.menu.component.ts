@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AppMainComponent } from './app.main.component';
+import {UserService} from "./service/user.service";
+import {MenuItem} from "primeng/api";
+import {HttpClient} from "@angular/common/http";
+import {Constants} from "./common/constants";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-menu',
@@ -18,9 +23,16 @@ import { AppMainComponent } from './app.main.component';
 })
 export class AppMenuComponent implements OnInit {
 
-    model: any[];
-
-    constructor(public appMain: AppMainComponent) { }
+    model: MenuItem[];
+    logged:boolean;
+    admin:boolean;
+    urlFChannels:string = Constants.apiURL;
+    constructor(public appMain: AppMainComponent,
+                private userService: UserService,
+                private http: HttpClient,
+                private router: Router) {
+        this.urlFChannels += "followChannelSearch";
+    }
 
     ngOnInit() {
         this.model = [
@@ -31,81 +43,44 @@ export class AppMenuComponent implements OnInit {
                 ]
             },
             {
-                label: 'UI Components',
+                label: 'Canales',
                 items: [
-                    {label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout']},
-
-                ]
-            },
-            {
-                label:'Prime Blocks',
-                items:[
-                    {label: 'Free Blocks', icon: 'pi pi-fw pi-eye', routerLink: ['/blocks'], badge: 'NEW'},
-                    {label: 'All Blocks', icon: 'pi pi-fw pi-globe', url: ['https://www.primefaces.org/primeblocks-ng'], target: '_blank'},
-                ]
-            },
-            {label:'Utilities',
-                items:[
-                    {label: 'PrimeIcons', icon: 'pi pi-fw pi-prime', routerLink: ['/icons']},
-                    {label: 'PrimeFlex', icon: 'pi pi-fw pi-desktop', url: ['https://www.primefaces.org/primeflex/'], target: '_blank'},
-                ]
-            },
-            {
-                label: 'Pages',
-                items: [
-                    {label: 'Crud', icon: 'pi pi-fw pi-user-edit', routerLink: ['/pages/crud']},
-                    {label: 'Timeline', icon: 'pi pi-fw pi-calendar', routerLink: ['/pages/timeline']},
-                    {label: 'Landing', icon: 'pi pi-fw pi-globe', routerLink: ['pages/landing']},
-                    {label: 'Login', icon: 'pi pi-fw pi-sign-in', routerLink: ['auth/login']},
-                    {label: 'Error', icon: 'pi pi-fw pi-times-circle', routerLink: ['pages/error']},
-                    {label: 'Not Found', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['pages/notfound']},
-                    {label: 'Access Denied', icon: 'pi pi-fw pi-lock', routerLink: ['pages/access']},
-                    {label: 'Empty', icon: 'pi pi-fw pi-circle', routerLink: ['/pages/empty']}
-                ]
-            },
-            {
-                label: 'Hierarchy',
-                items: [
-                    {
-                        label: 'Submenu 1', icon: 'pi pi-fw pi-bookmark',
-                        items: [
-                            {
-                                label: 'Submenu 1.1', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    {label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark'},
-                                    {label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark'},
-                                    {label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark'},
-                                ]
-                            },
-                            {
-                                label: 'Submenu 1.2', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    {label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark'}
-                                ]
-                            },
-                        ]
-                    },
-                    {
-                        label: 'Submenu 2', icon: 'pi pi-fw pi-bookmark',
-                        items: [
-                            {
-                                label: 'Submenu 2.1', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    {label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark'},
-                                    {label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark'},
-                                ]
-                            },
-                            {
-                                label: 'Submenu 2.2', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    {label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark'},
-                                ]
-                            },
-                        ]
-                    }
+                    {label: 'Buscar', icon: 'pi pi-fw pi-search', routerLink: ['/pages/searchChannel']},
                 ]
             },
         ];
+        this.userService.getProfile().subscribe((resp:any)=> {
+            this.logged = true;
+            let idx = 1;
+            if (resp['admin'] == true || resp['karma'] >= 1000){
+                this.admin = true;
+                this.model[1].items.push({label: 'Crear canal',icon: 'pi pi-fw pi-plus', routerLink: ['/pages/createChannel/step1']});
+                idx = 2;
+            }
+            this.model[1].items.push({label: 'Seguidos', icon: 'pi pi-fw pi-heart-fill',
+                items: []});
+            this.http.get(this.urlFChannels).subscribe((resp:any)=>{
+
+                if (resp.length > 0){
+                    resp.forEach((channel:any)=>{
+                        this.model[1].items[idx].items.push({ label: channel['name'],command: (event) => {
+                                this.router.navigate(['/pages/channel'], {queryParams:{id:channel['idChannel']}})
+                            } });
+                    });
+                }else{
+                    this.model[1].items[idx].items.push({ label: 'No sigues canales' });
+
+                }
+
+            }, ()=>{
+                this.model[1].items[idx].items.push({ label: 'No sigues canales' });
+            });
+
+
+        },(error:any)=>this.logged=false);
+
+
+
     }
 
     onKeydown(event: KeyboardEvent) {

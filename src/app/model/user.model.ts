@@ -16,6 +16,7 @@ export class UserModel {
   public _description: string;
   public _gender: string;
   public _theme: string;
+  public _profilePhoto: string;
 
 
 
@@ -31,16 +32,27 @@ export class UserModel {
         this._birthday = "";
         this._idUser= 0;
         this._karma= 0;
-        this._activated= false;
         this._admin= false;
         this._banned= false;
         this._country= "";
         this._description= "";
         this._gender= "";
         this._theme= "";
+        this._profilePhoto= "";
 
     }
-    constructorProfile(activated:boolean, admin:boolean, adultContent: boolean, banned:boolean, birthday: string, country: string, description: string, email: string, gender: string, idUser: number, karma: number, name: string, nickname:string, theme: string){
+
+    constructorProfileUpdate( adultContent: boolean, country: string, description: string, gender: string, name: string, nickname:string){
+        this._adultContent = adultContent;
+        this._country = country;
+        this._description = description;
+        this._gender = gender;
+        this._name = name.trim();
+        this._nickname = nickname.trim();
+    }
+
+    constructorProfile(profile_photo:string, activated:boolean, admin:boolean, adultContent: boolean, banned:boolean, birthday: string, country: string, description: string, email: string, gender: string, idUser: number, karma: number, name: string, nickname:string, theme: string){
+        this._profilePhoto = profile_photo;
         this._activated = activated;
         this._admin = admin;
         this._adultContent = adultContent;
@@ -48,12 +60,12 @@ export class UserModel {
         this._birthday = birthday;
         this._country = country;
         this._description = description;
-        this._email = email;
+        this._email = email.trim();
         this._gender = gender;
         this._idUser = idUser;
         this._karma = karma;
-        this._name = name;
-        this._nickname = nickname;
+        this._name = name.trim();
+        this._nickname = nickname.trim();
         this._theme = theme;
 
 }
@@ -62,19 +74,19 @@ export class UserModel {
         this._password = password;
     }
     constructorRegister(email:string, password:string, nickname:string, name:string, repPass:string, birthday:string, adultContent:boolean, terms:boolean) {
-        this._email = email;
+        this._email = email.trim();
         this._password = password;
-        this._nickname = nickname;
-        this._name = name;
+        this._nickname = nickname.trim();
+        this._name = name.trim();
         this._repPass = repPass;
         this._adultContent = adultContent;
         this._terms = terms;
         this._birthday = birthday;
     }
     constructorEmail(email:string) {
-        this._email = email;
+        this._email = email.trim();
     }
     constructorNickname(nickname:string) {
-        this._nickname = nickname;
+        this._nickname = nickname.trim();
     }
 }

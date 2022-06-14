@@ -23,11 +23,11 @@
     <div class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active':appMain.topMenuActive}">
         <a *ngIf="logged" [routerLink]="" (click)="goToProfileSettings()" class="p-link layout-topbar-button">
             <i class="pi pi-cog"></i>
-            <span>Settings</span>
+            <span>Ajustes de perfil</span>
         </a>
         <a *ngIf="logged" [routerLink]="" (click)="goToProfile()" class="p-link layout-topbar-button">
             <i class="pi pi-user"></i>
-            <span>Profile</span>
+            <span>Perfil</span>
         </a>
         <a *ngIf="logged" [routerLink]="" (click)="logOut()" class="p-link layout-topbar-button">
             <i class="pi pi-sign-out"></i>
@@ -35,7 +35,7 @@
         </a>
         <a *ngIf="!logged" [routerLink]="" (click)="goToLogIn()" class="p-link layout-topbar-button">
             <i class="pi pi-user"></i>
-            <span>Profile</span>
+            <span>Identifícate</span>
         </a>
     </div>
 </div>
