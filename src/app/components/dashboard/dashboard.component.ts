@@ -49,6 +49,8 @@ export class DashboardComponent implements OnInit {
 
     urlUserRank:string = Constants.apiURL + "karmaRank";
 
+    urlPhoto:string = Constants.imgURL ;
+
     constructor(
         private productService: ProductService,
         public configService: ConfigService,
@@ -177,7 +179,7 @@ export class DashboardComponent implements OnInit {
         this.http.get<Object>(this.urlChannelRank, {observe: "response"}).subscribe((resp:any)=>{
            resp.body['channels'].forEach((channel:any)=>{
                let channelAux = new ChannelModel();
-               channelAux.constructorRankChannel(channel['idChannel'], channel['name'], channel['photo'], channel['banner'], channel['threads']);
+               channelAux.constructorRankChannel(channel['idChannel'], channel['name'], this.urlPhoto + channel['photo'], this.urlPhoto + channel['banner'], channel['threads']);
                this.channels.push(channelAux);
            });
             if(resp.body['channels'].length === 0){
@@ -194,7 +196,7 @@ export class DashboardComponent implements OnInit {
         this.http.get<Object>(this.urlUserRank, {observe:"response"}).subscribe((resp:any)=>{
            resp.body['users'].forEach((user:any)=>{
                let userAux = new UserModel();
-               userAux.constructorRankUser(user['idUser'], user['name'], user['nickname'], user['profilePhoto'], user['karma']);
+               userAux.constructorRankUser(user['idUser'], user['name'], user['nickname'], this.urlPhoto + user['profilePhoto' ], user['karma']);
                this.users.push(userAux);
                console.log(this.users)
            });
