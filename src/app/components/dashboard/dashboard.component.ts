@@ -5,9 +5,14 @@ import { ProductService } from '../../service/productservice';
 import { Subscription } from 'rxjs';
 import { ConfigService } from '../../service/app.config.service';
 import { AppConfig } from '../../api/appconfig';
- 
+import {ChannelModel} from "../../model/channel.model";
+import {Router} from "@angular/router";
+import {Constants} from "../../common/constants";
+
 @Component({
     templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
+
 })
 export class DashboardComponent implements OnInit {
 
@@ -23,7 +28,14 @@ export class DashboardComponent implements OnInit {
 
     config: AppConfig;
 
-    constructor(private productService: ProductService, public configService: ConfigService) {}
+    channels: ChannelModel[] = [];
+
+    urlBanner:string = Constants.imgURL + "mainBanner.png";
+
+    constructor(
+        private productService: ProductService,
+        public configService: ConfigService,
+        private router: Router) {}
 
     ngOnInit() {
         this.config = this.configService.config;
@@ -32,7 +44,7 @@ export class DashboardComponent implements OnInit {
             this.updateChartOptions();
         });
         this.productService.getProductsSmall().then(data => this.products = data);
-          
+
         this.items = [
             {label: 'Add New', icon: 'pi pi-fw pi-plus'},
             {label: 'Remove', icon: 'pi pi-fw pi-minus'}
@@ -97,6 +109,10 @@ export class DashboardComponent implements OnInit {
                 },
             }
         };
+    }
+
+    goToChannel(id:number){
+        this.router.navigate(['/pages/channel'], { queryParams: { id: id } });
     }
 
     applyLightTheme() {
