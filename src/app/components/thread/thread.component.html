@@ -17,7 +17,7 @@
                                 <p-avatar [image]="user._profilePhoto" styleClass="mx-2" [style]="{'border': '1px solid var(--primary-color)'}" shape="circle"></p-avatar>
                             </div>
                         </div>
-                        <div id="asd" class="card threadContent mt-3 text-color" style="background: var(--threadBackground)"></div>
+                        <div [innerHTML]="thread._content" class="card threadContent mt-3 text-color" style="background: var(--threadBackground)"></div>
                         <div class="threadPhotos">
                             <span *ngIf="!emptyArray">
                             <div class="text-center col-12 flex flex-row flex-wrap card-container justify-content-center" id="photosBox" style="display: none">
@@ -29,15 +29,16 @@
                             <span *ngIf="emptyArray"></span>
                         </div>
                         <div class="col-12 md:col-2 flex" style="cursor: pointer">
-                            <i class="pi pi-comment mx-1" style="font-size: 1.5rem"></i>
+                            <i (click)="toggleComment()" class="pi pi-comment mx-1" style="font-size: 1.5rem"></i>
                             <i class="pi pi-thumbs-up mx-1" style="font-size: 1.5rem"></i>
                             <i class="pi pi-thumbs-down mx-1" style="font-size: 1.5rem"></i>
                         </div>
+                        <div  *ngIf="commentVisible" class="col-12">
+                            <app-comment-create></app-comment-create>
+                        </div>
+                        <span *ngIf="!commentVisible"></span>
                     </div>
                 </div>
-            </div>
-            <div class="card col-12">
-                <app-comment-create></app-comment-create>
             </div>
             <div class="card col-12">
                 <app-comments-list></app-comments-list>

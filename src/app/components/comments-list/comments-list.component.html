@@ -1,18 +1,35 @@
-<div class="flex flex-row flex-wrap mb-2 justify-content-between">
-    <div class="text-center col-12 md:col-3 flex" style="cursor: pointer">
-        <p-avatar  styleClass="mx-2" [style]="{'border': '1px solid var(--primary-color)'}" shape="circle"></p-avatar>
-        <span class="text-md text-color-secondary mx-3 mt-1">
-            ioaycfsadhiudsf
-        </span>
-    </div>
-    <div class="col-12 md:col-2 flex" style="cursor: pointer">
-        <i class="pi pi-comment mx-1" style="font-size: 1.5rem"></i>
-        <i class="pi pi-thumbs-up mx-1" style="font-size: 1.5rem"></i>
-        <i class="pi pi-thumbs-down mx-1" style="font-size: 1.5rem"></i>
-        <i class="pi pi-user-plus mx-1" style="font-size: 1.5rem"></i>
-        <i class="pi pi-user-minus mx-1" style="font-size: 1.5rem"></i>
+<div *ngIf="!emptyComments">
+    <div *ngFor="let comment of comments; index as i; first as isFirst">
+        <div class="flex flex-row flex-wrap mb-2 justify-content-between">
+            <div class="text-center col-12 md:col-3 flex" style="cursor: pointer;" (click)="goToProfile()">
+                <p-avatar [image]="comment._user._profilePhoto" styleClass="mx-2" [style]="{'border': '1px solid var(--primary-color)'}" shape="circle"></p-avatar>
+                <span class="text-md text-color-secondary mx-3 mt-1">
+                    {{comment._user._nickname}}
+                </span>
+            </div>
+            <span class="text-center col-12 md:col-3 flex text-md text-color-secondary mt-1">
+                    <i class="pi pi-minus mr-3 mt-1"></i>{{comment._dateComment}}
+                </span>
+            <div class="col-12 md:col-2 flex" style="cursor: pointer">
+                <i (click)="toggleComment()" class="pi pi-comment mx-1" style="font-size: 1.5rem"></i>
+                <i class="pi pi-thumbs-up mx-1" style="font-size: 1.5rem"></i>
+                <i class="pi pi-thumbs-down mx-1" style="font-size: 1.5rem"></i>
+                <i class="pi pi-user-plus mx-1" style="font-size: 1.5rem"></i>
+                <i class="pi pi-user-minus mx-1" style="font-size: 1.5rem"></i>
+            </div>
+        </div>
+        <div>
+            <div class="card col-12" style="background: var(--threadBackground)">
+                {{comment._content}}
+            </div>
+            <div  *ngIf="commentVisible" class="col-12">
+                <app-comment-create></app-comment-create>
+            </div>
+            <span *ngIf="!commentVisible"></span>
+        </div>
     </div>
 </div>
-<div class="card col-12" style="background: var(--threadBackground)">
+<div *ngIf="emptyComments" class="card col-12" style="background: var(--surface-border)">
+    <div class="text-xl text-center text-primary">No existen comentarios en este hilo.</div>
+</div>
 
-</div>

@@ -22,12 +22,13 @@ export class ThreadComponent implements OnInit {
     userUrl:string = Constants.apiURL;
     private idThread:string;
     photo:boolean;
-    emptyArray:boolean=false;
     multimedia:MultimediaModel[] = [];
     thread:ThreadModel = new ThreadModel();
     channel:ChannelModel = new ChannelModel();
     user:UserModel = new UserModel();
 
+    emptyArray:boolean=false;
+    commentVisible:boolean=true;
 
     constructor( private messageService: MessageService,
                  private route: ActivatedRoute,
@@ -44,6 +45,15 @@ export class ThreadComponent implements OnInit {
   ngOnInit(): void {
       this.threadPetition();
   }
+
+  toggleComment(){
+      if (this.commentVisible){
+          this.commentVisible=false;
+      }else {
+          this.commentVisible=true;
+      }
+  }
+
 
   multimediaPetition(){
       let param = new HttpParams();
@@ -78,7 +88,6 @@ export class ThreadComponent implements OnInit {
               this.multimediaPetition();
               this.channelPetition();
               this.userPetition();
-              document.getElementById("asd").innerHTML = this.thread._content;
           }else if(resp.body.length===0){
 
           }else{
