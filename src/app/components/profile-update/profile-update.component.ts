@@ -175,7 +175,7 @@ export class ProfileUpdateComponent implements OnInit {
                             icon: "success",
                             confirmButtonText: 'Ok'
                         }).then((result:any)=>{
-                            this.router.navigate(['/pages/profile']);
+                            this.router.navigate(['/pages/profile'],{queryParams:{id:this.user._idUser}});
                         });
                     }
 
