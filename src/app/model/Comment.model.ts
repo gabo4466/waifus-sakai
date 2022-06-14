@@ -9,7 +9,7 @@ export class CommentModel{
     public _comment:number;
     public _thread:number;
     public _user:UserModel;
-    public _comentable:boolean;
+    public _commentable:boolean;
 
 
     constructor() {
@@ -19,7 +19,7 @@ export class CommentModel{
         this._comment = 0;
         this._thread = 0;
         this._user = null;
-        this._comentable = false;
+        this._commentable = false;
     }
 
     constructorCommentCreator(dateComment:string, content:string){

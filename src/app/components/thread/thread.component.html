@@ -3,7 +3,7 @@
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <p-progressSpinner *ngIf="loading"></p-progressSpinner>
+                <p-progressSpinner class="col-2 col-offset-5" *ngIf="loading"></p-progressSpinner>
                 <div *ngIf="!loading" class="p-fluid grid">
                     <div class="col-12">
                         <div (click)="goToChannel(thread._idChannel)" class="threadChannel text-md text-color-secondary" style="cursor: pointer;">

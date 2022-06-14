@@ -30,7 +30,6 @@ export class CommentCreateComponent implements OnInit {
         this.comment = new CommentModel();
         this.commentUrl += "commentCreation";
         this.createForm();
-        console.log("id comentario" + this.idComment)
         this.route.queryParams.subscribe(params => this.idThread = params.id);
     }
 

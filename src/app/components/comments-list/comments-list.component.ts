@@ -58,7 +58,7 @@ export class CommentsListComponent implements OnInit {
 
 
     toggleComment(idx){
-        this.comments[idx]._comentable = !this.comments[idx]._comentable;
+        this.comments[idx]._commentable = !this.comments[idx]._commentable;
     }
 
     paginateComments(){
@@ -85,11 +85,11 @@ export class CommentsListComponent implements OnInit {
                 userAux._idUser = comment['user'];
                 commentAux.constructorComment(comment['idComment'], comment['dateComment'], comment['content'], comment['comment'], comment['thread'], userAux);
                 this.userPetition(commentAux, idx === array.length - 1);
-                console.log(comment)
                 this.comments.push(commentAux);
             });
             if (resp.body['comments'].length===0){
                 this.emptyComments = true;
+                this.loading = false;
             }
             if (this.totalComments>this.idxComments+this.pag-1){
                 this.moreComments=true;
@@ -97,6 +97,7 @@ export class CommentsListComponent implements OnInit {
                 this.moreComments=false;
             }
         }, ()=>{
+            this.loading = false;
             this.emptyComments = true;
         });
     }
