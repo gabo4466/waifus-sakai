@@ -6,6 +6,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {ThreadModel} from "../../model/thread.model";
 import {UserModel} from "../../model/user.model";
 import {CommentModel} from "../../model/Comment.model";
+import {computeMsgId} from "@angular/compiler";
 
 @Component({
   selector: 'app-comments-list',
@@ -21,15 +22,21 @@ export class CommentsListComponent implements OnInit {
     user:UserModel = new UserModel();
     comment:CommentModel = new CommentModel();
     comments:CommentModel[] = [];
+    embedded:CommentModel = new CommentModel();
+    embeddedComments:CommentModel[] = [];
     private idThread:string;
     pag:number = 10;
-    idx:number;
+    idxComments:number;
+    idxEmbedded:number;
     totalComments:number;
+    totalEmbedded:number;
 
     commentVisible:boolean=false;
     emptyComments:boolean=false;
     emptyEmbedded:boolean=false;
-
+    moreComments:boolean=false;
+    moreEmbedded:boolean=false;
+    loading:boolean=true;
 
     constructor(private messageService: MessageService,
                 private route: ActivatedRoute,
@@ -38,8 +45,10 @@ export class CommentsListComponent implements OnInit {
         this.userUrl += "profileSearch";
         this.commentUrl += "commentCreation";
         this.embeddedUrl += "commentSearch";
-        this.idx = 1;
+        this.idxComments = 1;
         this.totalComments = 0;
+        this.idxEmbedded = 1;
+        this.totalEmbedded = 0;
         this.route.queryParams.subscribe(params => this.idThread = params.id);
     }
 
@@ -48,49 +57,63 @@ export class CommentsListComponent implements OnInit {
     }
 
 
-    toggleComment(){
-        if (this.commentVisible){
-            this.commentVisible=false;
-        }else {
-            this.commentVisible=true;
-        }
+    toggleComment(idx){
+        this.comments[idx]._comentable = !this.comments[idx]._comentable;
     }
 
-    paginate(event){
-        this.idx = event.first+1;
+    paginateComments(){
+        this.idxComments = this.idxComments+this.pag;
         this.commentPetition();
     }
 
+    paginateEmbedded(){
+        this.idxEmbedded = this.idxEmbedded+this.pag;
+        this.embeddedPetition();
+    }
+
     commentPetition(){
-        this.comments = [];
         this.emptyComments = false;
         let param = new HttpParams();
         param = param.append("idThread", this.idThread);
-        param = param.append("idx", this.idx);
+        param = param.append("idx", this.idxComments);
         param = param.append("pag", this.pag);
         this.http.get<Object>(this.commentUrl, {observe: 'response', params: param}).subscribe( (resp:any) => {
-            resp.body['comments'].forEach((comment:any)=>{
+            this.totalComments = resp.body['count'];
+            resp.body['comments'].forEach((comment:any, idx:number, array:any)=>{
                 let commentAux = new CommentModel();
-                commentAux.constructorComment(comment['idComment'], comment['dateComment'], comment['content'], comment['comment'], comment['thread'], this.userPetition(comment['user']));
+                let userAux = new UserModel();
+                userAux._idUser = comment['user'];
+                commentAux.constructorComment(comment['idComment'], comment['dateComment'], comment['content'], comment['comment'], comment['thread'], userAux);
+                this.userPetition(commentAux, idx === array.length - 1);
+                console.log(comment)
                 this.comments.push(commentAux);
             });
             if (resp.body['comments'].length===0){
                 this.emptyComments = true;
+            }
+            if (this.totalComments>this.idxComments+this.pag-1){
+                this.moreComments=true;
+            }else {
+                this.moreComments=false;
             }
         }, ()=>{
             this.emptyComments = true;
         });
     }
 
-    userPetition(id:number):UserModel{
-        this.user = new UserModel();
+    userPetition(comment:CommentModel, last:boolean){
+        let user = new UserModel();
         let param = new HttpParams();
-        param = param.append("idUser", id);
+        param = param.append("idUser", comment._user._idUser);
         this.http.get<Object>(this.userUrl, {observe: 'response', params: param}).subscribe((resp:any)=>{
             if(!resp.body['banned']) {
-                this.user.constructorNickname(resp.body['nickname']);
-                this.user._idUser = resp.body['idUser'];
-                this.user._profilePhoto = this.imgUrl + resp.body['profilePhoto'];
+                user.constructorNickname(resp.body['nickname']);
+                user._idUser = resp.body['idUser'];
+                user._profilePhoto = this.imgUrl + resp.body['profilePhoto'];
+                comment._user = user;
+                if (last===true){
+                    this.loading = false;
+                }
             }else if(resp.body.length===0){
 
             }else{
@@ -99,11 +122,14 @@ export class CommentsListComponent implements OnInit {
         }, ()=>{
 
         });
-        return this.user;
     }
 
-    goToProfile(){
-        this.router.navigate(['/pages/profile'], { queryParams: { id: this.user._idUser } });
+    embeddedPetition(){
+
+    }
+
+    goToProfile(id){
+        this.router.navigate(['/pages/profile'], { queryParams: { id: id } });
     }
 
 }

@@ -29,6 +29,7 @@ export class ThreadComponent implements OnInit {
 
     emptyArray:boolean=false;
     commentVisible:boolean=true;
+    loading:boolean=true;
 
     constructor( private messageService: MessageService,
                  private route: ActivatedRoute,
@@ -124,6 +125,7 @@ export class ThreadComponent implements OnInit {
               this.user.constructorNickname(resp.body['nickname']);
               this.user._idUser = resp.body['idUser'];
               this.user._profilePhoto = this.imgUrl + resp.body['profilePhoto'];
+              this.loading = false;
           }else if(resp.body.length===0){
 
           }else{

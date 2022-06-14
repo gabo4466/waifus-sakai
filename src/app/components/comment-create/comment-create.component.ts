@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Constants} from "../../common/constants";
-import {ThreadModel} from "../../model/thread.model";
-import {UserModel} from "../../model/user.model";
 import {CommentModel} from "../../model/Comment.model";
 import {MessageService} from "primeng/api";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -20,6 +18,7 @@ export class CommentCreateComponent implements OnInit {
     private idThread:string;
     fg: FormGroup;
     today: string;
+    @Input('idComment') idComment:number = 0;
 
     constructor(private messageService: MessageService,
                 private route: ActivatedRoute,
@@ -31,6 +30,7 @@ export class CommentCreateComponent implements OnInit {
         this.comment = new CommentModel();
         this.commentUrl += "commentCreation";
         this.createForm();
+        console.log("id comentario" + this.idComment)
         this.route.queryParams.subscribe(params => this.idThread = params.id);
     }
 
@@ -56,10 +56,20 @@ export class CommentCreateComponent implements OnInit {
             param = param.append("idThread", this.idThread);
             this.comment.constructorCommentCreator(this.fg.get('dateComment').value, this.fg.get("content").value);
             this.http.post<Object>(this.commentUrl, JSON.stringify(this.comment).replace(/[/_/]/g, ''), {observe: 'response', params: param}).subscribe( (resp:any) => {
-                this.router.navigate(['/pages/thread'], { queryParams: { id: this.idThread } });
+                this.router.onSameUrlNavigation = 'reload';
+                setTimeout(()=>{                           //<<<---using ()=> syntax
+                    this.reloadComponent();
+                }, 500);
             });
 
         }
+    }
+
+    reloadComponent() {
+        let currentUrl = this.router.url;
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/pages/thread'], {queryParams:{id:this.idThread}});
     }
 
 }

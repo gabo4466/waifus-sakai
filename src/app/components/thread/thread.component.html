@@ -3,7 +3,8 @@
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <div class="p-fluid grid">
+                <p-progressSpinner *ngIf="loading"></p-progressSpinner>
+                <div *ngIf="!loading" class="p-fluid grid">
                     <div class="col-12">
                         <div (click)="goToChannel(thread._idChannel)" class="threadChannel text-md text-color-secondary" style="cursor: pointer;">
                             <i class="pi pi-angle-left"></i>{{channel._name}}
