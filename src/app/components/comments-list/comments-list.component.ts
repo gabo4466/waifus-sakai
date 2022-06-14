@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {ThreadModel} from "../../model/thread.model";
 import {UserModel} from "../../model/user.model";
-import {CommentModel} from "../../model/Comment.model";
+import {CommentModel} from "../../model/comment.model";
 import {computeMsgId} from "@angular/compiler";
 
 @Component({

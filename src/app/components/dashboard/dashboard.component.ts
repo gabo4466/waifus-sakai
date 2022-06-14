@@ -8,6 +8,9 @@ import { AppConfig } from '../../api/appconfig';
 import {ChannelModel} from "../../model/channel.model";
 import {Router} from "@angular/router";
 import {Constants} from "../../common/constants";
+import {UserModel} from "../../model/user.model";
+import {HttpClient} from "@angular/common/http";
+import * as http from "http";
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -30,12 +33,27 @@ export class DashboardComponent implements OnInit {
 
     channels: ChannelModel[] = [];
 
+    channel: ChannelModel = new ChannelModel();
+
+    emptyChannels:boolean = false;
+
+    users: UserModel[] = [];
+
+    user: UserModel = new UserModel();
+
+    emptyUsers: boolean = false;
+
     urlBanner:string = Constants.imgURL + "mainBanner.png";
+
+    urlChannelRank:string = Constants.apiURL + "mostThreads";
+
+    urlUserRank:string = Constants.apiURL + "karmaRank";
 
     constructor(
         private productService: ProductService,
         public configService: ConfigService,
-        private router: Router) {}
+        private router: Router,
+        private http: HttpClient) {}
 
     ngOnInit() {
         this.config = this.configService.config;
@@ -71,6 +89,10 @@ export class DashboardComponent implements OnInit {
                 }
             ]
         };
+
+        this.channelRank();
+
+        this.userRank();
     }
 
     updateChartOptions() {
@@ -115,6 +137,10 @@ export class DashboardComponent implements OnInit {
         this.router.navigate(['/pages/channel'], { queryParams: { id: id } });
     }
 
+    goToUser(id:number){
+        this.router.navigate(['/pages/profile'], { queryParams: { id: id } });
+    }
+
     applyLightTheme() {
             this.chartOptions = {
             plugins: {
@@ -143,5 +169,40 @@ export class DashboardComponent implements OnInit {
                 },
             }
         };
+    }
+
+    channelRank(){
+        this.emptyChannels = false;
+        this.channels = [];
+        this.http.get<Object>(this.urlChannelRank, {observe: "response"}).subscribe((resp:any)=>{
+           resp.body['channels'].forEach((channel:any)=>{
+               let channelAux = new ChannelModel();
+               channelAux.constructorRankChannel(channel['idChannel'], channel['name'], channel['photo'], channel['banner'], channel['threads']);
+               this.channels.push(channelAux);
+           });
+            if(resp.body['channels'].length === 0){
+                this.emptyChannels = true;
+            }
+        }, ()=>{
+            this.emptyChannels = true;
+        });
+    }
+
+    userRank(){
+        this.emptyUsers = false;
+        this.users = [];
+        this.http.get<Object>(this.urlUserRank, {observe:"response"}).subscribe((resp:any)=>{
+           resp.body['users'].forEach((user:any)=>{
+               let userAux = new UserModel();
+               userAux.constructorRankUser(user['idUser'], user['name'], user['nickname'], user['profilePhoto'], user['karma']);
+               this.users.push(userAux);
+               console.log(this.users)
+           });
+           if(resp.body['users'].length === 0){
+               this.emptyUsers = true;
+           }
+        }, ()=>{
+            this.emptyUsers = true;
+        });
     }
 }
