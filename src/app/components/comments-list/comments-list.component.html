@@ -11,10 +11,10 @@
             <span class="text-center col-12 md:col-3 flex text-md text-color-secondary mt-1">
                     {{comment._dateComment}}
                 </span>
-            <div class="col-12 md:col-1 md:col-offset-1 flex" style="cursor: pointer">
-                <!--<i (click)="toggleComment(i)" class="pi pi-comment mx-1" style="font-size: 1.5rem"></i>-->
-                <i class="pi pi-thumbs-up mx-1" style="font-size: 1.5rem"></i>
-                <i class="pi pi-thumbs-down mx-1" style="font-size: 1.5rem"></i>
+            <div class="col-12 md:col-1 md:col-offset-1 flex">
+                <!--<i (click)="toggleComment(i)" class="pi pi-comment mx-1" style="font-size: 1.5rem; cursor: pointer"></i>-->
+                <i (click)="likeComment(i)" class="pi pi-thumbs-up mx-1" style="font-size: 1.5rem; cursor: pointer"></i>
+                <i (click)="dislikeComment(i)" class="pi pi-thumbs-down mx-1" style="font-size: 1.5rem; cursor: pointer"></i>
             </div>
         </div>
         <div>

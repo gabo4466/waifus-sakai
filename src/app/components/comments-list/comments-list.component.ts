@@ -18,6 +18,8 @@ export class CommentsListComponent implements OnInit {
     embeddedUrl:string = Constants.apiURL;
     imgUrl:string = Constants.imgURL;
     userUrl:string = Constants.apiURL;
+    likeUrl:string = Constants.apiURL;
+    dislikeUrl:string = Constants.apiURL;
     thread:ThreadModel = new ThreadModel();
     user:UserModel = new UserModel();
     comment:CommentModel = new CommentModel();
@@ -45,6 +47,8 @@ export class CommentsListComponent implements OnInit {
         this.userUrl += "profileSearch";
         this.commentUrl += "commentCreation";
         this.embeddedUrl += "commentSearch";
+        this.likeUrl += "likeComment";
+        this.dislikeUrl += "dislikeComment";
         this.idxComments = 1;
         this.totalComments = 0;
         this.idxEmbedded = 1;
@@ -131,6 +135,18 @@ export class CommentsListComponent implements OnInit {
 
     goToProfile(id){
         this.router.navigate(['/pages/profile'], { queryParams: { id: id } });
+    }
+
+    likeComment(idx){
+        let param = new HttpParams();
+        param = param.append("idComment", this.comments[idx]._idComment);
+        this.http.get<Object>(this.likeUrl, {observe: 'response', params: param}).subscribe((resp:any)=>{});
+    }
+
+    dislikeComment(idx){
+        let param = new HttpParams();
+        param = param.append("idComment", this.comments[idx]._idComment);
+        this.http.get<Object>(this.dislikeUrl, {observe: 'response', params: param}).subscribe((resp:any)=>{});
     }
 
 }
