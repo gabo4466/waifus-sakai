@@ -137,16 +137,5 @@ export class CommentsListComponent implements OnInit {
         this.router.navigate(['/pages/profile'], { queryParams: { id: id } });
     }
 
-    likeComment(idx){
-        let param = new HttpParams();
-        param = param.append("idComment", this.comments[idx]._idComment);
-        this.http.get<Object>(this.likeUrl, {observe: 'response', params: param}).subscribe((resp:any)=>{});
-    }
-
-    dislikeComment(idx){
-        let param = new HttpParams();
-        param = param.append("idComment", this.comments[idx]._idComment);
-        this.http.get<Object>(this.dislikeUrl, {observe: 'response', params: param}).subscribe((resp:any)=>{});
-    }
 
 }
