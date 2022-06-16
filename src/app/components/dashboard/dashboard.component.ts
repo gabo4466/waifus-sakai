@@ -39,6 +39,8 @@ export class DashboardComponent implements OnInit {
 
     users: UserModel[] = [];
 
+    usersKarma:UserModel[] = [];
+
     user: UserModel = new UserModel();
 
     emptyUsers: boolean = false;
@@ -195,10 +197,11 @@ export class DashboardComponent implements OnInit {
         this.users = [];
         this.http.get<Object>(this.urlUserRank, {observe:"response"}).subscribe((resp:any)=>{
            resp.body['users'].forEach((user:any)=>{
+               console.log(resp.body)
                let userAux = new UserModel();
                userAux.constructorRankUser(user['idUser'], user['name'], user['nickname'], this.urlPhoto + user['profilePhoto' ], user['karma']);
                this.users.push(userAux);
-               console.log(this.users)
+               this.orderUsersByKarma();
            });
            if(resp.body['users'].length === 0){
                this.emptyUsers = true;
@@ -206,5 +209,23 @@ export class DashboardComponent implements OnInit {
         }, ()=>{
             this.emptyUsers = true;
         });
+    }
+
+    orderUsersByKarma() {
+        for (let i = 0; i < this.users.length; i++) {
+            // Last i elements are already in place
+            for (let j = 0; j < (this.users.length - i - 1); j++) {
+                // Checking if the item at present iteration
+                // is greater than the next iteration
+                if (this.users[j]._karma < this.users[j + 1]._karma) {
+                    // If the condition is true then swap them
+                    let temp = this.users[j];
+                    this.users[j] = this.users[j + 1];
+                    this.users[j + 1] = temp;
+                }
+            }
+
+
+        }
     }
 }
