@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Constants} from "../../common/constants";
-import {CommentModel} from "../../model/Comment.model";
+import {CommentModel} from "../../model/comment.model";
 import {MessageService} from "primeng/api";
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient, HttpParams} from "@angular/common/http";

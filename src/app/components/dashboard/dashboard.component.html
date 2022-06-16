@@ -1,7 +1,71 @@
-<input id="prueba"
-       type="text"
-       placeholder="asdasd"
-       pInputText
-       class="w-full"
-       style="padding:1rem;">
-<p>HOLA MUNDO</p>
+<div class="grid">
+
+    <div class="col-12 text-center">
+        <img [src]="urlBanner" class="w-full bannerImg" alt="Banner de waifus">
+    </div>
+
+    <div class="card col-12 mt-5 md:col-7">
+            <div class="grid">
+                <span class="identifier w-full text-center text-3xl">Los canales con más hilos 📈</span>
+                <span *ngIf="!emptyChannels" class="col-12">
+                    <div *ngFor="let channel of channels; index as i; first as isFirst" (click)="goToChannel(channel._idChannel)" class="card w-full mb-5" style="cursor: pointer;background-color: var(--surface-border); background-image: url({{channel._banner}}); background-position: center; background-size: cover;">
+                        <div class="grid">
+                            <div class="col-2 md:col-2 borderR">
+                                <p-avatar [style]="{'border': '3px solid var(--primary-color)'}" shape="circle" class="w-full" id="previewMainPhoto" [image]="channel._photo"  severity="danger" styleClass="mr-2" size="xlarge"></p-avatar>
+                            </div>
+                            <div class="col-9 col-offset-1 md:col-9 white-space-nowrap overflow-hidden text-overflow-ellipsis">
+                                <span class="w-full text-2xl md:text-4xl" style="color: var(--text-color); background-color: var(--background2); border-radius: 10px;">{{ channel._name }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+                <div *ngIf="emptyChannels" class="card col-12" style="background-color: var(--surface-border)">
+                    <div class="grid">
+                        <div class="col-12 text-center">
+                            <span class="text-2xl md:text-4xl">No se han encontrado resultados</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="card col-12 mt-5 md:col-4 md:col-offset-1">
+        <div class="grid">
+            <span *ngIf="!emptyUsers" class=" w-full identifier text-center text-3xl">Usuarios con más karma 🏆</span>
+                <span class="col-12">
+                    <div *ngFor="let user of users; index as i; first as isFirst" (click)="goToUser(user._idUser)" class="card w-full mb-5" style="cursor: pointer;background-color: var(--surface-border); background-position: center; background-size: cover;">
+                        <div class="grid">
+                            <div class="col-2 md:col-2 borderR">
+                                <p-avatar [style]="{'border': '3px solid var(--primary-color)'}" shape="circle" class="w-full" id="idPhoto" [image]="user._profilePhoto"  severity="danger" styleClass="mr-2" size="xlarge"></p-avatar>
+                            </div>
+                            <div class="col-9 col-offset-1 md:col-8 md:col-offset-2 white-space-nowrap overflow-hidden text-overflow-ellipsis">
+                                <span class="w-full text-2xl md:text-4xl" >
+                                    <span *ngIf="i === 0">🥇</span>
+                                    <span *ngIf="i === 1">🥈</span>
+                                    <span *ngIf="i === 2">🥉</span>
+                                    <span *ngIf="i >= 3">🏅</span>
+                                </span>
+                                <span class="w-full text-2xl md:text-4xl" style="color: var(--text-color); background-color: var(--background2); border-radius: 10px;">
+
+                                    {{ user._nickname }}
+                                </span>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </span>
+            <div *ngIf="emptyUsers" class="card col-12" style="background-color: var(--surface-border)">
+                <div class="grid">
+                    <div class="col-12 text-center">
+                        <span class="text-2xl md:text-4xl">No se han encontrado resultados</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+

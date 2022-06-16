@@ -6,7 +6,7 @@
                 <p-progressSpinner class="col-2 col-offset-5" *ngIf="loading"></p-progressSpinner>
                 <div *ngIf="!loading" class="p-fluid grid">
                     <div class="col-12">
-                        <div (click)="goToChannel(thread._idChannel)" class="threadChannel text-md text-color-secondary" style="cursor: pointer;">
+                        <div (click)="goToChannel(thread._idChannel)" class="threadChannel text-md text-color-secondary col-1" style="cursor: pointer;">
                             <i class="pi pi-angle-left"></i>{{channel._name}}
                         </div>
                         <div class="flex flex-row flex-wrap justify-content-between">
@@ -27,17 +27,15 @@
                                 </div>
                             </div>
                         </span>
-                            <span *ngIf="emptyArray"></span>
                         </div>
-                        <div class="col-12 md:col-2 flex" style="cursor: pointer">
-                            <i (click)="toggleComment()" class="pi pi-comment mx-1" style="font-size: 1.5rem"></i>
-                            <i class="pi pi-thumbs-up mx-1" style="font-size: 1.5rem"></i>
-                            <i class="pi pi-thumbs-down mx-1" style="font-size: 1.5rem"></i>
+                        <div class="col-12 md:col-2 flex">
+                            <i (click)="toggleComment()" class="pi pi-comment mx-1" style="font-size: 1.5rem; cursor: pointer"></i>
+                            <i (click)="like()" class="pi pi-thumbs-up mx-1" style="font-size: 1.5rem; cursor: pointer"></i>
+                            <i (click)="dislike()" class="pi pi-thumbs-down mx-1" style="font-size: 1.5rem; cursor: pointer"></i>
                         </div>
-                        <div  *ngIf="commentVisible" class="col-12">
+                        <div  *ngIf="commentVisible && canCreate" class="col-12">
                             <app-comment-create></app-comment-create>
                         </div>
-                        <span *ngIf="!commentVisible"></span>
                     </div>
                 </div>
             </div>
