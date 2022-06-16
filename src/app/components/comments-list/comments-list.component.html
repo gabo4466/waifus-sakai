@@ -1,18 +1,39 @@
-<div class="flex flex-row flex-wrap mb-2 justify-content-between">
-    <div class="text-center col-12 md:col-3 flex" style="cursor: pointer">
-        <p-avatar  styleClass="mx-2" [style]="{'border': '1px solid var(--primary-color)'}" shape="circle"></p-avatar>
-        <span class="text-md text-color-secondary mx-3 mt-1">
-            ioaycfsadhiudsf
-        </span>
+<p-progressSpinner class="col-2 col-offset-5" *ngIf="loading"></p-progressSpinner>
+<div *ngIf="!emptyComments && !loading">
+    <div *ngFor="let comment of comments; index as i; first as isFirst" class="card px-0 pt-2 pb-0" style="background-color: var(--surface-border)">
+        <div class="flex flex-row flex-wrap mb-2 justify-content-between">
+            <div class="text-center col-12 md:col-3 flex" style="cursor: pointer;" (click)="goToProfile(comment._user._idUser)">
+                <p-avatar [image]="comment._user._profilePhoto" styleClass="mx-2" [style]="{'border': '1px solid var(--primary-color)'}" shape="circle"></p-avatar>
+                <span class="text-md text-color-secondary mx-3 mt-1">
+                    {{comment._user._nickname}}
+                </span>
+            </div>
+            <span class="text-center col-12 md:col-3 flex text-md text-color-secondary mt-1">
+                    {{comment._dateComment}}
+                </span>
+            <div class="col-12 md:col-1 md:col-offset-1 flex">
+                <!--<i (click)="toggleComment(i)" class="pi pi-comment mx-1" style="font-size: 1.5rem; cursor: pointer"></i>-->
+                <!--<i (click)="likeComment(i)" class="pi pi-thumbs-up mx-1" style="font-size: 1.5rem; cursor: pointer"></i>-->
+                <!--<i (click)="dislikeComment(i)" class="pi pi-thumbs-down mx-1" style="font-size: 1.5rem; cursor: pointer"></i>-->
+            </div>
+        </div>
+        <div>
+            <div class="card col-12" style="background: var(--threadBackground)">
+                {{comment._content}}
+            </div>
+            <div *ngIf="moreEmbedded" class="card col-12 flex flex-row flex-wrap justify-content-center" style="background: var(--surface-border); cursor: pointer" (click)="paginateEmbedded()">
+                <i class="pi pi-angle-down mx-3 flex mt-1" style="font-size: 1.5rem"></i><div class="text-xl flex">Ver comentarios</div><i class="pi pi-angle-down flex mx-3 mt-1" style="font-size: 1.5rem"></i>
+            </div>
+            <div *ngIf="comment._commentable" class="col-12">
+                <app-comment-create [idComment]="comment._idComment"></app-comment-create>
+            </div>
+        </div>
     </div>
-    <div class="col-12 md:col-2 flex" style="cursor: pointer">
-        <i class="pi pi-comment mx-1" style="font-size: 1.5rem"></i>
-        <i class="pi pi-thumbs-up mx-1" style="font-size: 1.5rem"></i>
-        <i class="pi pi-thumbs-down mx-1" style="font-size: 1.5rem"></i>
-        <i class="pi pi-user-plus mx-1" style="font-size: 1.5rem"></i>
-        <i class="pi pi-user-minus mx-1" style="font-size: 1.5rem"></i>
+    <div *ngIf="moreComments" class="card col-12 flex flex-row flex-wrap justify-content-center" style="background: var(--surface-border); cursor: pointer" (click)="paginateComments()">
+        <i class="pi pi-angle-down mx-3 flex mt-1" style="font-size: 1.5rem"></i><div class="text-xl flex">Ver más comentarios</div><i class="pi pi-angle-down flex mx-3 mt-1" style="font-size: 1.5rem"></i>
     </div>
 </div>
-<div class="card col-12" style="background: var(--threadBackground)">
+<div *ngIf="emptyComments" class="card col-12" style="background: var(--surface-border)">
+    <div class="text-xl text-center text-primary">No existen comentarios en este hilo.</div>
+</div>
 
-</div>

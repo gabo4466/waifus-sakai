@@ -5,6 +5,7 @@ export class ChannelModel{
     public _banner: string;
     public _name: string;
     public _idChannel:number;
+    public _threads:number;
 
 
     constructor() {
@@ -14,6 +15,7 @@ export class ChannelModel{
         this._banner = "";
         this._name = "";
         this._idChannel = 0;
+        this._threads = 0;
     }
 
     constructorCreateChannel(dateChannel: string, description: string, name: string) {
@@ -36,7 +38,13 @@ export class ChannelModel{
         this._name = name;
     }
 
-
+    constructorRankChannel(idChannel:number, name:string, photo:string, banner:string, threads:number){
+        this._name = name.trim();
+        this._photo = photo;
+        this._banner = banner;
+        this._idChannel = idChannel;
+        this._threads = threads;
+    }
 
 
 }

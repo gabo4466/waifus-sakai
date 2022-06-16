@@ -138,11 +138,10 @@ export class ChannelComponent implements OnInit, OnDestroy {
         param = param.append("idChannel", this.idChannel);
         param = param.append("dateFollow", this.dateService.formatDateYYYYMMDD(new Date()));
         this.http.post(this.urlFollow, "",{ observe: 'response', params: param }).subscribe((resp:any)=>{
-            if (resp.body['follow']){
-                this.labelFollow = "Unfollow";
-            }else {
-                this.labelFollow = "Follow";
-            }
+            this.router.onSameUrlNavigation = 'reload';
+            setTimeout(()=>{                           //<<<---using ()=> syntax
+                this.reloadComponent();
+            }, 500);
         }, ()=>{
             Swal.fire({
                 title: "Ha ocurido un error",
@@ -164,6 +163,13 @@ export class ChannelComponent implements OnInit, OnDestroy {
         },()=>{
             this.canCreate = false;
         });
+    }
+
+    reloadComponent() {
+        let currentUrl = this.router.url;
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/pages/channel'], {queryParams:{id:this.idChannel}});
     }
 
 

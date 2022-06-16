@@ -20,7 +20,6 @@ export class UserModel {
 
 
 
-
     constructor() {
         this._email = "";
         this._password = "";
@@ -87,6 +86,14 @@ export class UserModel {
         this._email = email.trim();
     }
     constructorNickname(nickname:string) {
+        this._nickname = nickname.trim();
+    }
+
+    constructorRankUser(idUser:number, name:string, nickname:string, profilePhoto:string, karma:number){
+        this._profilePhoto = profilePhoto;
+        this._idUser = idUser;
+        this._karma = karma;
+        this._name = name.trim();
         this._nickname = nickname.trim();
     }
 }
