@@ -6,7 +6,7 @@
 
     <div class="card col-12 mt-5 md:col-7">
             <div class="grid">
-                <span class="identifier w-full text-center text-3xl">Los canales con más hilos 📈</span>
+                <span class="identifier w-full text-center text-3xl mb-2">Los canales con más hilos 📈</span>
                 <span *ngIf="!emptyChannels" class="col-12">
                     <div *ngFor="let channel of channels; index as i; first as isFirst" (click)="goToChannel(channel._idChannel)" class="card w-full mb-5" style="cursor: pointer;background-color: var(--surface-border); background-image: url({{channel._banner}}); background-position: center; background-size: cover;">
                         <div class="grid">
@@ -31,7 +31,7 @@
 
     <div class="card col-12 mt-5 md:col-4 md:col-offset-1">
         <div class="grid">
-            <span *ngIf="!emptyUsers" class=" w-full identifier text-center text-3xl">Usuarios con más karma 🏆</span>
+            <span class=" w-full identifier text-center text-3xl">Usuarios con más karma 🏆</span>
                 <span class="col-12">
                     <div *ngFor="let user of users; index as i; first as isFirst" (click)="goToUser(user._idUser)" class="card w-full mb-5" style="cursor: pointer;background-color: var(--surface-border); background-position: center; background-size: cover;">
                         <div class="grid">
