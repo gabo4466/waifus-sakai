@@ -44,7 +44,7 @@ export class CreateChannelComponent implements OnInit, OnDestroy {
             this.config = config;
         });
         this.userService.getProfile().subscribe((resp:any)=>{
-            if (resp['admin']!=true){
+            if (resp['admin']!=true && resp['karma'] < 1000){
                 this.goToUnAuthorized();
             }
         },()=>{

@@ -34,6 +34,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
     urlThreads:string = Constants.apiURL;
     canCreate:boolean;
     labelFollow:string = "Follow";
+    canFollow:boolean;
     constructor( private configService: ConfigService,
                  private http: HttpClient,
                  private route: ActivatedRoute,
@@ -41,6 +42,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
                  private userService: UserService,
                  private dateService: DateService) {
         this.canCreate = false;
+        this.canFollow = false;
         this.channel = new ChannelModel();
         this.route.queryParams.subscribe(params => this.idChannel = params.id);
         this.urlChannel += "channel";
@@ -51,8 +53,9 @@ export class ChannelComponent implements OnInit, OnDestroy {
         this.term = "";
         userService.getProfile().subscribe((resp:any)=>{
             if (resp['admin'] == true || resp['karma'] > 20){
-                this.canCreate = true;
             }
+            this.canCreate = true;
+            this.canFollow = true;
         });
     }
 
